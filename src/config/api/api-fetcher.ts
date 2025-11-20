@@ -11,7 +11,7 @@ const addAuthTokenInterceptor = (config: InternalAxiosRequestConfig) => {
   return config;
 };
 
-export const apiFetcherCentral = axios.create({
+export const apiFetcher = axios.create({
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   },
@@ -19,13 +19,4 @@ export const apiFetcherCentral = axios.create({
   baseURL: `${Environment.apiUrl}/api/central`
 });
 
-export const apiFetcherTenant = axios.create({
-  headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-  },
-  withCredentials: true
-});
-
-apiFetcherCentral.interceptors.request.use(addAuthTokenInterceptor);
-
-apiFetcherTenant.interceptors.request.use(addAuthTokenInterceptor);
+apiFetcher.interceptors.request.use(addAuthTokenInterceptor);
