@@ -110,7 +110,7 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
                 type='email'
                 name='email'
                 label='Email'
-                placeholder='Enter email'
+                placeholder='Ingrese su correo electrónico'
                 control={control}
                 disabled={isDisabled}
                 inputProps={{

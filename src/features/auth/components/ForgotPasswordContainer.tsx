@@ -112,7 +112,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
             fontSize: '1.25rem'
           }}
         >
-          Forgot Password
+          Olvidé mi contraseña
         </Typography>
 
         <Typography
@@ -125,8 +125,8 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
             fontSize: '0.875rem'
           }}
         >
-          Enter your email address and we'll send you a link to reset your
-          password.
+          Ingrese su correo electrónico y le enviaremos un enlace para
+          restablecer su contraseña.
         </Typography>
       </Box>
 
@@ -147,8 +147,8 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
               fontWeight={500}
               sx={{ fontSize: '0.8125rem' }}
             >
-              Enter your email address and we'll send you a link to reset your
-              password.
+              Ingrese su correo electrónico y le enviaremos un enlace para
+              restablecer su contraseña.
             </Typography>
           </Stack>
         </CardContent>
@@ -180,7 +180,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
               name='email'
               error={Boolean(errors.email?.message)}
               label='Email'
-              placeholder='Enter your email address'
+              placeholder='Ingrese su correo electrónico'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>

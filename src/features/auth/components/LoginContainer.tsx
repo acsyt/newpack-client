@@ -64,7 +64,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
             control={control}
             name='email'
             label='Email'
-            placeholder='Please enter your email'
+            placeholder='Ingrese su correo electrónico'
             disabled={loginMutation.isPending}
           />
         </Grid>
@@ -75,8 +75,8 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
             fieldType='password'
             control={control}
             name='password'
-            label='Password'
-            placeholder='Please enter your password'
+            label='Contraseña'
+            placeholder='Ingrese su contraseña'
             type={showPassword ? 'text' : 'password'}
             id='password'
             InputProps={{
@@ -115,7 +115,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
           >
             <FormControlLabel
               control={<Checkbox name='remember' color='primary' />}
-              label='Remember me'
+              label='Recordarme'
             />
             <MUILink
               to='/auth/forgot-password'
@@ -123,7 +123,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
               underline='hover'
             >
               <Typography color='primary' variant='body2'>
-                Forgot Password
+                Olvidé mi contraseña
               </Typography>
             </MUILink>
           </Box>
@@ -138,7 +138,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
             sx={{ height: '40px' }}
             disabled={loginMutation.isPending}
           >
-            {loginMutation.isPending ? 'Logging in...' : 'Login'}
+            {loginMutation.isPending ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </Button>
         </Grid>
       </Grid>

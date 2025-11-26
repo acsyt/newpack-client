@@ -136,7 +136,7 @@ export const DashboardAppBar: FC<DashboardAppBarProps> = ({
             sx={{ flexGrow: 1 }}
             fontWeight={FontWeight.semiBold}
           >
-            ACSYT
+            NewPack
           </Typography>
 
           <Box display={'flex'} gap={1} alignItems='center'>

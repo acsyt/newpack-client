@@ -28,7 +28,7 @@ export const UserMenu: FC<UserMenuProps> = ({ userMenu, onCloseUserMenu }) => {
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       onClose={onCloseUserMenu}
     >
-      <MenuItem onClick={close}>Logout</MenuItem>
+      <MenuItem onClick={close}>Cerrar sesión</MenuItem>
     </Menu>
   );
 };
