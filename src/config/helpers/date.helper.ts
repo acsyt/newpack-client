@@ -1,6 +1,6 @@
 import { MONTHS, WEEK_DAYS } from '@/config/constants/time.constants';
 import { RandomHelper } from '@/config/helpers/random.helper';
-import { CustomOption } from '@/domain/interfaces/custom-option.interface';
+import { CustomOption } from '@/interfaces/custom-option.interface';
 
 export class DateHelper {
   /**

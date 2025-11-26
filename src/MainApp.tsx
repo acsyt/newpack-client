@@ -2,7 +2,7 @@ import { useEffect, type FC } from 'react';
 
 import { RouterProvider } from '@tanstack/react-router';
 
-import { useAuthStore } from './presentation/stores/auth.store';
+import { useAuthStore } from './stores/auth.store';
 import { router } from './router';
 
 interface MainAppProps {}

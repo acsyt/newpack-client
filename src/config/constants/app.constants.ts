@@ -8,7 +8,7 @@ export const TOAST_DURATION_TIME = 5000;
 
 export const OPTIMISTIC_ID = -1;
 
-export const APP_TIMEZONE = "America/Mexico_City";
+export const APP_TIMEZONE = 'America/Mexico_City';
 
 export const DEBOUNCE_FILTER_TIME = 1000;
 
@@ -23,7 +23,3 @@ export const GRID_SIZE = 50;
 export const MAX_SPOTS = 2000;
 
 export const HISTORY_LIMIT = 25;
-
-export const DEFAULT_MAIL_HOST = "smtp.hostinger.com";
-export const DEFAULT_MAIL_PORT = 465;
-export const DEFAULT_MAIL_USERNAME = "support@amdigitalpermits.com";

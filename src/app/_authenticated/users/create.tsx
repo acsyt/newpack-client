@@ -1,8 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { ModeAction } from '@/config/enums/mode-action.enum';
-import { UserFormContainer } from '@/presentation/components/users/user-form-container/UserFormContainer';
+import { UserFormContainer } from '@/features/users/components/UserFormContainer';
 
 export const Route = createFileRoute('/_authenticated/users/create')({
-  component: () => <UserFormContainer mode={ModeAction.Create} />
+  component: () => (
+    <UserFormContainer mode={ModeAction.Create} title='Crear usuario' />
+  )
 });

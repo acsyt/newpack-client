@@ -5,7 +5,7 @@ export interface FileWithPreview extends File {
 export class FileHelper {
   static createFileWithPreview(file: File): FileWithPreview {
     return Object.assign(file, {
-      preview: URL.createObjectURL(file),
+      preview: URL.createObjectURL(file)
     });
   }
 }

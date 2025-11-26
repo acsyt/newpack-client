@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { z } from 'zod';
 
-import { LoginContainer } from '@/presentation/components/auth/login/LoginContainer';
-import { AuthLayout } from '@/presentation/components/layouts/auth/AuthLayout';
+import { AuthLayout } from '@/components/layouts/AuthLayout';
+import { LoginContainer } from '@/features/auth/components/LoginContainer';
 
 export const Route = createFileRoute('/auth/login')({
   validateSearch: z.object({

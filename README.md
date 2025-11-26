@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# NEWPACK-CLIENT
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Primeros pasos
 
-Currently, two official plugins are available:
+1. **Instalar dependencias** (usar bun latest):
+   ```bash
+   bun install
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **Configurar variables de entorno**:
+   ```bash
+   VITE_API_URL=http://localhost:8000
+   ```
 
-## React Compiler
+3. **Levantar entorno de desarrollo**:
+   ```bash
+   bun run dev
+   ```
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+4. **Usuario de prueba**:
+   - Email: admin@acsyt.com
+   - Password: 123456
+    
+5. **Entorno local**:
+   - http://localhost:5173
 
-## Expanding the ESLint configuration
+## 🏗️ Arquitectura de carpetas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `components/` - Componentes React reutilizables
+- `config/` - Configuración de librerías externas (Axios, TanStack, etc.)
+- `constants/` - Constantes globales de la aplicación
+- `context/` - Contextos de React
+- `features/` - Módulos de funcionalidades específicas
+- `hooks/` - Custom hooks
+- `interfaces/` - Tipos TypeScript e interfaces
+- `mappers/` - Transformadores de datos entre formatos
+- `routes/` - Definición de rutas y páginas (TanStack Router)
+- `scripts/` - Scripts de utilidad
+- `store/` - Estado global (Zustand)
+- `styles/` - Estilos globales y configuración de Tailwind
+- `utils/` - Funciones auxiliares y helpers reutilizables
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Estructura de Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Cada feature debe contener:
+- `components/` - Componentes específicos del feature
+  - `user-form.tsx`
+- `hooks/` - Hooks específicos del feature
+  - `mutations.ts`
+  - `queries.ts`
+- `user-form.schema.ts` - Esquemas de validación (Zod)
+- `user.interface.ts` - Tipos TypeScript del feature
+- `user.service.ts` - Servicios/peticiones API del feature
+- `user.store.ts`- Store específico del feature
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📋 Consideraciones técnicas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Components: CamelCase UserForm.tsx
+- Funciones, utils, types: (user.services.tsx, date.helper.ts) (Con punto usa para indicar un propósito específico o tipo de archivo)
+- Routes: camelCase, pero la action separado por un punto. (user.show.tsx userTournaments.create.tsx)
+- No crear folders si solo engloban un solo archivo. Considerar el uso de folders para agrugar multimples archivos similares. 
+-  **Sin barrel exports**: No usar index.ts, importar directamente desde cada archivo
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📚 Librerías principales
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Peticiones API**: Axios
+- **Validación de esquemas**: Zod
+- **Peticiones asíncronas**: TanStack Query
+- **Formularios**: React Hook Form
+- **Enrutador**: TanStack Router
+- **Componentes UI**: Material UI y Tailwind CSS
+- **Estado global**: Zustand
+- **Iconos**: Material UI Icons
+- **Tablas**: Material-react-table
+
+> **Nota**: Cualquier cambio en la estructura del proyecto o en las librerías mencionadas debe reflejarse en esta documentación.
+
+Happy Coding! 🎉

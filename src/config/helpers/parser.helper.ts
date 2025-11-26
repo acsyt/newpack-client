@@ -6,8 +6,9 @@ export class ParserHelper {
    */
   static parseFloatingPoint(input: string): number | null {
     // Eliminar los separadores de miles y otros caracteres no numéricos
-    const cleanedInput = input.replace(/[^0-9.-]/g, "");
+    const cleanedInput = input.replace(/[^0-9.-]/g, '');
     const parsed = parseFloat(cleanedInput);
+
     // Verificar si el resultado es un número válido
     return isNaN(parsed) ? null : parsed;
   }
@@ -19,8 +20,9 @@ export class ParserHelper {
    */
   static parseInteger(input: string): number | null {
     // Eliminar los separadores de miles y otros caracteres no numéricos
-    const cleanedInput = input.replace(/[^0-9-]/g, "");
+    const cleanedInput = input.replace(/[^0-9-]/g, '');
     const parsed = parseInt(cleanedInput, 10);
+
     // Verificar si el resultado es un número válido
     return isNaN(parsed) ? null : parsed;
   }
@@ -32,6 +34,7 @@ export class ParserHelper {
    */
   static parseDate(input: string): Date | null {
     const date = new Date(input);
+
     // Verificar si el resultado es una fecha válida
     return isNaN(date.getTime()) ? null : date;
   }
@@ -43,15 +46,15 @@ export class ParserHelper {
    */
   static sanitizeString(input: string): string {
     // Eliminar espacios en blanco extra y otros caracteres no deseados
-    return input.trim().replace(/[^a-zA-Z0-9\s]/g, "");
+    return input.trim().replace(/[^a-zA-Z0-9\s]/g, '');
   }
 
   static generateSlug(name: string): string {
     return name
       .toLowerCase() // Convertir a minúsculas
       .trim() // Eliminar espacios en blanco al inicio y al final
-      .replace(/[^a-z0-9\s-]/g, "") // Eliminar caracteres no alfanuméricos
-      .replace(/\s+/g, "-") // Reemplazar espacios por guiones
-      .replace(/-+/g, "-"); // Reemplazar múltiples guiones por uno solo
+      .replace(/[^a-z0-9\s-]/g, '') // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-') // Reemplazar espacios por guiones
+      .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
 }
