@@ -7,15 +7,17 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
+import { Menu as MenuIcon } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
-import { DashboardAppBar } from './DashboardAppBar';
 import { DashboardBreadcrumbs } from './DashboardBreadcrumbs';
 import { DashboardSideBar } from './DashboardSideBar';
 
 import { DASHBOARD_DRAWER_WIDTH } from '@/config/constants/app.constants';
+import { cn } from '@/config/utils/cn.util';
 import { useUIStore } from '@/stores/ui.store';
 
 interface DashboardLayoutProps {
@@ -82,10 +84,6 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
   return (
     <>
       <Box display='flex' height='100dvh' overflow='hidden'>
-        <DashboardAppBar
-          open={isDashboardDrawerOpen}
-          toggleDrawer={toggleDashboardDrawer}
-        />
         {isDesktop ? (
           <StyledDrawer
             variant='permanent'
@@ -101,39 +99,48 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
             }}
           >
             <Toolbar
+              className={cn(
+                'flex items-center py-4',
+                isDashboardDrawerOpen
+                  ? 'justify-between gap-2 px-4'
+                  : 'justify-center gap-0 px-0'
+              )}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                px: [1]
+                minHeight: '80px !important'
               }}
             >
-              <Box
+              {isDashboardDrawerOpen && (
+                <Box className='flex grow justify-center'>
+                  <picture className='flex justify-center'>
+                    <source
+                      srcSet={'/assets/images/logo-full.avif'}
+                      type='image/avif'
+                    />
+                    <source
+                      srcSet={'/assets/images/logo-full.webp'}
+                      type='image/webp'
+                    />
+                    <Box
+                      component={'img'}
+                      loading='lazy'
+                      src={'/assets/images/logo-full.png'}
+                      alt={'Logo'}
+                      className='rounded w-60 h-24 object-contain'
+                    />
+                  </picture>
+                </Box>
+              )}
+
+              <IconButton
+                aria-label={isDashboardDrawerOpen ? 'Close menu' : 'Open menu'}
+                className='p-2'
                 sx={{
-                  flexGrow: 1,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  my: 2
+                  color: 'primary.main'
                 }}
+                onClick={toggleDashboardDrawer}
               >
-                <picture className='flex justify-center'>
-                  <source
-                    srcSet={'/assets/images/logo-full.avif'}
-                    type='image/avif'
-                  />
-                  <source
-                    srcSet={'/assets/images/logo-full.webp'}
-                    type='image/webp'
-                  />
-                  <Box
-                    component={'img'}
-                    loading='lazy'
-                    src={'/assets/images/logo-full.png'}
-                    alt={'Logo'}
-                    className='rounded w-60 h-24 object-contain'
-                  />
-                </picture>
-              </Box>
+                <MenuIcon size={24} />
+              </IconButton>
             </Toolbar>
             <DashboardSideBar
               menuItems={menuItems}
@@ -167,20 +174,18 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'flex-end',
-                px: [1],
-                position: 'relative',
-                zIndex: 1301
+                justifyContent: 'space-between',
+                gap: 1,
+                px: 2,
+                py: 2,
+                minHeight: '80px !important'
               }}
             >
               <Box
                 sx={{
                   flexGrow: 1,
                   display: 'flex',
-                  justifyContent: 'center',
-                  my: 2,
-                  position: 'relative',
-                  zIndex: 1302
+                  justifyContent: 'center'
                 }}
               >
                 <picture>
@@ -201,6 +206,16 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
                   />
                 </picture>
               </Box>
+
+              <IconButton
+                aria-label='Close menu'
+                sx={{
+                  color: 'primary.main'
+                }}
+                onClick={toggleDashboardDrawer}
+              >
+                <MenuIcon size={24} />
+              </IconButton>
             </Toolbar>
             <DashboardSideBar
               menuItems={menuItems}
@@ -214,16 +229,12 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
           sx={{
             flexGrow: 1,
             p: { xs: 1, sm: 2, md: 3 },
-            width: isDesktop
-              ? { sm: `calc(100% - ${DASHBOARD_DRAWER_WIDTH}px)` }
-              : '100%',
             height: '100%',
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain'
           }}
         >
-          <Toolbar />
           <div ref={topSentinelRef} aria-hidden style={{ height: 1 }} />
 
           <Grid container spacing={1}>

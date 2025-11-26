@@ -25,6 +25,7 @@ export type DashboardRoutes = Exclude<
   | '/auth/forgot-password'
   | '/auth/reset-password'
   | '/users/$userId'
+  | '/suppliers/$supplierId'
 >;
 
 export const hasRoleAccess = (path: string): boolean => {
@@ -94,7 +95,17 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/users': ['users.index'],
   '/users/create': ['users.create'],
   '/users/$userId/edit': ['users.edit'],
-  '/users/$userId/show': ['users.show']
+  '/users/$userId/show': ['users.show'],
+  '/classes': [],
+  '/customers': [],
+  '/machines': [],
+  '/processes': [],
+  '/raw-materials': [],
+  '/roles': [],
+  '/suppliers': [],
+  '/suppliers/$supplierId/edit': [],
+  '/suppliers/create': [],
+  '/suppliers/$supplierId/show': []
 };
 
 export const useRouteConfig = () => {
@@ -139,6 +150,60 @@ export const useRouteConfig = () => {
       breadcrumbs: [
         { title: 'Home', path: '/' },
         { title: 'Users', path: '/users' },
+        { title: ':id' },
+        { title: 'Show' }
+      ]
+    },
+    '/classes': {
+      title: 'Classes',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Classes' }]
+    },
+    '/customers': {
+      title: 'Customers',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Customers' }]
+    },
+    '/machines': {
+      title: 'Machines',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Machines' }]
+    },
+    '/processes': {
+      title: 'Processes',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Processes' }]
+    },
+    '/raw-materials': {
+      title: 'Raw Materials',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Raw Materials' }]
+    },
+    '/roles': {
+      title: 'Roles',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Roles' }]
+    },
+    '/suppliers': {
+      title: 'Suppliers',
+      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Suppliers' }]
+    },
+    '/suppliers/create': {
+      title: 'Create Supplier',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Suppliers', path: '/suppliers' },
+        { title: 'Create' }
+      ]
+    },
+    '/suppliers/$supplierId/edit': {
+      title: 'Edit Supplier',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Suppliers', path: '/suppliers' },
+        { title: ':id' },
+        { title: 'Edit' }
+      ]
+    },
+    '/suppliers/$supplierId/show': {
+      title: 'Show Supplier',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Suppliers', path: '/suppliers' },
         { title: ':id' },
         { title: 'Show' }
       ]

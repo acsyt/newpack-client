@@ -2,7 +2,15 @@ import type { MenuItem } from '@/interfaces/menu-item.interface';
 
 import { useMemo } from 'react';
 
-import { LayoutDashboard, Users } from 'lucide-react';
+import {
+  Box,
+  Building2,
+  ChartBarStacked,
+  LayoutDashboard,
+  Shield,
+  UserCheckIcon,
+  Users
+} from 'lucide-react';
 
 export const useMenuItems = () => {
   const menuItems = useMemo<MenuItem[]>(
@@ -14,9 +22,58 @@ export const useMenuItems = () => {
         isEnabled: true
       },
       {
-        title: 'Users',
+        title: 'Usuarios',
         icon: <Users aria-hidden='true' size={20} />,
         href: '/users',
+        isEnabled: true
+      },
+      {
+        title: 'Roles',
+        icon: <Shield aria-hidden='true' size={20} />,
+        href: '/roles',
+        isEnabled: true
+      },
+      {
+        title: 'Categories',
+        icon: <ChartBarStacked aria-hidden='true' size={20} />,
+        isEnabled: true,
+        menuItems: [
+          {
+            title: 'Procesos',
+            href: '/processes',
+            isEnabled: true,
+            icon: <ChartBarStacked aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Clases y Subclases',
+            href: '/classes',
+            isEnabled: true,
+            icon: <ChartBarStacked aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Maquinas',
+            href: '/machines',
+            isEnabled: true,
+            icon: <ChartBarStacked aria-hidden='true' size={20} />
+          }
+        ]
+      },
+      {
+        title: 'Materias Primas',
+        icon: <Box aria-hidden='true' size={20} />,
+        href: '/raw-materials',
+        isEnabled: true
+      },
+      {
+        title: 'Clientes',
+        icon: <UserCheckIcon aria-hidden='true' size={20} />,
+        href: '/customers',
+        isEnabled: true
+      },
+      {
+        title: 'Proveedores',
+        icon: <Building2 aria-hidden='true' size={20} />,
+        href: '/suppliers',
         isEnabled: true
       }
     ],

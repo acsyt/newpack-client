@@ -1,5 +1,5 @@
 export class Color {
-  static primary: string = '#1a2454';
+  static primary: string = '#101828';
 
   static secondary: string = '#5A544D';
 
