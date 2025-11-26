@@ -15,10 +15,10 @@ interface QueryOptions
 }
 
 export const usersKeys = {
-  all: () => ['users'] as const,
-  list: (params?: UserParams) => [...usersKeys.all(), 'list', params] as const,
-  detail: (id: number) => [...usersKeys.all(), 'detail', id] as const
-};
+  all: () => ['users'],
+  list: (params?: UserParams) => [...usersKeys.all(), 'list', params],
+  detail: (id: number) => [...usersKeys.all(), 'detail', id]
+} as const;
 
 export const useUsersQuery = ({ options, ...rest }: QueryOptions) => {
   return useQuery({

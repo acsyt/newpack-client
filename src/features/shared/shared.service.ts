@@ -135,7 +135,7 @@ export class SharedService {
 
         return response.data;
       } else {
-        const response = await fetcher.put<TResponse>(url, data);
+        const response = await fetcher.patch<TResponse>(url, data);
 
         return response.data;
       }

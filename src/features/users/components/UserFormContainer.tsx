@@ -33,6 +33,14 @@ export const UserFormContainer: FC<UserFormContainerProps> = ({
     staleTime: 5 * 60 * 1000
   });
 
+  if (mode === ModeAction.Create) {
+    return (
+      <DashboardLayoutContainer title={title}>
+        <UserForm mode={mode} />
+      </DashboardLayoutContainer>
+    );
+  }
+
   if (userLoading) {
     return (
       <DashboardLayoutContainer title={title}>

@@ -15,43 +15,35 @@ export const columns: MRT_ColumnDef<User>[] = [
   },
 
   {
-    header: 'Name',
+    header: 'Nombre',
     id: 'name',
     accessorKey: 'name'
   },
   {
-    id: 'username',
-    header: 'Username',
-    accessorKey: 'username',
-    accessorFn: (row): string => row.username || '---'
+    header: 'Apellido',
+    id: 'lastName',
+    accessorKey: 'lastName'
   },
   {
-    header: 'Role',
-    id: 'role',
-    accessorKey: 'roles',
-    accessorFn: (row): string =>
-      row.roles ? row.roles.map(role => role.description).join(', ') : '-'
-  },
-  {
-    header: 'Status',
+    header: 'Estado',
     id: 'active',
-    accessorKey: 'active',
+    accessorKey: 'isActive',
     filterVariant: 'select',
     filterSelectOptions: [
       {
-        label: 'Active',
+        label: 'Activo',
         value: 'true'
       },
       {
-        label: 'Inactive',
+        label: 'Inactivo',
         value: 'false'
       }
     ],
     Cell: ({ row: { original } }) => (
       <StatusChip
         status={original.active}
-        activeLabel='Active'
-        inactiveLabel='Inactive'
+        activeLabel='Activo'
+        inactiveLabel='Inactivo'
       />
     )
   },
@@ -62,7 +54,7 @@ export const columns: MRT_ColumnDef<User>[] = [
   },
   {
     id: 'updated_at',
-    header: 'Updated At',
+    header: 'Actualizado el',
     accessorKey: 'updatedAt',
     filterVariant: 'date-range',
     size: 100,

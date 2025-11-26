@@ -7,8 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from '@tanstack/react-router';
-import { MuiTelInput } from 'mui-tel-input';
-import { Controller, DefaultValues, useForm } from 'react-hook-form';
+import { DefaultValues, useForm } from 'react-hook-form';
 
 import { useUsersMutation } from '../hooks/users.mutation';
 
@@ -29,16 +28,16 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
     const userValues: DefaultValues<UserDto> = {
       mode,
       name: user?.name ?? '',
-      username: user?.username ?? '',
+      last_name: user?.lastName ?? '',
       email: user?.email ?? '',
-      active: user?.active ?? true,
-      role_id: user?.roles?.[0]?.id ?? undefined
+      active: user?.active ?? true
+      //role_id: user?.roles?.[0]?.id ?? undefined
     };
 
     return userValues;
   }, [mode, user]);
 
-  const { control, handleSubmit, setError, watch } = useForm<UserDto>({
+  const { control, handleSubmit } = useForm<UserDto>({
     mode: 'onBlur',
     resolver: zodResolver(userSchema),
     defaultValues: defaultValues
@@ -55,8 +54,10 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
     mutation.mutateAsync({ data, id: userId });
   };
 
+  const onError = (errors: any) => {};
+
   return (
-    <form onSubmit={handleSubmit(onSaveUser)}>
+    <form onSubmit={handleSubmit(onSaveUser, onError)}>
       <Grid container spacing={3}>
         <Grid size={12}>
           <Grid container spacing={2}>
@@ -64,8 +65,8 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
               <CustomFormTextField
                 fieldType='text'
                 name='name'
-                label='Full Name'
-                placeholder='Enter full name'
+                label='Nombre'
+                placeholder='Ingrese un nombre'
                 control={control}
                 disabled={isDisabled}
                 inputProps={{
@@ -82,18 +83,18 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
             <Grid size={{ xs: 12, md: 6 }}>
               <CustomFormTextField
                 fieldType='text'
-                name='username'
-                label='Username'
-                placeholder='Enter username'
+                name='last_name'
+                label='Apellido'
+                placeholder='Ingrese un apellido'
                 control={control}
                 disabled={isDisabled}
                 inputProps={{
-                  maxLength: 20,
+                  maxLength: 50,
                   onInput: (e: React.FormEvent<HTMLInputElement>) => {
                     e.currentTarget.value = e.currentTarget.value
-                      .toLowerCase()
-                      .replace(/[^\w.-]/g, '')
-                      .slice(0, 20);
+                      .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-.]/g, '')
+                      .replace(/\s{2,}/g, ' ')
+                      .slice(0, 50);
                   }
                 }}
               />
@@ -122,56 +123,6 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
                 }}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Controller
-                name='phone'
-                control={control}
-                render={({
-                  field: { ref: fieldRef, value, ...fieldProps },
-                  fieldState: { error }
-                }) => (
-                  <MuiTelInput
-                    {...fieldProps}
-                    fullWidth
-                    disableDropdown
-                    label={'Phone'}
-                    placeholder='Enter phone number'
-                    value={value ?? ''}
-                    inputRef={fieldRef}
-                    preferredCountries={['US']}
-                    defaultCountry='US'
-                    onlyCountries={['US']}
-                    helperText={error?.message}
-                    disabled={isDisabled}
-                    error={Boolean(error)}
-                    slotProps={{
-                      input: {
-                        inputProps: {
-                          maxLength: 16
-                        }
-                      }
-                    }}
-                    onChange={newValue => {
-                      const digits = newValue.replace(/\D/g, '');
-
-                      if (digits === '' || digits === '1') {
-                        fieldProps.onChange(undefined);
-
-                        return;
-                      }
-
-                      if (!newValue.startsWith('+1')) {
-                        fieldProps.onChange(
-                          '+1' + newValue.replace(/^\+?1?/, '')
-                        );
-                      } else {
-                        fieldProps.onChange(newValue);
-                      }
-                    }}
-                  />
-                )}
-              />
-            </Grid>
           </Grid>
         </Grid>
 
@@ -182,10 +133,10 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
                 fieldType='switch'
                 control={control}
                 name='active'
-                label={'Status'}
+                label='Estado'
                 disabled={isDisabled}
-                labelFalse={'Inactive'}
-                labelTrue={'Active'}
+                labelFalse='Inactivo'
+                labelTrue='Activo'
               />
             </Grid>
           </Grid>
@@ -206,7 +157,7 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
               color='cancel'
               onClick={() => navigate({ to: '/users' })}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               color='primary'
@@ -214,7 +165,7 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
               disabled={mutation.isPending || isDisabled}
               variant={mutation.isPending ? 'outlined' : 'contained'}
             >
-              {mutation.isPending ? 'Saving user...' : 'Save user'}
+              {mutation.isPending ? 'Guardando usuario...' : 'Guardar usuario'}
             </Button>
           </Grid>
         )}
