@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
 
-import { ErrorMapper } from './config/mappers/error.mapper';
-import { AuthState } from './presentation/stores/auth.store';
 import { routeTree } from './routeTree.gen';
+import { AuthState } from './stores/auth.store';
+
+import { mapErrorToApiResponse } from '@/config/error.mapper';
 
 export const router = (() => {
   const queryClient = new QueryClient({
@@ -12,7 +13,7 @@ export const router = (() => {
         refetchOnWindowFocus: false,
         retryDelay: () => 500,
         retry(failureCount, error) {
-          const mappedError = ErrorMapper.mapErrorToApiResponse(error);
+          const mappedError = mapErrorToApiResponse(error);
 
           if (!mappedError.statusCode || mappedError.statusCode === 401)
             return false;

@@ -8,9 +8,9 @@ export class FormDataHelper {
         value.forEach((item, index) => appendData(`${key}[${index}]`, item));
       } else if (value instanceof File) {
         formData.append(key, value);
-      } else if (typeof value === "boolean") {
+      } else if (typeof value === 'boolean') {
         formData.append(key, String(Number(value)));
-      } else if (typeof value === "object") {
+      } else if (typeof value === 'object') {
         Object.entries(value).forEach(([keyObj, val]) => {
           appendData(`${key}[${keyObj}]`, val);
         });

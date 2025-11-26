@@ -1,57 +1,60 @@
 export class RandomHelper {
   static names = [
-    "Alex",
-    "Jamie",
-    "Jordan",
-    "Morgan",
-    "Taylor",
-    "Casey",
-    "Devon",
-    "Kelly",
+    'Alex',
+    'Jamie',
+    'Jordan',
+    'Morgan',
+    'Taylor',
+    'Casey',
+    'Devon',
+    'Kelly'
   ];
 
   static secondNames = [
-    "John",
-    "Jane",
-    "Michael",
-    "Sarah",
-    "William",
-    "Emily",
-    "David",
-    "Jessica",
+    'John',
+    'Jane',
+    'Michael',
+    'Sarah',
+    'William',
+    'Emily',
+    'David',
+    'Jessica'
   ];
 
   static domains = [
-    "example.com",
-    "test.org",
-    "mail.com",
-    "email.net",
-    "website.com",
+    'example.com',
+    'test.org',
+    'mail.com',
+    'email.net',
+    'website.com'
   ];
 
   static lastNames = [
-    "Smith",
-    "Johnson",
-    "Williams",
-    "Brown",
-    "Jones",
-    "Garcia",
-    "Miller",
-    "Davis",
+    'Smith',
+    'Johnson',
+    'Williams',
+    'Brown',
+    'Jones',
+    'Garcia',
+    'Miller',
+    'Davis'
   ];
 
   static addNames(newNames: string[]) {
     const setNames = new Set([...this.names, ...newNames]);
+
     this.names = Array.from(setNames);
   }
 
   static addLastNames(newLastNames: string[]) {
     const setLastNames = new Set([...this.lastNames, ...newLastNames]);
+
     this.lastNames = Array.from(setLastNames);
   }
 
   static addDomains(newDomains: string[]) {
     const setDomains = new Set([...this.domains, ...newDomains]);
+
     this.domains = Array.from(setDomains);
   }
 
@@ -72,6 +75,7 @@ export class RandomHelper {
    */
   static getRandomItem<T>(array: T[]): T {
     const index = Math.floor(Math.random() * array.length);
+
     return array[index];
   }
 
@@ -83,6 +87,7 @@ export class RandomHelper {
    */
   static getRandomItems<T>(array: T[], count: number): T[] {
     const shuffled = array.sort(() => 0.5 - Math.random());
+
     return shuffled.slice(0, count);
   }
 
@@ -94,8 +99,10 @@ export class RandomHelper {
   static shuffleArray<T>(array: T[]): T[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
+
       [array[i], array[j]] = [array[j], array[i]];
     }
+
     return array;
   }
 
@@ -106,13 +113,15 @@ export class RandomHelper {
    */
   static getRandomString(length: number): string {
     const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+
     for (let i = 0; i < length; i++) {
       result += characters.charAt(
-        Math.floor(Math.random() * characters.length),
+        Math.floor(Math.random() * characters.length)
       );
     }
+
     return result;
   }
 
@@ -121,11 +130,13 @@ export class RandomHelper {
    * @returns {string} Un color aleatorio en formato hexadecimal.
    */
   static getRandomColor(): string {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
+
     return color;
   }
 
@@ -134,10 +145,12 @@ export class RandomHelper {
    * @returns {string} Un número de teléfono aleatorio de 10 dígitos.
    */
   static getRandomPhoneNumber(): string {
-    let phoneNumber = "";
+    let phoneNumber = '';
+
     for (let i = 0; i < 10; i++) {
       phoneNumber += this.getRandomInteger(0, 9).toString();
     }
+
     return phoneNumber;
   }
 
@@ -150,11 +163,11 @@ export class RandomHelper {
    */
   static getRandomEmail(
     minDigits: number = 100,
-    maxDigits: number = 999,
+    maxDigits: number = 999
   ): string {
     if (minDigits < 0 || maxDigits < 0 || minDigits > maxDigits) {
       throw new Error(
-        "Parámetros inválidos para generar el correo electrónico.",
+        'Parámetros inválidos para generar el correo electrónico.'
       );
     }
 
@@ -183,9 +196,9 @@ export class RandomHelper {
   }
 
   static getRandomEnrollmentNumber(): string {
-    const prefix = "CSM";
+    const prefix = 'CSM';
     const currentYear = new Date().getFullYear().toString().substring(-2);
-    let words = "";
+    let words = '';
 
     for (let i = 0; i < 3; i++) {
       words += this.getRandomInteger(0, 9);
@@ -199,26 +212,28 @@ export class RandomHelper {
   }
 
   static generatePropertyCode = (): string => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const segments = [
       Array(2)
         .fill(null)
         .map(() => characters[Math.floor(Math.random() * characters.length)])
-        .join(""),
+        .join(''),
       Array(2)
         .fill(null)
         .map(() => characters[Math.floor(Math.random() * characters.length)])
-        .join(""),
+        .join(''),
       Array(2)
         .fill(null)
         .map(() => characters[Math.floor(Math.random() * characters.length)])
-        .join(""),
+        .join('')
     ];
-    return segments.join("");
+
+    return segments.join('');
   };
 
   static generateCode = (prefix: string, totalLength: number): string => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
     if (prefix.length >= totalLength) {
       return prefix.toUpperCase().slice(0, totalLength);
     }
@@ -227,7 +242,7 @@ export class RandomHelper {
       Array(remainingLength)
         .fill(null)
         .map(() => characters[Math.floor(Math.random() * characters.length)])
-        .join("");
+        .join('');
 
     return prefix.toUpperCase() + randomSegment().slice(0, remainingLength);
   };

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
-import { ForgotPasswordContainer } from '@/presentation/components/auth/forgot-password/ForgotPasswordContainer';
-import { AuthLayout } from '@/presentation/components/layouts/auth/AuthLayout';
+import { AuthLayout } from '@/components/layouts/AuthLayout';
+import { ForgotPasswordContainer } from '@/features/auth/components/ForgotPasswordContainer';
 
 export const Route = createFileRoute('/auth/forgot-password')({
   beforeLoad: ({ context }) => {

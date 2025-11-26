@@ -1,4 +1,4 @@
-import { Environment } from '../environments/env';
+import { Environment } from '../env';
 
 export const getTenant = (): string | null => {
   const host = window.location.host;

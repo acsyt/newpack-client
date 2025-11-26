@@ -5,7 +5,7 @@ import {
   ResetPasswordContainer
 } from '@/presentation/components/auth/reset-password/ResetPasswordContainer';
 import { AuthLayout } from '@/presentation/components/layouts/auth/AuthLayout';
-import { resetPasswordRouteSchema } from '@/presentation/schemas/auth.schema';
+import { resetPasswordRouteSchema } from '@/features/auth/auth.schema';
 
 export const Route = createFileRoute('/auth/reset-password')({
   beforeLoad: ({ context, search }) => {
