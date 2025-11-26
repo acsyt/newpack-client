@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
+import { AuthLayout } from '@/components/layouts/AuthLayout';
+import { resetPasswordRouteSchema } from '@/features/auth/auth.schema';
 import {
   InvalidResetLink,
   ResetPasswordContainer
-} from '@/presentation/components/auth/reset-password/ResetPasswordContainer';
-import { AuthLayout } from '@/presentation/components/layouts/auth/AuthLayout';
-import { resetPasswordRouteSchema } from '@/features/auth/auth.schema';
+} from '@/features/auth/components/ResetPasswordContainer';
 
 export const Route = createFileRoute('/auth/reset-password')({
   beforeLoad: ({ context, search }) => {

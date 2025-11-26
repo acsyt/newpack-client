@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
 import { DashboardLayout } from '@/components/layouts/dashboard/DashboardLayout';
+import { AuthProvider } from '@/features/auth/context/AuthProvider';
+import { DashboardProvider } from '@/features/auth/context/DashboardProvider';
 import { useMenuItems } from '@/routes/menu-items';
 import { useAuthStore } from '@/stores/auth.store';
 
@@ -24,8 +26,12 @@ function RouteComponent() {
   const { renderMenuItems } = useMenuItems();
 
   return (
-    <DashboardLayout menuItems={renderMenuItems}>
-      <Outlet />
-    </DashboardLayout>
+    <AuthProvider>
+      <DashboardProvider>
+        <DashboardLayout menuItems={renderMenuItems}>
+          <Outlet />
+        </DashboardLayout>
+      </DashboardProvider>
+    </AuthProvider>
   );
 }

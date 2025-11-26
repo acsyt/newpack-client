@@ -27,7 +27,7 @@ const argv = minimist<Args>(process.argv.slice(2), {
   string: ['src', 'out', 'pattern', 'formats'],
   boolean: ['verbose', 'force', 'skipOriginal'],
   default: {
-    src: 'src/presentation/assets/images',
+    src: 'src/assets/images',
     out: 'public/assets/images',
     // Patrón expandido con todos los formatos soportados por Sharp
     pattern:

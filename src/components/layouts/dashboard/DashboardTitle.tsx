@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import { useRouteConfig } from '@/presentation/routes/route.config';
+import { useRouteConfig } from '@/routes/route.config';
 import { FontWeight } from '@/theme/font-weight';
 
 interface DashboardTitleProps {}

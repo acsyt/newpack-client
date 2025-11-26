@@ -19,3 +19,14 @@ export const apiFetcher = axios.create({
 });
 
 apiFetcher.interceptors.request.use(addAuthTokenInterceptor);
+
+apiFetcher.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      useAuthStore.getState().clearAuth();
+    }
+
+    return Promise.reject(error);
+  }
+);

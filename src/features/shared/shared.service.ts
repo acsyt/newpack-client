@@ -5,7 +5,6 @@ import {
   INITIAL_PAGE_SIZE
 } from '@/config/constants/app.constants';
 import { getErrorMessage } from '@/config/error.mapper';
-import { getTenant } from '@/config/utils/get-tenant.util';
 import {
   BasePaginationParams,
   PaginationResponse
@@ -79,18 +78,6 @@ export class SharedService {
     } catch (error) {
       throw new Error(getErrorMessage(error));
     }
-  };
-
-  static tenant = () => {
-    const currentTenant = getTenant();
-    const isTenant = Boolean(currentTenant);
-    const isCentral = !isTenant;
-
-    return {
-      currentTenant,
-      isTenant,
-      isCentral
-    };
   };
 
   static create = async <TResponse, TRequest>(

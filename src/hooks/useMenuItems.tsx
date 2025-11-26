@@ -5,8 +5,7 @@ import { useMemo, useCallback } from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
-import { useAuth } from '../features/auth/hooks/useAuth';
-
+import { useAuth } from '@/features/auth/hooks/mutations';
 import { Permission } from '@/features/role/role.interface';
 import { routePermissions } from '@/routes/route.config';
 import { FileRouteTypes } from '@/routeTree.gen';
