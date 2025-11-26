@@ -20,6 +20,9 @@
 4. **Usuario de prueba**:
    - Email: admin@acsyt.com
    - Password: 123456
+    
+5. **Entorno local**:
+   - http://localhost:5173
 
 ## 🏗️ Arquitectura de carpetas
 
