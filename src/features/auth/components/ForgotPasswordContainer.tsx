@@ -3,12 +3,6 @@ import type { FC } from 'react';
 import { useCallback } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import SecurityIcon from '@mui/icons-material/Security';
-import TimerIcon from '@mui/icons-material/Timer';
 import { LoadingButton } from '@mui/lab';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -22,6 +16,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
+import { ArrowLeft, CheckCircle, Clock, Mail, Shield } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
@@ -99,7 +94,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
             mb: 1.5
           }}
         >
-          <SecurityIcon fontSize='medium' />
+          <Shield size={20} />
         </Box>
 
         <Typography
@@ -140,7 +135,11 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
       >
         <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
           <Stack direction='row' spacing={1.5} alignItems='center'>
-            <SecurityIcon fontSize='small' color='primary' />
+            <Shield
+              size={16}
+              color='currentColor'
+              style={{ color: 'inherit' }}
+            />
             <Typography
               variant='body2'
               color='primary.main'
@@ -163,7 +162,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
             fontSize: '0.8125rem',
             py: 1
           }}
-          icon={<SecurityIcon fontSize='small' />}
+          icon={<Shield size={16} />}
         >
           {getErrorMessage(forgotPasswordMutation.error)}
         </Alert>
@@ -184,7 +183,11 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <EmailIcon color='action' />
+                    <Mail
+                      size={18}
+                      color='currentColor'
+                      style={{ opacity: 0.54 }}
+                    />
                   </InputAdornment>
                 )
               }}
@@ -196,7 +199,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
               variant='contained'
               type='submit'
               loadingPosition='start'
-              startIcon={<MailOutlineIcon />}
+              startIcon={<Mail size={18} />}
               color='primary'
               loading={forgotPasswordMutation.isPending}
             >
@@ -215,7 +218,7 @@ export const ForgotPasswordContainer: FC<ForgotPasswordContainerProps> = () => {
         component={Link}
         to='/auth/login'
         variant='outlined'
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
       >
         Back to login
       </Button>
@@ -247,7 +250,7 @@ const ForgotPasswordInstructions: FC<ForgotPasswordInstructionsProps> = ({
           mb: 1.5
         }}
       >
-        <CheckCircleIcon fontSize='medium' />
+        <CheckCircle size={20} />
       </Box>
 
       <Typography
@@ -285,14 +288,22 @@ const ForgotPasswordInstructions: FC<ForgotPasswordInstructionsProps> = ({
         <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
           <Stack spacing={1.5}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <TimerIcon color='warning' fontSize='small' />
+              <Clock
+                size={16}
+                color='currentColor'
+                style={{ color: 'inherit' }}
+              />
               <Typography variant='body2' sx={{ fontSize: '0.8125rem' }}>
                 <strong>Expiration time</strong> 60 minutes
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <MailOutlineIcon color='info' fontSize='small' />
+              <Mail
+                size={16}
+                color='currentColor'
+                style={{ color: 'inherit' }}
+              />
               <Typography variant='body2' sx={{ fontSize: '0.8125rem' }}>
                 <strong>Can't see email?</strong> If you don't see the email,
                 check your spam folder.
@@ -338,7 +349,7 @@ const ForgotPasswordInstructions: FC<ForgotPasswordInstructionsProps> = ({
           component={Link}
           to='/auth/login'
           variant='contained'
-          startIcon={<ArrowBackIcon />}
+          startIcon={<ArrowLeft size={18} />}
         >
           Back to login
         </Button>
@@ -346,7 +357,7 @@ const ForgotPasswordInstructions: FC<ForgotPasswordInstructionsProps> = ({
         <Button
           fullWidth
           variant='outlined'
-          startIcon={<MailOutlineIcon />}
+          startIcon={<Mail size={18} />}
           onClick={onTryAgain}
         >
           Resend email

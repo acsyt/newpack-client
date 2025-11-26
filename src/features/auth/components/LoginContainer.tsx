@@ -3,9 +3,6 @@ import type { FC } from 'react';
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import LockIcon from '@mui/icons-material/Lock';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -16,6 +13,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import MUILink from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { Link } from '@tanstack/react-router';
+import { Eye, EyeOff, Lock } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { useLogin } from '../hooks/mutations';
@@ -82,7 +80,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
-                  <LockIcon />
+                  <Lock size={18} />
                 </InputAdornment>
               ),
               endAdornment: (
@@ -95,9 +93,9 @@ export const LoginContainer: FC<LoginContainerProps> = ({}) => {
                     onClick={togglePassword}
                   >
                     {showPassword ? (
-                      <VisibilityOffIcon aria-hidden='true' />
+                      <EyeOff size={18} aria-hidden='true' />
                     ) : (
-                      <VisibilityIcon aria-hidden='true' />
+                      <Eye size={18} aria-hidden='true' />
                     )}
                   </IconButton>
                 </InputAdornment>

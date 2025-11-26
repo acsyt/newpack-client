@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { createFileRoute } from '@tanstack/react-router';
 import { Link } from '@tanstack/react-router';
+import { Plus } from 'lucide-react';
 
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
 import { CustomTable } from '@/components/shared/CustomTable';
@@ -39,7 +39,7 @@ function RouteComponent() {
                 <Button
                   variant='contained'
                   color='primary'
-                  startIcon={<AddIcon />}
+                  startIcon={<Plus size={18} />}
                 >
                   Crear usuario
                 </Button>

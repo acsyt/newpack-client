@@ -3,8 +3,6 @@ import type { FC } from 'react';
 
 import { useEffect, useRef, useState } from 'react';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -12,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { UserCircle, Menu as MenuIcon } from 'lucide-react';
 import { create } from 'zustand';
 
 import { UserMenu } from './menus/UserMenu';
@@ -125,7 +124,7 @@ export const DashboardAppBar: FC<DashboardAppBarProps> = ({
             }}
             onClick={toggleDrawer}
           >
-            <MenuIcon />
+            <MenuIcon size={20} />
           </IconButton>
 
           <Typography
@@ -148,7 +147,7 @@ export const DashboardAppBar: FC<DashboardAppBarProps> = ({
               }}
             />
             <IconButton color='inherit' onClick={onOpenUserMenu}>
-              <AccountCircleIcon />
+              <UserCircle size={20} />
             </IconButton>
           </Box>
         </Toolbar>

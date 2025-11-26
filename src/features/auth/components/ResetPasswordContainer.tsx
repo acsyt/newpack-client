@@ -5,11 +5,6 @@ import type { FC } from 'react';
 import { useCallback, useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import LockResetIcon from '@mui/icons-material/LockReset';
-import SecurityIcon from '@mui/icons-material/Security';
 import { LoadingButton } from '@mui/lab';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -24,6 +19,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useRouter, useSearch } from '@tanstack/react-router';
+import { ArrowLeft, CheckCircle, KeyRound, Mail, Shield } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
@@ -140,7 +136,7 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
             mb: 1.5
           }}
         >
-          <LockResetIcon fontSize='medium' />
+          <KeyRound size={20} />
         </Box>
 
         <Typography
@@ -180,7 +176,11 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
       >
         <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
           <Stack direction='row' spacing={1.5} alignItems='center'>
-            <CheckCircleIcon color='success' fontSize='small' />
+            <CheckCircle
+              size={16}
+              color='currentColor'
+              style={{ color: 'inherit' }}
+            />
             <Typography
               variant='body2'
               color='success.main'
@@ -202,7 +202,7 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
             fontSize: '0.8125rem',
             py: 1
           }}
-          icon={<SecurityIcon fontSize='small' />}
+          icon={<Shield size={16} />}
         >
           {getErrorMessage(mutation.error)}
         </Alert>
@@ -222,7 +222,11 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <EmailIcon color='action' />
+                    <Mail
+                      size={18}
+                      color='currentColor'
+                      style={{ opacity: 0.54 }}
+                    />
                   </InputAdornment>
                 )
               }}
@@ -253,7 +257,7 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
               variant='contained'
               type='submit'
               loadingPosition='start'
-              startIcon={<LockResetIcon />}
+              startIcon={<KeyRound size={18} />}
               color='primary'
               loading={mutation.isPending}
             >
@@ -300,7 +304,7 @@ export const ResetPasswordContainer: FC<ResetPasswordContainerProps> = () => {
         component={Link}
         to='/auth/login'
         variant='outlined'
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
       >
         Volver a iniciar sesión
       </Button>
@@ -330,7 +334,7 @@ const ResetPasswordSuccess: FC<ResetPasswordSuccessProps> = ({
           mb: 1.5
         }}
       >
-        <CheckCircleIcon fontSize='medium' />
+        <CheckCircle size={20} />
       </Box>
 
       <Typography
@@ -367,14 +371,22 @@ const ResetPasswordSuccess: FC<ResetPasswordSuccessProps> = ({
         <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
           <Stack spacing={1.5}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <SecurityIcon color='success' fontSize='small' />
+              <Shield
+                size={16}
+                color='currentColor'
+                style={{ color: 'inherit' }}
+              />
               <Typography variant='body2' sx={{ fontSize: '0.8125rem' }}>
                 <strong>Cuenta segura:</strong> Tu nueva contraseña está activa
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <LockResetIcon color='info' fontSize='small' />
+              <KeyRound
+                size={16}
+                color='currentColor'
+                style={{ color: 'inherit' }}
+              />
               <Typography variant='body2' sx={{ fontSize: '0.8125rem' }}>
                 <strong>Próximos pasos:</strong> Inicia sesión con tu nueva
                 contraseña
@@ -398,7 +410,7 @@ const ResetPasswordSuccess: FC<ResetPasswordSuccessProps> = ({
       <Button
         fullWidth
         variant='contained'
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
         onClick={onBackToLogin}
       >
         Iniciar sesión
@@ -423,7 +435,7 @@ export const InvalidResetLink: FC = () => {
           mb: 1.5
         }}
       >
-        <SecurityIcon fontSize='medium' />
+        <Shield size={20} />
       </Box>
 
       <Typography
@@ -469,7 +481,7 @@ export const InvalidResetLink: FC = () => {
           component={Link}
           to='/auth/forgot-password'
           variant='contained'
-          startIcon={<LockResetIcon />}
+          startIcon={<KeyRound size={18} />}
         >
           Solicitar nuevo enlace
         </Button>
@@ -479,7 +491,7 @@ export const InvalidResetLink: FC = () => {
           component={Link}
           to='/auth/login'
           variant='outlined'
-          startIcon={<ArrowBackIcon />}
+          startIcon={<ArrowLeft size={18} />}
         >
           Volver a iniciar sesión
         </Button>

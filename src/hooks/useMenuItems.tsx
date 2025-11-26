@@ -2,8 +2,7 @@ import type { MenuItem, SubMenuItem } from '@/interfaces/menu-item.interface';
 
 import { useMemo, useCallback } from 'react';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import { LayoutDashboard, Users } from 'lucide-react';
 
 import { useAuth } from '@/features/auth/hooks/mutations';
 import { Permission } from '@/features/role/role.interface';
@@ -74,13 +73,13 @@ export const useMenuItems = () => {
     () => [
       {
         title: 'Dashboard',
-        icon: <DashboardIcon aria-hidden='true' fontSize='medium' />,
+        icon: <LayoutDashboard aria-hidden='true' size={20} />,
         href: '/dashboard',
         isEnabled: true
       },
       {
         title: 'Users',
-        icon: <SupervisedUserCircleIcon aria-hidden='true' fontSize='medium' />,
+        icon: <Users aria-hidden='true' size={20} />,
         href: '/users',
         isEnabled: true
       }

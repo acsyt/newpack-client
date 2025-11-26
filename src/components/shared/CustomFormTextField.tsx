@@ -6,8 +6,6 @@ import type { TextFieldProps } from '@mui/material/TextField';
 
 import { useState } from 'react';
 
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -19,6 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
+import { Eye, EyeOff } from 'lucide-react';
 import {
   Control,
   Controller,
@@ -262,7 +261,7 @@ export const CustomFormTextField = <T extends FieldValues>({
                     edge='end'
                     onClick={handleClickShowPassword}
                   >
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </IconButton>
                 </InputAdornment>
               )

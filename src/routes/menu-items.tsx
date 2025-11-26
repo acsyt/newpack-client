@@ -2,21 +2,20 @@ import type { MenuItem } from '@/interfaces/menu-item.interface';
 
 import { useMemo } from 'react';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import { LayoutDashboard, Users } from 'lucide-react';
 
 export const useMenuItems = () => {
   const menuItems = useMemo<MenuItem[]>(
     () => [
       {
         title: 'Dashboard',
-        icon: <DashboardIcon aria-hidden='true' fontSize='medium' />,
+        icon: <LayoutDashboard aria-hidden='true' size={20} />,
         href: '/dashboard',
         isEnabled: true
       },
       {
         title: 'Users',
-        icon: <SupervisedUserCircleIcon aria-hidden='true' fontSize='medium' />,
+        icon: <Users aria-hidden='true' size={20} />,
         href: '/users',
         isEnabled: true
       }

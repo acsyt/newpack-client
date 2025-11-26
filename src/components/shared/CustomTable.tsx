@@ -16,12 +16,12 @@ import type {
 
 import { useEffect, useMemo, useState } from 'react';
 
-import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { FilterX } from 'lucide-react';
 import {
   MaterialReactTable,
   MaterialReactTableProps,
@@ -348,7 +348,7 @@ export const CustomTable = <
             )}
             <Tooltip title={'Clear filters'}>
               <IconButton onClick={clearFilters}>
-                <FilterAltOffIcon />
+                <FilterX size={20} />
               </IconButton>
             </Tooltip>
             <MRT_ShowHideColumnsButton table={table} />
