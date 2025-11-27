@@ -34,7 +34,7 @@ export const useMenuItems = () => {
         isEnabled: true
       },
       {
-        title: 'Categories',
+        title: 'Catálogos',
         icon: <ChartBarStacked aria-hidden='true' size={20} />,
         isEnabled: true,
         menuItems: [
