@@ -45,8 +45,14 @@ export const useMenuItems = () => {
             icon: <ChartBarStacked aria-hidden='true' size={20} />
           },
           {
-            title: 'Clases y Subclases',
+            title: 'Clases',
             href: '/classes',
+            isEnabled: true,
+            icon: <ChartBarStacked aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Subclases',
+            href: '/subclasses',
             isEnabled: true,
             icon: <ChartBarStacked aria-hidden='true' size={20} />
           },

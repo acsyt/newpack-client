@@ -17,18 +17,14 @@ import type {
 import { useEffect, useMemo, useState } from 'react';
 
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { FilterX } from 'lucide-react';
 import {
   MaterialReactTable,
   MaterialReactTableProps,
   MRT_ShowHideColumnsButton,
   MRT_ToggleDensePaddingButton,
-  MRT_ToggleFullScreenButton,
-  MRT_ToggleGlobalFilterButton
+  MRT_ToggleFullScreenButton
 } from 'material-react-table';
 import { useDebounce } from 'use-debounce';
 
@@ -253,12 +249,75 @@ export const CustomTable = <
 
   return (
     <MaterialReactTable
+      enableColumnFilters={false}
+      enableGlobalFilter={false}
+      enableRowSelection={false}
+      enableSorting={false}
+      enableColumnActions={false}
+      enableToolbarInternalActions={false}
+      data={paginationData}
+      columns={memoizedColumns}
+      muiTableBodyRowProps={{
+        hover: true,
+        sx: {
+          '&:hover': {
+            backgroundColor: '#F8FAFC'
+          }
+        }
+      }}
+      muiTableContainerProps={{
+        sx: {
+          borderRadius: '12px',
+          overflow: 'hidden',
+          boxShadow: 'none'
+        }
+      }}
+      muiTablePaperProps={{
+        elevation: 0,
+        sx: {
+          // boxShadow:
+          //   '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+          // border: '1px solid #E5E7EB',
+          borderRadius: '12px',
+          backgroundColor: '#FFFFFF',
+          overflow: 'hidden'
+        }
+      }}
+      muiTableHeadCellProps={{
+        sx: {
+          backgroundColor: '#101828',
+          color: '#FFFFFF',
+          fontWeight: 700,
+          fontSize: '0.875rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          borderBottom: 'none',
+          paddingY: 2
+        }
+      }}
+      muiTableBodyCellProps={{
+        sx: {
+          paddingY: 2,
+          fontSize: '0.9375rem',
+          color: '#101828',
+          borderBottom: '1px solid #F3F4F6',
+          backgroundColor: '#FFFFFF'
+        }
+      }}
+      mrtTheme={theme => ({
+        baseBackgroundColor: theme.palette.background.default
+      })}
+    />
+  );
+
+  return (
+    <MaterialReactTable
       {...rest}
-      manualFiltering
       manualPagination
-      manualSorting
-      enableColumnResizing
       enableStickyHeader
+      manualFiltering={false}
+      manualSorting={false}
+      enableColumnResizing={false}
       data={paginationData}
       columns={memoizedColumns}
       getRowId={row => row.id}
@@ -343,14 +402,6 @@ export const CustomTable = <
           justifyContent={'flex-end'}
         >
           <Box display='flex' justifyContent={'flex-end'}>
-            {enableGlobalFilter && (
-              <MRT_ToggleGlobalFilterButton table={table} />
-            )}
-            <Tooltip title={'Clear filters'}>
-              <IconButton onClick={clearFilters}>
-                <FilterX size={20} />
-              </IconButton>
-            </Tooltip>
             <MRT_ShowHideColumnsButton table={table} />
             <MRT_ToggleDensePaddingButton table={table} />
             <MRT_ToggleFullScreenButton table={table} />
@@ -376,18 +427,7 @@ export const CustomTable = <
         globalFilter,
         rowSelection: enableRowSelection ? rowSelection : {}
       }}
-      enableGlobalFilter={enableGlobalFilter}
-      onRowSelectionChange={
-        enableRowSelection ? handleRowSelectionChange : undefined
-      }
-      onColumnFiltersChange={filters => setColumnFilters(filters)}
       onPaginationChange={pagination => setPagination(pagination)}
-      onSortingChange={sorting => setSorting(sorting)}
-      onGlobalFilterChange={value => {
-        const filterValue = typeof value === 'string' ? value : '';
-
-        setGlobalFilter(filterValue);
-      }}
     />
   );
 };

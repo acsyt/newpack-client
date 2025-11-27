@@ -17,6 +17,7 @@ import { Route as AuthForgotPasswordRouteImport } from './app/auth/forgot-passwo
 import { Route as AuthenticatedDashboardRouteImport } from './app/_authenticated/dashboard'
 import { Route as AuthenticatedUsersIndexRouteImport } from './app/_authenticated/users/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './app/_authenticated/suppliers/index'
+import { Route as AuthenticatedSubclassesIndexRouteImport } from './app/_authenticated/subclasses/index'
 import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticated/roles/index'
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
@@ -70,6 +71,12 @@ const AuthenticatedSuppliersIndexRoute =
   AuthenticatedSuppliersIndexRouteImport.update({
     id: '/suppliers/',
     path: '/suppliers/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSubclassesIndexRoute =
+  AuthenticatedSubclassesIndexRouteImport.update({
+    id: '/subclasses/',
+    path: '/subclasses/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedRolesIndexRoute = AuthenticatedRolesIndexRouteImport.update({
@@ -172,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
+  '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
@@ -195,6 +203,7 @@ export interface FileRoutesByTo {
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
+  '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
@@ -220,6 +229,7 @@ export interface FileRoutesById {
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
   '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
+  '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
@@ -245,6 +255,7 @@ export interface FileRouteTypes {
     | '/processes'
     | '/raw-materials'
     | '/roles'
+    | '/subclasses'
     | '/suppliers'
     | '/users'
     | '/suppliers/$supplierId/edit'
@@ -268,6 +279,7 @@ export interface FileRouteTypes {
     | '/processes'
     | '/raw-materials'
     | '/roles'
+    | '/subclasses'
     | '/suppliers'
     | '/users'
     | '/suppliers/$supplierId/edit'
@@ -292,6 +304,7 @@ export interface FileRouteTypes {
     | '/_authenticated/processes/'
     | '/_authenticated/raw-materials/'
     | '/_authenticated/roles/'
+    | '/_authenticated/subclasses/'
     | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
     | '/_authenticated/suppliers/$supplierId/edit'
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/suppliers'
       fullPath: '/suppliers'
       preLoaderRoute: typeof AuthenticatedSuppliersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/subclasses/': {
+      id: '/_authenticated/subclasses/'
+      path: '/subclasses'
+      fullPath: '/subclasses'
+      preLoaderRoute: typeof AuthenticatedSubclassesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/roles/': {
@@ -513,6 +533,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
   AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
+  AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
@@ -531,6 +552,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,
   AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
+  AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
