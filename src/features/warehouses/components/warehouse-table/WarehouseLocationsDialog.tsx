@@ -195,14 +195,20 @@ export const WarehouseLocationsDialog = ({
         }}
         onClose={onClose}
       >
-        <DialogTitle className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-divider pb-4'>
-          <div className='flex items-center gap-3'>
-            <MapPin size={24} />
-            <div>
-              <Typography variant='h6' className='font-semibold'>
+        <DialogTitle className='flex items-center justify-between gap-3 border-b border-divider pb-3 sm:pb-4'>
+          <div className='flex items-center gap-2 sm:gap-3 min-w-0 flex-1'>
+            <MapPin size={20} className='sm:w-6 sm:h-6 shrink-0' />
+            <div className='min-w-0'>
+              <Typography
+                variant='h6'
+                className='font-semibold text-sm sm:text-base truncate'
+              >
                 Ubicaciones - {warehouse.name}
               </Typography>
-              <Typography variant='caption' className='text-text-secondary'>
+              <Typography
+                variant='caption'
+                className='text-text-secondary text-xs'
+              >
                 {warehouse.warehouseLocationsCount}{' '}
                 {warehouse.warehouseLocationsCount > 1
                   ? 'ubicaciones'
@@ -210,30 +216,21 @@ export const WarehouseLocationsDialog = ({
               </Typography>
             </div>
           </div>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1 sm:gap-2 shrink-0'>
             {canCreate && (
               <Button
                 variant='contained'
                 size='small'
                 startIcon={<Plus size={16} />}
-                className='hidden sm:flex'
+                className='text-xs sm:text-sm px-2 sm:px-3'
                 onClick={onCreate}
               >
-                Nueva ubicación
+                <span className='hidden xs:inline'>Nueva</span>
+                <span className='xs:hidden'>+</span>
               </Button>
             )}
-            {canCreate && (
-              <IconButton
-                size='small'
-                color='primary'
-                className='sm:hidden'
-                onClick={onCreate}
-              >
-                <Plus size={20} />
-              </IconButton>
-            )}
             <IconButton size='small' onClick={onClose}>
-              <X size={20} />
+              <X size={18} className='sm:w-5 sm:h-5' />
             </IconButton>
           </div>
         </DialogTitle>
