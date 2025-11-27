@@ -390,6 +390,7 @@ export const CustomTable = <
         globalFilter,
         rowSelection: enableRowSelection ? rowSelection : {}
       }}
+      paginationDisplayMode='pages'
       onRowSelectionChange={handleRowSelectionChange}
       onPaginationChange={pagination => setPagination(pagination)}
     />

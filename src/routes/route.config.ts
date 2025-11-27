@@ -106,7 +106,8 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/suppliers/$supplierId/edit': ['suppliers.edit'],
   '/suppliers/create': ['suppliers.create'],
   '/suppliers/$supplierId/show': ['suppliers.show'],
-  '/subclasses': ['subclasses.index']
+  '/subclasses': ['subclasses.index'],
+  '/warehouses': ['warehouses.index']
 };
 
 export const useRouteConfig = () => {
@@ -207,6 +208,10 @@ export const useRouteConfig = () => {
         { title: ':id' },
         { title: 'Detalle' }
       ]
+    },
+    '/warehouses': {
+      title: 'Almacenes',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Almacenes' }]
     }
   };
 

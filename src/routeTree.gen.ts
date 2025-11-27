@@ -15,6 +15,7 @@ import { Route as AuthResetPasswordRouteImport } from './app/auth/reset-password
 import { Route as AuthLoginRouteImport } from './app/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './app/auth/forgot-password'
 import { Route as AuthenticatedDashboardRouteImport } from './app/_authenticated/dashboard'
+import { Route as AuthenticatedWarehousesIndexRouteImport } from './app/_authenticated/warehouses/index'
 import { Route as AuthenticatedUsersIndexRouteImport } from './app/_authenticated/users/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './app/_authenticated/suppliers/index'
 import { Route as AuthenticatedSubclassesIndexRouteImport } from './app/_authenticated/subclasses/index'
@@ -62,6 +63,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedWarehousesIndexRoute =
+  AuthenticatedWarehousesIndexRouteImport.update({
+    id: '/warehouses/',
+    path: '/warehouses/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -182,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -206,6 +214,7 @@ export interface FileRoutesByTo {
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -232,6 +241,7 @@ export interface FileRoutesById {
   '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
   '/_authenticated/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/_authenticated/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/_authenticated/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/subclasses'
     | '/suppliers'
     | '/users'
+    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/subclasses'
     | '/suppliers'
     | '/users'
+    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -307,6 +319,7 @@ export interface FileRouteTypes {
     | '/_authenticated/subclasses/'
     | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
+    | '/_authenticated/warehouses/'
     | '/_authenticated/suppliers/$supplierId/edit'
     | '/_authenticated/suppliers/$supplierId/show'
     | '/_authenticated/users/$userId/edit'
@@ -362,6 +375,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/warehouses/': {
+      id: '/_authenticated/warehouses/'
+      path: '/warehouses'
+      fullPath: '/warehouses'
+      preLoaderRoute: typeof AuthenticatedWarehousesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/users/': {
@@ -536,6 +556,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -555,6 +576,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

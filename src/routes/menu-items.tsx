@@ -9,7 +9,8 @@ import {
   LayoutDashboard,
   Shield,
   UserCheckIcon,
-  Users
+  Users,
+  Warehouse
 } from 'lucide-react';
 
 export const useMenuItems = () => {
@@ -80,6 +81,12 @@ export const useMenuItems = () => {
         title: 'Proveedores',
         icon: <Building2 aria-hidden='true' size={20} />,
         href: '/suppliers',
+        isEnabled: true
+      },
+      {
+        title: 'Almacenes',
+        icon: <Warehouse aria-hidden='true' size={20} />,
+        href: '/warehouses',
         isEnabled: true
       }
     ],

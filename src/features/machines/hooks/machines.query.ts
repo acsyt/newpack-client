@@ -5,9 +5,14 @@ import type {
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { MachineDto } from '../machine.schema';
+
+import { CustomError } from '@/config/custom.error';
+import { ModeAction } from '@/config/enums/mode-action.enum';
 import { MachineService } from '@/features/machines/machine.service';
+import { DataResponse } from '@/interfaces/data-response.interface';
 
 interface QueryOptions
   extends Omit<
@@ -48,5 +53,32 @@ export const useMachineByIdQuery = ({
     queryFn: () => MachineService.findMachineByIdAction(id, options),
     enabled: enabled && id > 0,
     ...rest
+  });
+};
+
+export const useSaveDrawerMutation = ({
+  mode,
+  id,
+  machineParams
+}: {
+  mode: ModeAction;
+  id?: number;
+  machineParams: MachineParams;
+}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<DataResponse<Machine>, CustomError, MachineDto>({
+    mutationFn: machineDto => {
+      if (mode === ModeAction.Create)
+        return MachineService.createMachine(machineDto);
+      if (id && id > 0 && mode === ModeAction.Edit)
+        return MachineService.updateMachine(id, machineDto);
+      throw new CustomError('No se puede guardar la maquina');
+    },
+    onSuccess: () => {
+      const machinesQueryKey = machinesKeys.list(machineParams);
+
+      queryClient.invalidateQueries({ queryKey: machinesQueryKey });
+    }
   });
 };

@@ -107,4 +107,11 @@ export type Permission =
   | 'customers.show'
   | 'customers.create'
   | 'customers.edit'
-  | 'customers.export';
+  | 'customers.export'
+
+  // Warehouses
+  | 'warehouses.index'
+  | 'warehouses.show'
+  | 'warehouses.create'
+  | 'warehouses.edit'
+  | 'warehouses.export';
