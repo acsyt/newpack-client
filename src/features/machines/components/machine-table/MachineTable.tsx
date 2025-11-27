@@ -12,27 +12,40 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Eye, Pencil, Plus, X } from 'lucide-react';
 import { Controller, DefaultValues, useForm } from 'react-hook-form';
 
 import { MachineDto, machineSchema } from '../../machine.schema';
+import { MachineService } from '../../machine.service';
 
 import { machineColumns } from './columns';
 
 import { CustomTable } from '@/components/shared/CustomTable';
+import { CustomError } from '@/config/custom.error';
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Environment } from '@/config/env';
+import { ErrorMapper } from '@/config/error.mapper';
+import { FormHelper } from '@/config/helpers/form.helper';
 import { cn } from '@/config/utils/cn.util';
 import { customFaker } from '@/config/utils/faker.util';
 import { useAuth } from '@/features/auth/hooks/mutations';
-import { useMachinesQuery } from '@/features/machines/hooks/machines.query';
-import { Machine } from '@/features/machines/machine.interface';
+import {
+  machinesKeys,
+  useMachinesQuery
+} from '@/features/machines/hooks/machines.query';
+import { Machine, MachineParams } from '@/features/machines/machine.interface';
 import { useProcessesQuery } from '@/features/processes/hooks/processes.query';
 import { createDrawerStore } from '@/hooks/useDrawerStore';
+import { DataResponse } from '@/interfaces/data-response.interface';
 
 interface MachineTableProps {}
 
 const useMachineDrawerStore = createDrawerStore<Machine>();
+
+const machineParams: MachineParams = {
+  include: ['process']
+};
 
 export const MachineTable: FC<MachineTableProps> = ({}) => {
   const { permissions } = useAuth();
@@ -45,9 +58,7 @@ export const MachineTable: FC<MachineTableProps> = ({}) => {
       <CustomTable
         queryHook={useMachinesQuery}
         queryProps={{
-          options: {
-            include: ['process']
-          }
+          options: machineParams
         }}
         columns={memoizedColumns}
         positionActionsColumn='last'
@@ -70,7 +81,7 @@ export const MachineTable: FC<MachineTableProps> = ({}) => {
         )}
       />
 
-      <SaveMachineDrawer />
+      {isOpen && <SaveMachineDrawer />}
     </>
   );
 };
@@ -102,12 +113,40 @@ const MachineRowAction: FC<MachineRowActionProps> = ({ machine }) => {
   );
 };
 
+const useSaveDrawerMutation = ({
+  mode,
+  id
+}: {
+  mode: ModeAction;
+  id?: number;
+}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<DataResponse<Machine>, CustomError, MachineDto>({
+    mutationFn: machineDto => {
+      if (mode === ModeAction.Create)
+        return MachineService.createMachine(machineDto);
+      if (id && id > 0 && mode === ModeAction.Edit)
+        return MachineService.updateMachine(id, machineDto);
+      throw new CustomError('No se puede guardar la maquina');
+    },
+    onSuccess: () => {
+      const machinesQueryKey = machinesKeys.list(machineParams);
+
+      queryClient.invalidateQueries({ queryKey: machinesQueryKey });
+    }
+  });
+};
+
 interface SaveMachineDrawerProps {}
 
 const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
   const { isOpen, onClose, item, mode } = useMachineDrawerStore();
 
   const isProd = Environment.isProd;
+  const isShow = mode === ModeAction.Show;
+
+  const mutation = useSaveDrawerMutation({ mode, id: item?.id || undefined });
 
   const { data: processesData } = useProcessesQuery({
     options: { has_pagination: false }
@@ -186,8 +225,17 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
     >
       <form
         className='flex flex-col h-full'
-        onSubmit={form.handleSubmit(_data => {
-          // Handle submit
+        onSubmit={form.handleSubmit(data => {
+          mutation.mutate(data, {
+            onSuccess: () => {
+              onClose();
+            },
+            onError: error => {
+              const errors = ErrorMapper.mapErrorToApiResponse(error);
+
+              FormHelper.setFormErrors(errors.errors, form.setError);
+            }
+          });
         })}
       >
         <div className='p-5 flex items-center justify-between border-b border-divider'>
@@ -218,6 +266,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     label='Código'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                   />
                 )}
               />
@@ -234,6 +283,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     label='Nombre'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                   />
                 )}
               />
@@ -251,6 +301,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     options={processes}
                     getOptionLabel={option => option.name}
                     value={processes.find(p => p.id === value) || null}
+                    disabled={isShow}
                     renderInput={params => (
                       <TextField
                         {...params}
@@ -280,6 +331,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     type='number'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                     value={field.value ?? ''}
                     onKeyDown={e => {
                       if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -307,6 +359,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     type='number'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                     value={field.value ?? ''}
                     onKeyDown={e => {
                       if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -334,6 +387,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     type='number'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                     value={field.value ?? ''}
                     onKeyDown={e => {
                       if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -361,6 +415,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     type='number'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                     value={field.value ?? ''}
                     onKeyDown={e => {
                       if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -388,6 +443,7 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
                     type='number'
                     error={!!error}
                     helperText={error?.message}
+                    disabled={isShow}
                     value={field.value ?? ''}
                     onKeyDown={e => {
                       if (['e', 'E', '+', '-'].includes(e.key)) {
@@ -406,17 +462,19 @@ const SaveMachineDrawer = ({}: SaveMachineDrawerProps) => {
           </Grid>
         </div>
 
-        <div className='p-5 border-t border-divider'>
-          <Button
-            fullWidth
-            type='submit'
-            variant='contained'
-            color='primary'
-            size='large'
-          >
-            Guardar
-          </Button>
-        </div>
+        {![ModeAction.Show].includes(mode) && (
+          <div className='p-5 border-t border-divider'>
+            <Button
+              fullWidth
+              type='submit'
+              variant='contained'
+              color='primary'
+              size='large'
+            >
+              Guardar
+            </Button>
+          </div>
+        )}
       </form>
     </Drawer>
   );

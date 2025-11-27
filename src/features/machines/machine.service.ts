@@ -41,11 +41,10 @@ export class MachineService extends SharedService {
     machineDto: MachineDto
   ): Promise<DataResponse<Machine>> => {
     try {
-      const data = await SharedService.create<DataResponse<Machine>, MachineDto>(
-        apiFetcher,
-        '/machines',
-        machineDto
-      );
+      const data = await SharedService.create<
+        DataResponse<Machine>,
+        MachineDto
+      >(apiFetcher, '/machines', machineDto);
 
       return data;
     } catch (error) {
@@ -58,11 +57,10 @@ export class MachineService extends SharedService {
     machineDto: MachineDto
   ): Promise<DataResponse<Machine>> => {
     try {
-      const data = await SharedService.update<DataResponse<Machine>, MachineDto>(
-        apiFetcher,
-        `/machines/${id}`,
-        machineDto
-      );
+      const data = await SharedService.update<
+        DataResponse<Machine>,
+        MachineDto
+      >(apiFetcher, `/machines/${id}`, machineDto);
 
       return data;
     } catch (error) {

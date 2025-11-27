@@ -159,6 +159,9 @@ export const customTheme = createTheme({
       }
     },
     MuiButton: {
+      defaultProps: {
+        className: 'font-semibold rounded-lg'
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           borderRadius: theme.spacing(1)
@@ -167,20 +170,10 @@ export const customTheme = createTheme({
       variants: [
         {
           props: { variant: 'cancel' },
-          style: ({ theme }) => ({
-            borderColor: theme.palette.grey[300],
-            color: theme.palette.grey[700],
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            backgroundColor: 'transparent',
-            '&:hover': {
-              borderColor: theme.palette.grey[400],
-              backgroundColor: theme.palette.grey[100]
-            },
-            '&:active': {
-              backgroundColor: theme.palette.grey[200]
-            }
-          })
+          style: {
+            className:
+              'border border-gray-300 text-gray-700 bg-transparent hover:border-gray-400 hover:bg-gray-100 active:bg-gray-200'
+          }
         }
       ]
     }

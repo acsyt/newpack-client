@@ -34,13 +34,9 @@ import {
   INITIAL_PAGE_SIZE
 } from '@/config/constants/app.constants';
 
-interface Params<J = Record<string, any[]>, F = string> {
-  options: BasePaginationParams<J, F>;
-}
-
 interface CustomTableProps<
   T extends MRT_RowData,
-  J,
+  P = any,
   Y = Record<string, any[]>,
   F = string
 > extends Omit<
@@ -51,8 +47,8 @@ interface CustomTableProps<
     | 'table'
     | 'onRowSelectionChange'
   > {
-  queryHook: (props: J & Params) => UseQueryResult<PaginationResponse<T>>;
-  queryProps: J & Params;
+  queryHook: (props: { options: P }) => UseQueryResult<PaginationResponse<T>>;
+  queryProps: { options: P };
   columns: MRT_ColumnDef<T>[];
   queryPrefetch?: (
     queryClient: QueryClient,
@@ -65,7 +61,7 @@ interface CustomTableProps<
 
 export const CustomTable = <
   T extends Record<string, any>,
-  J,
+  P = any,
   F extends Record<string, any[]> = Record<string, any[]>,
   I = string
 >({
@@ -78,7 +74,7 @@ export const CustomTable = <
   onRowSelectionChange,
   allowFullWidthActions = false,
   ...rest
-}: CustomTableProps<T, J, F, I>) => {
+}: CustomTableProps<T, P, F, I>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const queryClient = useQueryClient();
@@ -90,9 +86,11 @@ export const CustomTable = <
     DEBOUNCE_FILTER_TIME
   );
 
+  const optionsParams = queryProps.options as any;
+
   const immutableFilters = useMemo(
-    () => queryProps.options?.filter ?? ({} as F),
-    [queryProps.options?.filter]
+    () => optionsParams?.filter ?? ({} as F),
+    [optionsParams?.filter]
   );
 
   const mutableFilters = useMemo(() => {
@@ -162,7 +160,7 @@ export const CustomTable = <
       filters: combinedFilters as F,
       sort,
       term: globalFilter,
-      include: (queryProps.options.include || []) as string[]
+      include: (optionsParams?.include || []) as string[]
     }),
     [
       pagination.pageIndex,
@@ -170,7 +168,7 @@ export const CustomTable = <
       combinedFilters,
       sort,
       globalFilter,
-      queryProps.options.include
+      optionsParams?.include
     ]
   );
 
@@ -277,8 +275,13 @@ export const CustomTable = <
         elevation: 0,
         sx: {
           borderRadius: '12px',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'transparent',
           overflow: 'hidden'
+        }
+      }}
+      muiTopToolbarProps={{
+        sx: {
+          backgroundColor: 'transparent'
         }
       }}
       muiTableBodyCellProps={({ cell }) => {
