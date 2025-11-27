@@ -3,10 +3,13 @@ import type { MenuItem } from '@/interfaces/menu-item.interface';
 import { useMemo } from 'react';
 
 import {
+  ArrowLeftRight,
   Box,
+  Boxes,
   Building2,
   ChartBarStacked,
   LayoutDashboard,
+  MapPin,
   Shield,
   UserCheckIcon,
   Users,
@@ -84,10 +87,29 @@ export const useMenuItems = () => {
         isEnabled: true
       },
       {
-        title: 'Almacenes',
+        title: 'Almacén',
         icon: <Warehouse aria-hidden='true' size={20} />,
-        href: '/warehouses',
-        isEnabled: true
+        isEnabled: true,
+        menuItems: [
+          {
+            title: 'Existencias',
+            href: '/stock',
+            isEnabled: true,
+            icon: <Boxes aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Movimientos',
+            href: '/movements',
+            isEnabled: true,
+            icon: <ArrowLeftRight aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Almacenes',
+            href: '/warehouses',
+            isEnabled: true,
+            icon: <MapPin aria-hidden='true' size={20} />
+          }
+        ]
       }
     ],
     []

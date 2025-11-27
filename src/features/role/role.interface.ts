@@ -120,4 +120,10 @@ export type Permission =
   | 'warehouse-locations.index'
   | 'warehouse-locations.create'
   | 'warehouse-locations.edit'
-  | 'warehouse-locations.delete';
+  | 'warehouse-locations.delete'
+
+  // Movements
+  | 'movements.index'
+
+  // Stock
+  | 'stock.index';
