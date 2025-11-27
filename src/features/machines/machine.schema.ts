@@ -1,15 +1,30 @@
 import { z } from 'zod';
 
-export const machineSchema = z.object({
+import { ModeAction } from '@/config/enums/mode-action.enum';
+
+export const baseSchema = z.object({
   code: z.string().min(1, 'El código es requerido').max(50),
   name: z.string().min(1, 'El nombre es requerido').max(255),
-  processId: z.number().min(1, 'El proceso es requerido'),
-  speedMh: z.number().optional().nullable(),
-  speedKgh: z.number().optional().nullable(),
-  circumferenceTotal: z.number().optional().nullable(),
-  maxWidth: z.number().optional().nullable(),
-  maxCenter: z.number().optional().nullable(),
-  status: z.string().max(50).optional().nullable()
+  process_id: z.number().positive(),
+  speed_mh: z.number().optional().nullable(),
+  speed_kgh: z.number().optional().nullable(),
+  circumference_total: z.number().optional().nullable(),
+  max_width: z.number().optional().nullable(),
+  max_center: z.number().optional().nullable()
 });
+
+const createMachineSchema = baseSchema.extend({
+  mode: z.literal(ModeAction.Create)
+});
+
+const updateMachineSchema = baseSchema.extend({
+  id: z.number(),
+  mode: z.enum([ModeAction.Edit, ModeAction.Show])
+});
+
+export const machineSchema = z.discriminatedUnion('mode', [
+  createMachineSchema,
+  updateMachineSchema
+]);
 
 export type MachineDto = z.infer<typeof machineSchema>;

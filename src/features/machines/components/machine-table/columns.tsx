@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import { Machine } from '../../machine.interface';
 
-export const columns: MRT_ColumnDef<Machine>[] = [
+export const machineColumns: MRT_ColumnDef<Machine>[] = [
   {
     id: 'id',
     header: 'ID',
@@ -24,13 +24,13 @@ export const columns: MRT_ColumnDef<Machine>[] = [
   },
   {
     header: 'Proceso',
-    id: 'process',
+    id: 'process.name',
     accessorKey: 'process.name',
     Cell: ({ row: { original } }) => original.process?.name || '-'
   },
   {
     header: 'Velocidad M/H',
-    id: 'speedMh',
+    id: 'speed_mh',
     accessorKey: 'speedMh',
     size: 120,
     Cell: ({ row: { original } }) =>
@@ -38,7 +38,7 @@ export const columns: MRT_ColumnDef<Machine>[] = [
   },
   {
     header: 'Velocidad KG/H',
-    id: 'speedKgh',
+    id: 'speed_kgh',
     accessorKey: 'speedKgh',
     size: 120,
     Cell: ({ row: { original } }) =>
@@ -46,7 +46,7 @@ export const columns: MRT_ColumnDef<Machine>[] = [
   },
   {
     header: 'Circunferencia Total',
-    id: 'circumferenceTotal',
+    id: 'circumference_total',
     accessorKey: 'circumferenceTotal',
     size: 150,
     Cell: ({ row: { original } }) =>
@@ -56,7 +56,7 @@ export const columns: MRT_ColumnDef<Machine>[] = [
   },
   {
     header: 'Ancho Máximo',
-    id: 'maxWidth',
+    id: 'max_width',
     accessorKey: 'maxWidth',
     size: 120,
     Cell: ({ row: { original } }) =>
@@ -64,7 +64,7 @@ export const columns: MRT_ColumnDef<Machine>[] = [
   },
   {
     header: 'Centro Máximo',
-    id: 'maxCenter',
+    id: 'max_center',
     accessorKey: 'maxCenter',
     size: 120,
     Cell: ({ row: { original } }) =>

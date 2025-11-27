@@ -210,16 +210,6 @@ export const CustomTable = <
     queryPrefetch
   ]);
 
-  const clearFilters = () => {
-    setPagination({
-      pageIndex: INITIAL_PAGE - 1,
-      pageSize: INITIAL_PAGE_SIZE
-    });
-    setGlobalFilter('');
-    setSorting([]);
-    setColumnFilters([]);
-  };
-
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
   const handleRowSelectionChange: MaterialReactTableProps<T>['onRowSelectionChange'] =
@@ -249,81 +239,48 @@ export const CustomTable = <
 
   return (
     <MaterialReactTable
-      enableColumnFilters={false}
-      enableGlobalFilter={false}
-      enableRowSelection={false}
-      enableSorting={false}
-      enableColumnActions={false}
-      enableToolbarInternalActions={false}
+      {...rest}
+      enableRowActions
+      manualPagination
+      manualFiltering
+      manualSorting
+      enableStickyHeader
+      enableColumnResizing={false}
+      layoutMode='semantic'
+      positionActionsColumn='last'
+      columnResizeMode={'onEnd'}
       data={paginationData}
       columns={memoizedColumns}
-      muiTableBodyRowProps={{
-        hover: true,
-        sx: {
-          '&:hover': {
-            backgroundColor: '#F8FAFC'
-          }
-        }
+      getRowId={row => row.id}
+      rowCount={data?.meta?.total || 0}
+      enableRowSelection={enableRowSelection}
+      enableGlobalFilter={enableGlobalFilter}
+      enableColumnFilters={false}
+      enableSorting={false}
+      initialState={{
+        ...rest.initialState,
+        showColumnFilters: false,
+        showGlobalFilter: Boolean(globalFilter),
+        columnPinning: { right: ['mrt-row-actions'] }
       }}
+      columnFilterDisplayMode='popover'
       muiTableContainerProps={{
+        className: 'max-h-[650px]',
         sx: {
+          maxHeight: '650px',
           borderRadius: '12px',
-          overflow: 'hidden',
+          overflow: 'auto', // Fixed: Changed from hidden to auto to enable scrollbars
           boxShadow: 'none'
         }
       }}
       muiTablePaperProps={{
         elevation: 0,
         sx: {
-          // boxShadow:
-          //   '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-          // border: '1px solid #E5E7EB',
           borderRadius: '12px',
           backgroundColor: '#FFFFFF',
           overflow: 'hidden'
         }
       }}
-      muiTableHeadCellProps={{
-        sx: {
-          backgroundColor: '#101828',
-          color: '#FFFFFF',
-          fontWeight: 700,
-          fontSize: '0.875rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          borderBottom: 'none',
-          paddingY: 2
-        }
-      }}
-      muiTableBodyCellProps={{
-        sx: {
-          paddingY: 2,
-          fontSize: '0.9375rem',
-          color: '#101828',
-          borderBottom: '1px solid #F3F4F6',
-          backgroundColor: '#FFFFFF'
-        }
-      }}
-      mrtTheme={theme => ({
-        baseBackgroundColor: theme.palette.background.default
-      })}
-    />
-  );
-
-  return (
-    <MaterialReactTable
-      {...rest}
-      manualPagination
-      enableStickyHeader
-      manualFiltering={false}
-      manualSorting={false}
-      enableColumnResizing={false}
-      data={paginationData}
-      columns={memoizedColumns}
-      getRowId={row => row.id}
-      enableRowSelection={enableRowSelection}
-      columnResizeMode={'onEnd'}
-      muiTableContainerProps={{ sx: { maxHeight: '550px' } }}
       muiTableBodyCellProps={({ cell }) => {
         if (cell.column.id === 'mrt-row-actions') {
           return {
@@ -355,6 +312,11 @@ export const CustomTable = <
 
         return {
           sx: {
+            paddingY: 2,
+            fontSize: '0.9375rem',
+            color: '#101828',
+            borderBottom: '1px solid #F3F4F6',
+            backgroundColor: '#FFFFFF',
             maxWidth: '200px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -375,23 +337,21 @@ export const CustomTable = <
 
         return {
           sx: {
-            maxWidth: '200px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            backgroundColor: '#101828',
+            color: '#FFFFFF',
+            fontWeight: 700,
+            fontSize: '0.875rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            borderBottom: 'none',
+            paddingY: 2,
             whiteSpace: 'nowrap'
           }
         };
       }}
-      rowCount={data?.meta?.total || 0}
-      layoutMode='semantic'
-      positionActionsColumn='last'
-      initialState={{
-        ...rest.initialState,
-        showColumnFilters: true,
-        showGlobalFilter: Boolean(globalFilter),
-        columnPinning: { right: ['mrt-row-actions'] }
-      }}
-      columnFilterDisplayMode='popover'
+      mrtTheme={theme => ({
+        baseBackgroundColor: theme.palette.background.default
+      })}
       renderTopToolbarCustomActions={params => (
         <Box>{rest.renderTopToolbarCustomActions?.(params)}</Box>
       )}
@@ -427,6 +387,7 @@ export const CustomTable = <
         globalFilter,
         rowSelection: enableRowSelection ? rowSelection : {}
       }}
+      onRowSelectionChange={handleRowSelectionChange}
       onPaginationChange={pagination => setPagination(pagination)}
     />
   );

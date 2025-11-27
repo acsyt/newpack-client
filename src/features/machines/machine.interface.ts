@@ -1,3 +1,5 @@
+import { Process } from '../processes';
+
 import { BasePaginationParams } from '@/interfaces/pagination-response.interface';
 
 export interface Machine {
@@ -5,11 +7,7 @@ export interface Machine {
   code: string;
   name: string;
   processId: number;
-  process?: {
-    id: number;
-    code: string;
-    name: string;
-  };
+  process?: Process;
   speedMh: number | null;
   speedKgh: number | null;
   circumferenceTotal: number | null;
