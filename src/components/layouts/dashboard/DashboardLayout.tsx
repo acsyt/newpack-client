@@ -240,6 +240,20 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
             overscrollBehavior: 'contain'
           }}
         >
+          {!isDesktop && (
+            <Box sx={{ mb: 2 }}>
+              <IconButton
+                aria-label='Open menu'
+                sx={{
+                  color: 'primary.main'
+                }}
+                onClick={toggleDashboardDrawer}
+              >
+                <MenuIcon size={24} />
+              </IconButton>
+            </Box>
+          )}
+
           <div ref={topSentinelRef} aria-hidden style={{ height: 1 }} />
 
           <Grid container spacing={1}>
