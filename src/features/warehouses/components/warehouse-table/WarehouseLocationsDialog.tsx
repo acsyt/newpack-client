@@ -195,43 +195,73 @@ export const WarehouseLocationsDialog = ({
         }}
         onClose={onClose}
       >
-        <DialogTitle className='flex items-center justify-between gap-3 border-b border-divider pb-3 sm:pb-4'>
-          <div className='flex items-center gap-2 sm:gap-3 min-w-0 flex-1'>
-            <MapPin size={20} className='sm:w-6 sm:h-6 shrink-0' />
-            <div className='min-w-0'>
-              <Typography
-                variant='h6'
-                className='font-semibold text-sm sm:text-base truncate'
-              >
-                Ubicaciones - {warehouse.name}
-              </Typography>
-              <Typography
-                variant='caption'
-                className='text-text-secondary text-xs'
-              >
-                {warehouse.warehouseLocationsCount}{' '}
-                {warehouse.warehouseLocationsCount > 1
-                  ? 'ubicaciones'
-                  : 'ubicación'}
-              </Typography>
+        <DialogTitle className='border-b border-divider pb-3'>
+          <div className='flex sm:hidden flex-col gap-3'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-2 flex-1 min-w-0'>
+                <MapPin size={20} className='flex-0' />
+                <div className='min-w-0 flex-1'>
+                  <Typography
+                    variant='subtitle1'
+                    className='font-semibold truncate'
+                  >
+                    Ubicaciones
+                  </Typography>
+                  <Typography variant='caption' className='text-text-secondary'>
+                    {warehouse.warehouseLocationsCount}{' '}
+                    {warehouse.warehouseLocationsCount > 1
+                      ? 'ubicaciones'
+                      : 'ubicación'}
+                  </Typography>
+                </div>
+              </div>
+              <IconButton size='small' className='flex-0' onClick={onClose}>
+                <X size={20} />
+              </IconButton>
             </div>
-          </div>
-          <div className='flex items-center gap-1 sm:gap-2 shrink-0'>
             {canCreate && (
               <Button
+                fullWidth
                 variant='contained'
                 size='small'
                 startIcon={<Plus size={16} />}
-                className='text-xs sm:text-sm px-2 sm:px-3'
                 onClick={onCreate}
               >
-                <span className='hidden xs:inline'>Nueva</span>
-                <span className='xs:hidden'>+</span>
+                Nueva ubicación
               </Button>
             )}
-            <IconButton size='small' onClick={onClose}>
-              <X size={18} className='sm:w-5 sm:h-5' />
-            </IconButton>
+          </div>
+
+          <div className='hidden sm:flex sm:items-center sm:justify-between'>
+            <div className='flex items-center gap-3'>
+              <MapPin size={24} />
+              <div>
+                <Typography variant='h6' className='font-semibold'>
+                  Ubicaciones - {warehouse.name}
+                </Typography>
+                <Typography variant='caption' className='text-text-secondary'>
+                  {warehouse.warehouseLocationsCount}{' '}
+                  {warehouse.warehouseLocationsCount > 1
+                    ? 'ubicaciones'
+                    : 'ubicación'}
+                </Typography>
+              </div>
+            </div>
+            <div className='flex items-center gap-2'>
+              {canCreate && (
+                <Button
+                  variant='contained'
+                  size='small'
+                  startIcon={<Plus size={16} />}
+                  onClick={onCreate}
+                >
+                  Nueva ubicación
+                </Button>
+              )}
+              <IconButton size='small' onClick={onClose}>
+                <X size={20} />
+              </IconButton>
+            </div>
           </div>
         </DialogTitle>
 
@@ -261,7 +291,6 @@ export const WarehouseLocationsDialog = ({
             </div>
           ) : (
             <>
-              {/* Desktop view - Table */}
               <div className='hidden md:block'>
                 <TableContainer component={Paper} elevation={0}>
                   <Table size='small'>
@@ -387,7 +416,6 @@ export const WarehouseLocationsDialog = ({
                 </TableContainer>
               </div>
 
-              {/* Mobile view - Cards */}
               <div className='block md:hidden p-4'>
                 {locations.map(location => (
                   <LocationCard key={location.id} location={location} />
