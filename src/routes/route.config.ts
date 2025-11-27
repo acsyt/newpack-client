@@ -96,16 +96,17 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/users/create': ['users.create'],
   '/users/$userId/edit': ['users.edit'],
   '/users/$userId/show': ['users.show'],
-  '/classes': [],
-  '/customers': [],
-  '/machines': [],
-  '/processes': [],
-  '/raw-materials': [],
-  '/roles': [],
-  '/suppliers': [],
-  '/suppliers/$supplierId/edit': [],
-  '/suppliers/create': [],
-  '/suppliers/$supplierId/show': []
+  '/classes': ['classes.index'],
+  '/customers': ['customers.index'],
+  '/machines': ['machines.index'],
+  '/processes': ['processes.index'],
+  '/raw-materials': ['raw-materials.index'],
+  '/roles': ['roles.index'],
+  '/suppliers': ['suppliers.index'],
+  '/suppliers/$supplierId/edit': ['suppliers.edit'],
+  '/suppliers/create': ['suppliers.create'],
+  '/suppliers/$supplierId/show': ['suppliers.show'],
+  '/subclasses': ['subclasses.index']
 };
 
 export const useRouteConfig = () => {
@@ -113,99 +114,98 @@ export const useRouteConfig = () => {
 
   const dashboardRoutes: Record<DashboardRoutes, RouteMetadata> = {
     '/dashboard': {
-      title: 'Dashboard',
-      breadcrumbs: [
-        {
-          title: 'Home',
-          path: '/'
-        },
-        {
-          title: 'Dashboard'
-        }
-      ]
+      title: 'Panel',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Panel' }]
     },
     '/users': {
-      title: 'Users',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Users' }]
+      title: 'Usuarios',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Usuarios' }]
     },
     '/users/create': {
-      title: 'Create User',
+      title: 'Crear Usuario',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Users', path: '/users' },
-        { title: 'Create' }
+        { title: 'Inicio', path: '/' },
+        { title: 'Usuarios', path: '/users' },
+        { title: 'Crear' }
       ]
     },
     '/users/$userId/edit': {
-      title: 'Edit User',
+      title: 'Editar Usuario',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Users', path: '/users' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Usuarios', path: '/users' },
         { title: ':id' },
-        { title: 'Edit' }
+        { title: 'Editar' }
       ]
     },
     '/users/$userId/show': {
-      title: 'Show User',
+      title: 'Detalle Usuario',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Users', path: '/users' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Usuarios', path: '/users' },
         { title: ':id' },
-        { title: 'Show' }
+        { title: 'Detalle' }
       ]
     },
     '/classes': {
-      title: 'Classes',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Classes' }]
+      title: 'Clases',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clases' }]
+    },
+    '/subclasses': {
+      title: 'Subclases',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Subclases' }]
     },
     '/customers': {
-      title: 'Customers',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Customers' }]
+      title: 'Clientes',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clientes' }]
     },
     '/machines': {
-      title: 'Machines',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Machines' }]
+      title: 'Máquinas',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Máquinas' }]
     },
     '/processes': {
-      title: 'Processes',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Processes' }]
+      title: 'Procesos',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Procesos' }]
     },
     '/raw-materials': {
-      title: 'Raw Materials',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Raw Materials' }]
+      title: 'Materias Primas',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Materias Primas' }
+      ]
     },
     '/roles': {
       title: 'Roles',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Roles' }]
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Roles' }]
     },
     '/suppliers': {
-      title: 'Suppliers',
-      breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Suppliers' }]
+      title: 'Proveedores',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Proveedores' }]
     },
     '/suppliers/create': {
-      title: 'Create Supplier',
+      title: 'Crear Proveedor',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Suppliers', path: '/suppliers' },
-        { title: 'Create' }
+        { title: 'Inicio', path: '/' },
+        { title: 'Proveedores', path: '/suppliers' },
+        { title: 'Crear' }
       ]
     },
     '/suppliers/$supplierId/edit': {
-      title: 'Edit Supplier',
+      title: 'Editar Proveedor',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Suppliers', path: '/suppliers' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Proveedores', path: '/suppliers' },
         { title: ':id' },
-        { title: 'Edit' }
+        { title: 'Editar' }
       ]
     },
     '/suppliers/$supplierId/show': {
-      title: 'Show Supplier',
+      title: 'Detalle Proveedor',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Suppliers', path: '/suppliers' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Proveedores', path: '/suppliers' },
         { title: ':id' },
-        { title: 'Show' }
+        { title: 'Detalle' }
       ]
     }
   };

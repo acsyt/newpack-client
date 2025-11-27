@@ -15,7 +15,7 @@ function RouteComponent() {
   const memoizedColumns = useMemo(() => columns, []);
 
   return (
-    <DashboardLayoutContainer title='Subclases de Productos'>
+    <DashboardLayoutContainer title='Subclases'>
       <CustomTable
         queryHook={useProductSubclassesQuery}
         queryProps={{

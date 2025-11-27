@@ -51,4 +51,60 @@ export type Permission =
   | 'users.create'
   | 'users.edit'
   | 'users.change-password'
-  | 'users.export';
+  | 'users.export'
+
+  // Roles
+  | 'roles.index'
+  | 'roles.show'
+  | 'roles.create'
+  | 'roles.edit'
+  | 'roles.export'
+
+  // Classes
+  | 'classes.index'
+  | 'classes.show'
+  | 'classes.create'
+  | 'classes.edit'
+  | 'classes.export'
+
+  // Subclasses
+  | 'subclasses.index'
+  | 'subclasses.show'
+  | 'subclasses.create'
+  | 'subclasses.edit'
+  | 'subclasses.export'
+
+  // Machines
+  | 'machines.index'
+  | 'machines.show'
+  | 'machines.create'
+  | 'machines.edit'
+  | 'machines.export'
+
+  // Processes
+  | 'processes.index'
+  | 'processes.show'
+  | 'processes.create'
+  | 'processes.edit'
+  | 'processes.export'
+
+  // Raw materials
+  | 'raw-materials.index'
+  | 'raw-materials.show'
+  | 'raw-materials.create'
+  | 'raw-materials.edit'
+  | 'raw-materials.export'
+
+  // Suppliers
+  | 'suppliers.index'
+  | 'suppliers.show'
+  | 'suppliers.create'
+  | 'suppliers.edit'
+  | 'suppliers.export'
+
+  // Customers
+  | 'customers.index'
+  | 'customers.show'
+  | 'customers.create'
+  | 'customers.edit'
+  | 'customers.export';
