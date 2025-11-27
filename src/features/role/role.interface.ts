@@ -114,4 +114,10 @@ export type Permission =
   | 'warehouses.show'
   | 'warehouses.create'
   | 'warehouses.edit'
-  | 'warehouses.export';
+  | 'warehouses.export'
+
+  // Warehouse Locations
+  | 'warehouse-locations.index'
+  | 'warehouse-locations.create'
+  | 'warehouse-locations.edit'
+  | 'warehouse-locations.delete';

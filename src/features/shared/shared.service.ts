@@ -19,7 +19,8 @@ export class SharedService {
       include = [],
       page = INITIAL_PAGE,
       per_page = INITIAL_PAGE_SIZE,
-      sort = ''
+      sort = '',
+      has_pagination = true
     } = options;
     const newFilters = SharedService.transformFiltersToQueryParams(
       filter as Record<string, any>
@@ -30,7 +31,8 @@ export class SharedService {
       ...(include && include.length > 0 && { include: include.join(',') }),
       ...(page ? { page } : {}),
       ...(per_page ? { per_page } : {}),
-      ...(sort ? { sort } : {})
+      ...(sort ? { sort } : {}),
+      ...(has_pagination !== undefined && { has_pagination })
     };
 
     return queryParams;
