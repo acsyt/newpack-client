@@ -107,11 +107,11 @@ const LogoContainer = () => {
       }}
     >
       <picture>
-        <source srcSet='/assets/images/logo-full.avif' type='image/avif' />
-        <source srcSet='/assets/images/logo-full.webp' type='image/webp' />
+        <source srcSet='/assets/images/logo.avif' type='image/avif' />
+        <source srcSet='/assets/images/logo.webp' type='image/webp' />
         <img
           loading='lazy'
-          src='/assets/images/logo-full.png'
+          src='/assets/images/logo.png'
           alt='Logo'
           className='w-72 h-auto object-contain'
         />

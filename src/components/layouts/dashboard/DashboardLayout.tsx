@@ -58,11 +58,16 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const { setScrollContainer, setDrawerOpen } = useUIStore();
 
-  const [isDashboardDrawerOpen, setIsDashboardDrawerOpen] = useState(true);
+  const [isDashboardDrawerOpen, setIsDashboardDrawerOpen] = useState(isDesktop);
 
   const toggleDashboardDrawer = () => {
     setIsDashboardDrawerOpen(prev => !prev);
   };
+
+  useEffect(() => {
+    // Update drawer state when switching between desktop and mobile
+    setIsDashboardDrawerOpen(isDesktop);
+  }, [isDesktop]);
 
   useEffect(() => {
     setDrawerOpen(isDashboardDrawerOpen);
@@ -113,17 +118,17 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
                 <Box className='flex grow justify-center'>
                   <picture className='flex justify-center'>
                     <source
-                      srcSet={'/assets/images/logo-full.avif'}
+                      srcSet={'/assets/images/logo.avif'}
                       type='image/avif'
                     />
                     <source
-                      srcSet={'/assets/images/logo-full.webp'}
+                      srcSet={'/assets/images/logo.webp'}
                       type='image/webp'
                     />
                     <Box
                       component={'img'}
                       loading='lazy'
-                      src={'/assets/images/logo-full.png'}
+                      src={'/assets/images/logo.png'}
                       alt={'Logo'}
                       className='rounded w-60 h-24 object-contain'
                     />
