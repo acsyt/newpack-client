@@ -39,7 +39,10 @@ import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ErrorMapper } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
-import { InventoryStockParams } from '@/features/inventory-stocks/inventory-stock.interface';
+import {
+  InventoryStockParams,
+  InventoryStockStatus
+} from '@/features/inventory-stocks/inventory-stock.interface';
 import {
   useWarehouseLocationsQuery,
   useWarehousesQuery
@@ -353,8 +356,13 @@ const TransferRow = ({
         warehouse_id: sourceWarehouseId,
         search: searchTerm
       },
-      include: ['product', 'warehouseLocation', 'batch'] as const,
-      per_page: 20
+      include: [
+        'product',
+        'warehouseLocation',
+        'batch',
+        'product.productType'
+      ] as const,
+      has_pagination: false
     }),
     [sourceWarehouseId, searchTerm]
   );
@@ -366,7 +374,10 @@ const TransferRow = ({
     });
 
   const stocks = useMemo(
-    () => (stocksData?.data || []).filter((s: any) => s.status === 'available'),
+    () =>
+      (stocksData?.data || []).filter(
+        s => s.status === InventoryStockStatus.AVAILABLE
+      ),
     [stocksData]
   );
 
@@ -384,7 +395,9 @@ const TransferRow = ({
       <TableCell sx={{ verticalAlign: 'top', p: 1 }}>
         <Autocomplete
           options={stocks}
-          groupBy={option => option.product?.name || ''}
+          groupBy={option =>
+            option.product?.productType?.name || 'Sin Categoría'
+          }
           getOptionLabel={s => {
             if (!s.product) return '';
             const batchInfo = s.batch
