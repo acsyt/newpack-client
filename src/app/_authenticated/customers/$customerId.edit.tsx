@@ -15,7 +15,7 @@ function RouteComponent() {
       <CustomerFormContainer
         mode={ModeAction.Edit}
         customerId={Number(customerId)}
-        title='Edit Customer'
+        title='Editar Cliente'
       />
     )
 }

@@ -31,14 +31,14 @@ function RouteComponent() {
                 positionActionsColumn='last'
                 renderTopToolbarCustomActions={() => (
                   <Box display='flex' gap={1}>
-                        {permissions.includes('users.create') && (
+                        {permissions.includes('customers.create') && (
                           <Link to='/customers/create'>
                             <Button
                               variant='contained'
                               color='primary'
                               startIcon={<Plus size={18} />}
                             >
-                              Crear usuario
+                              Crear Cliente
                             </Button>
                           </Link>
                         )}

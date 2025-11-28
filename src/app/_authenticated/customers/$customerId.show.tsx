@@ -16,7 +16,7 @@ function RouteComponent() {
     <CustomerFormContainer
       mode={ModeAction.Show}
       customerId={Number(customerId)}
-      title='Show Customer'
+      title='Detalles Cliente'
     />
   )
 }
