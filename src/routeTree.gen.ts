@@ -227,9 +227,9 @@ export interface FileRoutesByFullPath {
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
-  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -257,9 +257,9 @@ export interface FileRoutesByTo {
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
-  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -289,9 +289,9 @@ export interface FileRoutesById {
   '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
   '/_authenticated/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/_authenticated/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
-  '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
   '/_authenticated/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/_authenticated/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/_authenticated/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -321,9 +321,9 @@ export interface FileRouteTypes {
     | '/subclasses'
     | '/suppliers'
     | '/users'
+    | '/warehouses'
     | '/customers/$customerId/edit'
     | '/customers/$customerId/show'
-    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -351,9 +351,9 @@ export interface FileRouteTypes {
     | '/subclasses'
     | '/suppliers'
     | '/users'
+    | '/warehouses'
     | '/customers/$customerId/edit'
     | '/customers/$customerId/show'
-    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -382,9 +382,9 @@ export interface FileRouteTypes {
     | '/_authenticated/subclasses/'
     | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
+    | '/_authenticated/warehouses/'
     | '/_authenticated/customers/$customerId/edit'
     | '/_authenticated/customers/$customerId/show'
-    | '/_authenticated/warehouses/'
     | '/_authenticated/suppliers/$supplierId/edit'
     | '/_authenticated/suppliers/$supplierId/show'
     | '/_authenticated/users/$userId/edit'
@@ -659,9 +659,9 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
   AuthenticatedCustomersCustomerIdEditRoute: typeof AuthenticatedCustomersCustomerIdEditRoute
   AuthenticatedCustomersCustomerIdShowRoute: typeof AuthenticatedCustomersCustomerIdShowRoute
-  AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -685,11 +685,11 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
   AuthenticatedCustomersCustomerIdEditRoute:
     AuthenticatedCustomersCustomerIdEditRoute,
   AuthenticatedCustomersCustomerIdShowRoute:
     AuthenticatedCustomersCustomerIdShowRoute,
-  AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
