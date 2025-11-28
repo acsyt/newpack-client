@@ -1,62 +1,51 @@
 import { useEffect, type FC } from 'react';
 
-import { UserForm } from './UserForm';
-
+import { CustomerForm } from '@/features/customers/components/CustomerForm';
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
 import { PageNotFound } from '@/components/shared/PageNotFound';
 import { ModeAction } from '@/config/enums/mode-action.enum';
-import { useUserByIdQuery } from '@/features/users/hooks/users.query';
+import { useCustomerByIdQuery } from '@/features/customers/hook/customer.query';
 
-type UserFormContainerProps = {
+type CustomerFormContainerProps = {
   mode: ModeAction;
-  userId?: number;
+  customerId?: number;
   title: string;
 };
 
-export const UserFormContainer: FC<UserFormContainerProps> = ({
-  mode,
-  userId,
-  title
-}) => {
-  const {
-    data: user,
-    isLoading: userLoading,
-    error,
-    refetch,
-    isRefetching
-  } = useUserByIdQuery({
-    id: userId!,
+export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({ mode, customerId, title }) => {
+  const { data: customer,isLoading: customerLoading, error, refetch, isRefetching } = useCustomerByIdQuery({
+    id: customerId!,
     options: {},
     enabled: mode !== ModeAction.Create,
     retry: false,
     staleTime: 5 * 60 * 1000
   });
-
+  
   if (mode === ModeAction.Create) {
     return (
       <DashboardLayoutContainer title={title}>
-        <UserForm mode={mode} />
+        <CustomerForm mode={mode} />
       </DashboardLayoutContainer>
     );
-  }
+  };
 
-  if (userLoading) {
+  if (customerLoading) {
     return (
       <DashboardLayoutContainer title={title}>
         <LoadingScreen isLoading={true} />
       </DashboardLayoutContainer>
     );
-  }
+  };
 
-  if (error || !user) {
-    const errorMessage = error ? 'Error loading user' : 'User not found';
+  if (error || !customer) {
+    const errorMessage = error ? 'Error loading customer' : 'Customer not found';
 
     return (
       <DashboardLayoutContainer title={title}>
         <PageNotFound
           message={errorMessage}
-          redirectPath='/users'
+          redirectPath='/customers'
           statusCode={error ? 500 : 404}
           showRetry={true}
           isRetrying={isRefetching}
@@ -64,11 +53,11 @@ export const UserFormContainer: FC<UserFormContainerProps> = ({
         />
       </DashboardLayoutContainer>
     );
-  }
+  };
 
   return (
     <DashboardLayoutContainer title={title}>
-      <UserForm mode={mode} user={user} />
+      <CustomerForm mode={mode} customer={customer} />
     </DashboardLayoutContainer>
   );
 };
