@@ -18,9 +18,10 @@ type CustomerFormProps = {
   customer?: Customer;
 };
 
-export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
+export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
   const navigate = useNavigate();
   const mutation = useCustomersMutation();
+
 
   const defaultValues = useMemo<DefaultValues<CustomerDto>>(() => {
     const userValues: DefaultValues<CustomerDto> = {

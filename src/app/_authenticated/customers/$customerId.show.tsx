@@ -1,3 +1,5 @@
+import { ModeAction } from '@/config/enums/mode-action.enum';
+import { CustomerFormContainer } from '@/features/customers/components/CustomerFormContainer';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
@@ -7,5 +9,14 @@ export const Route = createFileRoute(
 })
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/customers/$customerId/show"!</div>
+  
+  const { customerId } = Route.useParams();
+  
+  return (
+    <CustomerFormContainer
+      mode={ModeAction.Show}
+      customerId={Number(customerId)}
+      title='Show Customer'
+    />
+  )
 }
