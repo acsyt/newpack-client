@@ -1,23 +1,21 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-  Tooltip
-} from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { Plus, Trash2, Save, ArrowRightCircle } from 'lucide-react';
 import {
   Controller,
@@ -27,6 +25,7 @@ import {
   useFormContext,
   FormProvider
 } from 'react-hook-form';
+import { useDebounce } from 'use-debounce';
 
 import { useCreateTransferMutation } from '../../hooks/inventory-movements.query';
 import {
@@ -39,10 +38,7 @@ import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ErrorMapper } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
-import {
-  InventoryStockParams,
-  InventoryStockStatus
-} from '@/features/inventory-stocks/inventory-stock.interface';
+import { InventoryStockParams } from '@/features/inventory-stocks/inventory-stock.interface';
 import {
   useWarehouseLocationsQuery,
   useWarehousesQuery
@@ -59,10 +55,11 @@ const invisibleInputSx = (error: boolean) => ({
 });
 
 export const CreateTransferDrawer = () => {
-  const { isOpen, onClose, movementType } = useInventoryMovementDrawerStore();
+  const { isOpen, onClose } = useInventoryMovementDrawerStore();
   const mutation = useCreateTransferMutation();
 
   const form = useForm<InventoryTransferDto>({
+    mode: 'onChange',
     resolver: zodResolver(
       inventoryTransferSchema.superRefine((data, ctx) => {
         if (data.products.length === 0) {
@@ -87,6 +84,16 @@ export const CreateTransferDrawer = () => {
     name: 'products'
   });
 
+  const onCreateNewProduct = () => {
+    append({
+      product_id: undefined as any,
+      quantity: undefined as any,
+      source_location_id: undefined as any,
+      destination_location_id: undefined as any,
+      batch_id: null
+    });
+  };
+
   const sourceWarehouseId = useWatch({
     control: form.control,
     name: 'source_warehouse_id'
@@ -96,6 +103,18 @@ export const CreateTransferDrawer = () => {
     control: form.control,
     name: 'destination_warehouse_id'
   });
+
+  useEffect(() => {
+    replace([
+      {
+        product_id: undefined as any,
+        quantity: undefined as any,
+        source_location_id: undefined as any,
+        destination_location_id: undefined as any,
+        batch_id: null
+      }
+    ]);
+  }, [sourceWarehouseId, replace]);
 
   const { data: warehousesData } = useWarehousesQuery({
     options: { has_pagination: false }
@@ -138,7 +157,7 @@ export const CreateTransferDrawer = () => {
           <Button
             disableElevation
             variant='contained'
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || !form.formState.isValid}
             startIcon={<Save size={18} />}
             onClick={form.handleSubmit(handleSubmit)}
           >
@@ -237,15 +256,10 @@ export const CreateTransferDrawer = () => {
               </Typography>
               <Button
                 size='small'
+                disabled={!sourceWarehouseId}
                 startIcon={<Plus size={16} />}
                 sx={{ textTransform: 'none', fontWeight: 600 }}
-                onClick={() =>
-                  append({
-                    product_id: undefined as any,
-                    quantity: undefined as any,
-                    batch_id: null
-                  })
-                }
+                onClick={onCreateNewProduct}
               >
                 Agregar Fila
               </Button>
@@ -271,22 +285,33 @@ export const CreateTransferDrawer = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fields.map((field, index) => (
-                    <TransferRow
-                      key={field.id}
-                      index={index}
-                      remove={remove}
-                      isSingleRow={fields.length === 1}
-                      destLocations={destLocations}
-                      sourceWarehouseId={sourceWarehouseId}
-                      destWarehouseId={destWarehouseId}
-                    />
-                  ))}
+                  {!sourceWarehouseId ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align='center' sx={{ py: 6 }}>
+                        <Typography variant='body2' color='text.secondary'>
+                          Seleccione un almacén de origen para comenzar
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    fields.map((field, index) => (
+                      <TransferRow
+                        key={field.id}
+                        index={index}
+                        remove={remove}
+                        isSingleRow={fields.length === 1}
+                        destLocations={destLocations}
+                        sourceWarehouseId={sourceWarehouseId}
+                        destWarehouseId={destWarehouseId}
+                      />
+                    ))
+                  )}
                 </TableBody>
               </Table>
 
               <Button
                 fullWidth
+                disabled={!sourceWarehouseId}
                 variant='text'
                 startIcon={<Plus size={16} />}
                 sx={{
@@ -296,13 +321,7 @@ export const CreateTransferDrawer = () => {
                   borderTop: '1px dashed #E2E8F0',
                   '&:hover': { bgcolor: '#F8FAFC', color: 'primary.main' }
                 }}
-                onClick={() =>
-                  append({
-                    product_id: undefined as any,
-                    quantity: undefined as any,
-                    batch_id: null
-                  })
-                }
+                onClick={onCreateNewProduct}
               >
                 Click para agregar nueva línea
               </Button>
@@ -340,8 +359,17 @@ const TransferRow = ({
   destWarehouseId?: number;
   isSingleRow: boolean;
 }) => {
-  const { control, setValue } = useFormContext<InventoryTransferDto>();
+  const {
+    control,
+    setValue,
+    getValues,
+    formState: { isSubmitted, errors }
+  } = useFormContext<InventoryTransferDto>();
+
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStockObj, setSelectedStockObj] = useState<any>(null);
+
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
   const productId = useWatch({ control, name: `products.${index}.product_id` });
   const sourceLocationId = useWatch({
@@ -354,7 +382,7 @@ const TransferRow = ({
     () => ({
       filter: {
         warehouse_id: sourceWarehouseId,
-        search: searchTerm
+        search: debouncedSearchTerm
       },
       include: [
         'product',
@@ -362,9 +390,9 @@ const TransferRow = ({
         'batch',
         'product.productType'
       ] as const,
-      has_pagination: false
+      per_page: 50
     }),
-    [sourceWarehouseId, searchTerm]
+    [sourceWarehouseId, debouncedSearchTerm]
   );
 
   const { data: stocksData, isLoading: isLoadingStocks } =
@@ -373,28 +401,33 @@ const TransferRow = ({
       enabled: !!sourceWarehouseId
     });
 
-  const stocks = useMemo(
+  const remoteStocks = useMemo(
     () =>
-      (stocksData?.data || []).filter(
-        s => s.status === InventoryStockStatus.AVAILABLE
-      ),
+      (stocksData?.data || []).filter(s => {
+        const status = s.status?.toLowerCase() || '';
+
+        return status === 'available';
+      }),
     [stocksData]
   );
 
-  const selectedStock = stocks.find(
-    s =>
-      s.productId === productId &&
-      s.warehouseLocationId === sourceLocationId &&
-      s.batchId === batchId
-  );
+  const options = useMemo(() => {
+    const list = [...remoteStocks];
 
-  const availableStock = selectedStock?.quantity || 0;
+    if (selectedStockObj && !list.find(s => s.id === selectedStockObj.id)) {
+      list.push(selectedStockObj);
+    }
+
+    return list;
+  }, [remoteStocks, selectedStockObj]);
+
+  const currentStockLimit = selectedStockObj?.quantity || 0;
 
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell sx={{ verticalAlign: 'top', p: 1 }}>
         <Autocomplete
-          options={stocks}
+          options={options}
           groupBy={option =>
             option.product?.productType?.name || 'Sin Categoría'
           }
@@ -407,7 +440,7 @@ const TransferRow = ({
             return `${s.product.sku} - ${s.product.name}${batchInfo} (Disp: ${Number(s.quantity).toFixed(2)})`;
           }}
           loading={isLoadingStocks}
-          value={selectedStock || null}
+          value={selectedStockObj || null}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           renderInput={params => (
             <TextField
@@ -422,19 +455,43 @@ const TransferRow = ({
           filterOptions={x => x}
           onChange={(_, stock) => {
             if (stock) {
+              // VALIDACIÓN: DETECCIÓN DE DUPLICADOS
+              const currentProducts = getValues().products;
+              const isDuplicate = currentProducts.some(
+                (p, idx) =>
+                  idx !== index && // No compararse con uno mismo
+                  p.product_id === stock.productId &&
+                  p.source_location_id === stock.warehouseLocationId &&
+                  p.batch_id === stock.batchId
+              );
+
+              if (isDuplicate) {
+                alert(
+                  'Este producto con este lote y ubicación ya está agregado en otra fila.'
+                );
+                setSelectedStockObj(null);
+
+                return;
+              }
+
+              setSelectedStockObj(stock);
               setValue(`products.${index}.product_id`, stock.productId);
               setValue(
                 `products.${index}.source_location_id`,
                 stock.warehouseLocationId
               );
               setValue(`products.${index}.batch_id`, stock.batchId);
+
+              setValue(`products.${index}.quantity`, undefined as any);
             } else {
+              setSelectedStockObj(null);
               setValue(`products.${index}.product_id`, undefined as any);
               setValue(
                 `products.${index}.source_location_id`,
                 undefined as any
               );
               setValue(`products.${index}.batch_id`, null);
+              setValue(`products.${index}.quantity`, undefined as any);
             }
           }}
           onInputChange={(_, val, reason) => {
@@ -443,31 +500,86 @@ const TransferRow = ({
             }
           }}
         />
+        {errors.products?.[index]?.product_id && (
+          <Typography variant='caption' color='error'>
+            {errors.products[index]?.product_id?.message}
+          </Typography>
+        )}
       </TableCell>
 
       <TableCell sx={{ verticalAlign: 'top', p: 1 }}>
         <Controller
           control={control}
           name={`products.${index}.quantity`}
-          render={({ field, fieldState: { error } }) => (
+          rules={{
+            required: 'Requerido',
+            validate: value => {
+              const qty = Number(value);
+
+              if (qty <= 0) return 'Debe ser mayor a 0';
+
+              if (!sourceLocationId || !productId) return true;
+
+              // Calcular uso total en TODO el formulario para este lote
+              const allRows = getValues().products || [];
+              const totalUsed = allRows.reduce((acc, row, _) => {
+                // Sumar si es el mismo producto/lote/ubicación
+                if (
+                  row.product_id === productId &&
+                  row.source_location_id === sourceLocationId &&
+                  row.batch_id === batchId
+                ) {
+                  return acc + (Number(row.quantity) || 0);
+                }
+
+                return acc;
+              }, 0);
+
+              if (totalUsed > currentStockLimit) {
+                const othersUsed = totalUsed - qty;
+                const remaining = currentStockLimit - othersUsed;
+
+                return `Max disponible: ${Math.max(0, remaining).toFixed(2)}`;
+              }
+
+              return true;
+            }
+          }}
+          render={({
+            field: { onChange, value, ref, onBlur },
+            fieldState: { error, isTouched, isDirty }
+          }) => (
             <TextField
-              {...field}
               fullWidth
+              inputRef={ref}
+              value={value ?? ''}
+              disabled={!productId}
               type='number'
               variant='standard'
-              error={!!error}
+              error={!!error && (isTouched || isDirty || isSubmitted)}
               helperText={
-                error
+                error && (isTouched || isDirty || isSubmitted)
                   ? error.message
                   : sourceLocationId
-                    ? `Max: ${Number(availableStock).toFixed(2)}`
+                    ? `Max: ${Number(currentStockLimit).toFixed(2)}`
                     : ''
               }
               InputProps={{ disableUnderline: true }}
-              sx={invisibleInputSx(!!error)}
-              onChange={e =>
-                field.onChange(e.target.value === '' ? '' : e.target.value)
-              }
+              sx={invisibleInputSx(
+                !!error && (isTouched || isDirty || isSubmitted)
+              )}
+              onKeyDown={e => {
+                if (['e', 'E', '+', '-'].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+              onChange={e => {
+                const val = e.target.value;
+
+                if (val.includes('.') && val.split('.')[1].length > 4) return;
+                onChange(val === '' ? undefined : val);
+              }}
+              onBlur={onBlur}
             />
           )}
         />
@@ -477,8 +589,8 @@ const TransferRow = ({
         <TextField
           disabled
           value={
-            selectedStock?.warehouseLocation
-              ? `${selectedStock.warehouseLocation.aisle}-${selectedStock.warehouseLocation.shelf}`
+            selectedStockObj?.warehouseLocation
+              ? `${selectedStockObj.warehouseLocation.aisle}-${selectedStockObj.warehouseLocation.shelf}`
               : '---'
           }
           variant='standard'
@@ -494,7 +606,7 @@ const TransferRow = ({
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Autocomplete
               options={destLocations}
-              disabled={!destWarehouseId}
+              disabled={!destWarehouseId || !productId}
               getOptionLabel={l => `${l.aisle}-${l.shelf}-${l.section}`}
               value={destLocations.find(l => l.id === value) || null}
               renderInput={params => (
@@ -503,6 +615,7 @@ const TransferRow = ({
                   placeholder='---'
                   variant='standard'
                   error={!!error}
+                  helperText={error ? 'Requerido' : ''}
                   InputProps={{ ...params.InputProps, disableUnderline: true }}
                   sx={invisibleInputSx(!!error)}
                 />

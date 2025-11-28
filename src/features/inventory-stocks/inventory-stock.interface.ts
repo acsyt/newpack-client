@@ -23,9 +23,9 @@ export interface InventoryStock {
 }
 
 export enum InventoryStockStatus {
-  AVAILABLE = 'available',
-  RESERVED = 'reserved',
-  DAMAGED = 'damaged'
+  Available = 'available',
+  Reserved = 'reserved',
+  Damaged = 'damaged'
 }
 
 export interface InventoryStockFilter {
