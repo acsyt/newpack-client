@@ -4,10 +4,10 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
 import { CustomTable } from '@/components/shared/CustomTable';
-import { columns } from '@/features/inventory-movements/components/movement-table/columns';
-import { useInventoryMovementsQuery } from '@/features/inventory-movements/hooks/inventory-movements.query';
+import { columns } from '@/features/inventory-stocks/components/stock-table/columns';
+import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
 
-export const Route = createFileRoute('/_authenticated/movements/')({
+export const Route = createFileRoute('/_authenticated/inventory-stock/')({
   component: RouteComponent
 });
 
@@ -15,9 +15,9 @@ function RouteComponent() {
   const memoizedColumns = useMemo(() => columns, []);
 
   return (
-    <DashboardLayoutContainer title='Movimientos de Inventario (Kardex)'>
+    <DashboardLayoutContainer title='Existencias de Inventario'>
       <CustomTable
-        queryHook={useInventoryMovementsQuery}
+        queryHook={useInventoryStocksQuery}
         queryProps={{
           options: {
             include: [
@@ -25,15 +25,14 @@ function RouteComponent() {
               'product.measureUnit',
               'warehouse',
               'warehouseLocation',
-              'batch',
-              'user'
+              'batch'
             ]
           }
         }}
         columns={memoizedColumns}
         enableRowActions={false}
         initialState={{
-          sorting: [{ id: 'created_at', desc: true }],
+          sorting: [{ id: 'id', desc: true }],
           columnVisibility: { id: false }
         }}
       />

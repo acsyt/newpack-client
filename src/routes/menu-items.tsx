@@ -93,13 +93,13 @@ export const useMenuItems = () => {
         menuItems: [
           {
             title: 'Existencias',
-            href: '/stock',
+            href: '/inventory-stock',
             isEnabled: true,
             icon: <Boxes aria-hidden='true' size={20} />
           },
           {
             title: 'Movimientos',
-            href: '/movements',
+            href: '/inventory-movements',
             isEnabled: true,
             icon: <ArrowLeftRight aria-hidden='true' size={20} />
           },

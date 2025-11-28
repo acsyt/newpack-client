@@ -123,7 +123,8 @@ export type Permission =
   | 'warehouse-locations.delete'
 
   // Movements
-  | 'movements.index'
+  | 'inventory-movements.index'
+  | 'inventory-movements.create'
 
   // Stock
-  | 'stock.index';
+  | 'inventory-stock.index';

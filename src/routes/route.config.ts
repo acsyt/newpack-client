@@ -108,8 +108,8 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/suppliers/$supplierId/show': ['suppliers.show'],
   '/subclasses': ['subclasses.index'],
   '/warehouses': ['warehouses.index'],
-  '/movements': ['movements.index'],
-  '/stock': ['stock.index']
+  '/inventory-movements': ['inventory-movements.index'],
+  '/inventory-stock': ['inventory-stock.index']
 };
 
 export const useRouteConfig = () => {
@@ -215,11 +215,11 @@ export const useRouteConfig = () => {
       title: 'Almacenes',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Almacenes' }]
     },
-    '/movements': {
+    '/inventory-movements': {
       title: 'Movimientos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Movimientos' }]
     },
-    '/stock': {
+    '/inventory-stock': {
       title: 'Existencias',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Existencias' }]
     }
