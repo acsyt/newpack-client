@@ -14,6 +14,7 @@ import { MovementType } from '../../inventory-movement.interface';
 import { useInventoryMovementDrawerStore } from '../../store/useInventoryMovementDrawerStore';
 
 import { columns } from './columns';
+import { CreateTransferDrawer } from './CreateTransferDrawer';
 import { SaveInventoryMovementDrawer } from './SaveInventoryMovementDrawer';
 
 import { CustomTable } from '@/components/shared/CustomTable';
@@ -29,18 +30,15 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   const { onOpen } = useInventoryMovementDrawerStore();
   const memoizedColumns = useMemo(() => columns, []);
 
-  // Estados para los filtros
   const [selectedWarehouse, setSelectedWarehouse] = useState<number | ''>('');
   const [selectedType, setSelectedType] = useState<string | ''>('');
 
-  // Obtener almacenes para el filtro
   const { data: warehousesData } = useWarehousesQuery({
     options: {}
   });
 
   const warehouses = warehousesData?.data || [];
 
-  // Construir parámetros de consulta con filtros
   const movementParams: InventoryMovementParams = {
     include: [
       'product',
@@ -62,6 +60,8 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   };
 
   const hasActiveFilters = selectedWarehouse !== '' || selectedType !== '';
+
+  const { isOpen: isTransferOpen } = useInventoryMovementDrawerStore();
 
   return (
     <>
@@ -199,6 +199,8 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
         )}
       />
       <SaveInventoryMovementDrawer />
+
+      <CreateTransferDrawer />
     </>
   );
 };

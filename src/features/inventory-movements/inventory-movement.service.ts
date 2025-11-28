@@ -44,4 +44,8 @@ export class InventoryMovementService extends SharedService {
       data
     );
   };
+
+  static createTransfer = async (data: any): Promise<void> => {
+    await apiFetcher.post('/inventory/movements/transfer', data);
+  };
 }

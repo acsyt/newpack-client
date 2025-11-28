@@ -72,3 +72,16 @@ export const useSaveInventoryMovementMutation = () => {
     }
   });
 };
+
+export const useCreateTransferMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: any) => InventoryMovementService.createTransfer(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: inventoryMovementsKeys.all()
+      });
+    }
+  });
+};

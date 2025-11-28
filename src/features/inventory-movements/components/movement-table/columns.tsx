@@ -13,29 +13,19 @@ const typeColors: Record<
   MovementType,
   'success' | 'error' | 'warning' | 'info' | 'default'
 > = {
-  purchase_entry: 'success',
-  production_output: 'success',
-  production_consumption: 'error',
-  sales_shipment: 'error',
-  adjustment: 'warning',
-  transfer: 'info'
+  [MovementType.Entry]: 'success',
+  [MovementType.Exit]: 'success',
+  [MovementType.Transfer]: 'success'
 };
 
 const typeLabels: Record<MovementType, string> = {
-  purchase_entry: 'Entrada por Compra',
-  production_output: 'Salida de Producción',
-  production_consumption: 'Consumo Producción',
-  sales_shipment: 'Salida por Venta',
-  adjustment: 'Ajuste',
-  transfer: 'Transferencia'
+  [MovementType.Entry]: 'Entrada',
+  [MovementType.Exit]: 'Salida',
+  [MovementType.Transfer]: 'Transferencia'
 };
 
 const isEntryType = (type: MovementType): boolean => {
-  return (
-    type === 'purchase_entry' ||
-    type === 'production_output' ||
-    type === 'adjustment'
-  );
+  return type === MovementType.Entry;
 };
 
 export const columns: MRT_ColumnDef<InventoryMovement>[] = [
@@ -63,12 +53,9 @@ export const columns: MRT_ColumnDef<InventoryMovement>[] = [
     size: 180,
     filterVariant: 'select',
     filterSelectOptions: [
-      { label: 'Entrada por Compra', value: 'purchase_entry' },
-      { label: 'Salida de Producción', value: 'production_output' },
-      { label: 'Consumo Producción', value: 'production_consumption' },
-      { label: 'Salida por Venta', value: 'sales_shipment' },
-      { label: 'Ajuste', value: 'adjustment' },
-      { label: 'Transferencia', value: 'transfer' }
+      { label: 'Entrada', value: MovementType.Entry },
+      { label: 'Salida', value: MovementType.Exit },
+      { label: 'Transferencia', value: MovementType.Transfer }
     ],
     Cell: ({ row: { original } }) => (
       <Chip
