@@ -13,10 +13,6 @@ import {
 import { X } from 'lucide-react';
 import { DefaultValues, useForm, Controller } from 'react-hook-form';
 
-import { useSaveDrawerMutation } from '../../hooks/machines.query';
-import { MachineParams } from '../../machine.interface';
-import { MachineDto, machineSchema } from '../../machine.schema';
-
 import { useMachineDrawerStore } from './MachineTable';
 
 import { ModeAction } from '@/config/enums/mode-action.enum';
@@ -25,6 +21,9 @@ import { ErrorMapper } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { cn } from '@/config/utils/cn.util';
 import { customFaker } from '@/config/utils/faker.util';
+import { useSaveDrawerMutation } from '@/features/machines/hooks/machines.query';
+import { MachineParams } from '@/features/machines/machine.interface';
+import { MachineDto, machineSchema } from '@/features/machines/machine.schema';
 import { useProcessesQuery } from '@/features/processes';
 
 interface SaveMachineDrawerProps {

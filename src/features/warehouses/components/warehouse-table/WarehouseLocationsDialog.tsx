@@ -57,7 +57,7 @@ export const WarehouseLocationsDialog = ({
 
   const { data: locationsData, isLoading } = useWarehouseLocationsQuery({
     options: {
-      filter: { warehouse_id: warehouse.id },
+      filter: { warehouse_id: [warehouse.id] },
       has_pagination: false
     },
     enabled: open

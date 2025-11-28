@@ -19,17 +19,22 @@ import {
 import { X } from 'lucide-react';
 import { DefaultValues, useForm, Controller } from 'react-hook-form';
 
-import { useSaveWarehouseMutation } from '../../hooks/warehouses.query';
-import { useWarehouseDrawerStore } from '../../store/useWarehouseDrawerStore';
-import { WarehouseParams, WAREHOUSE_TYPES } from '../../warehouse.interface';
-import { WarehouseDto, warehouseSchema } from '../../warehouse.schema';
-
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Environment } from '@/config/env';
 import { ErrorMapper } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { cn } from '@/config/utils/cn.util';
 import { customFaker } from '@/config/utils/faker.util';
+import { useSaveWarehouseMutation } from '@/features/warehouses/hooks/warehouses.query';
+import { useWarehouseDrawerStore } from '@/features/warehouses/store/useWarehouseDrawerStore';
+import {
+  WarehouseParams,
+  WAREHOUSE_TYPES
+} from '@/features/warehouses/warehouse.interface';
+import {
+  WarehouseDto,
+  warehouseSchema
+} from '@/features/warehouses/warehouse.schema';
 
 interface SaveWarehouseDrawerProps {
   warehouseParams: WarehouseParams;

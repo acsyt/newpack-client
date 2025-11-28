@@ -3,15 +3,15 @@ import type { MRT_ColumnDef } from 'material-react-table';
 import { Chip, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { Warehouse, WAREHOUSE_TYPES } from '../../warehouse.interface';
+import { Warehouse } from '../../warehouse.interface';
 
 const getWarehouseTypeColor = (type: string) => {
   switch (type) {
-    case WAREHOUSE_TYPES.MAIN:
+    case 'main':
       return 'primary';
-    case WAREHOUSE_TYPES.SECONDARY:
+    case 'secondary':
       return 'secondary';
-    case WAREHOUSE_TYPES.STORE:
+    case 'store':
       return 'success';
     default:
       return 'default';
@@ -34,13 +34,13 @@ export const warehouseColumns: MRT_ColumnDef<Warehouse>[] = [
   {
     header: 'Tipo',
     id: 'type',
-    accessorKey: 'typeName',
+    accessorKey: 'type',
     size: 180,
     Cell: ({ row: { original } }) => (
-      <Tooltip title={original.typeName}>
+      <Tooltip title={original.type}>
         <Chip
-          label={original.typeName}
-          color={getWarehouseTypeColor(original.type) as any}
+          label={original.type}
+          color={getWarehouseTypeColor(original.type as string)}
           size='small'
           variant='outlined'
         />

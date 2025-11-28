@@ -5,9 +5,9 @@ export interface WarehouseLocation {
   uniqueId: string;
   warehouseId: number;
   warehouse?: Warehouse;
-  aisle: string | null;
-  shelf: string | null;
-  section: string | null;
+  aisle?: string | null;
+  shelf?: string | null;
+  section?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -15,7 +15,6 @@ export interface WarehouseLocation {
 export interface Warehouse {
   id: number;
   type: string;
-  typeName: string;
   name: string;
   active: boolean;
   createdBy: number | null;
@@ -30,7 +29,9 @@ export interface WarehouseFilter {
   name?: string;
   type?: string;
   active?: boolean;
-  search?: string;
+  createdBy?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type WarehouseRelations = 'warehouseLocations';
@@ -38,17 +39,16 @@ export type WarehouseRelations = 'warehouseLocations';
 export interface WarehouseParams
   extends BasePaginationParams<WarehouseFilter, WarehouseRelations> {}
 
+export type WarehouseLocationRelations = 'warehouse';
+
 export interface WarehouseLocationFilter {
   id?: number[];
-  warehouse_id?: number;
+  warehouse_id?: number[];
   aisle?: string;
   shelf?: string;
   section?: string;
   unique_id?: string;
-  search?: string;
 }
-
-export type WarehouseLocationRelations = 'warehouse';
 
 export interface WarehouseLocationParams
   extends BasePaginationParams<

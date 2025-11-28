@@ -167,7 +167,7 @@ export const useSaveWarehouseLocationMutation = ({
     },
     onSuccess: () => {
       const locationsQueryKey = warehouseLocationsKeys.list({
-        filter: { warehouse_id: warehouseId }
+        filter: { warehouse_id: [warehouseId] }
       });
 
       queryClient.invalidateQueries({ queryKey: locationsQueryKey });
@@ -187,7 +187,7 @@ export const useDeleteWarehouseLocationMutation = ({
       WarehouseService.deleteWarehouseLocation(locationId),
     onSuccess: () => {
       const locationsQueryKey = warehouseLocationsKeys.list({
-        filter: { warehouse_id: warehouseId }
+        filter: { warehouse_id: [warehouseId] }
       });
 
       queryClient.invalidateQueries({ queryKey: locationsQueryKey });
