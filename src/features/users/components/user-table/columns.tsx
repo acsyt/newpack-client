@@ -13,7 +13,6 @@ export const columns: MRT_ColumnDef<User>[] = [
     accessorKey: 'id',
     size: 20
   },
-
   {
     header: 'Nombre',
     id: 'name',

@@ -51,4 +51,12 @@ export type Permission =
   | 'users.create'
   | 'users.edit'
   | 'users.change-password'
-  | 'users.export';
+  | 'users.export'
+
+  // CUstomers
+  | 'customers.index'
+  | 'customers.show'
+  | 'customers.create'
+  | 'customers.edit'
+  | 'customers.change-password'
+  | 'customers.export';

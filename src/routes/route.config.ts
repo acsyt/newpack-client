@@ -97,7 +97,10 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/users/$userId/edit': ['users.edit'],
   '/users/$userId/show': ['users.show'],
   '/classes': [],
-  '/customers': [],
+  '/customers': ['customers.index'],
+  '/customers/create': ['customers.create'],
+  '/customers/$customerId/edit': ['customers.edit'],
+  '/customers/$customerId/show': ['customers.show'],
   '/machines': [],
   '/processes': [],
   '/raw-materials': [],
@@ -161,6 +164,32 @@ export const useRouteConfig = () => {
     '/customers': {
       title: 'Customers',
       breadcrumbs: [{ title: 'Home', path: '/' }, { title: 'Customers' }]
+    },
+    '/customers/create': {
+      title: 'Create Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: 'Create' }
+      ]
+    },
+    '/customers/$customerId/edit': {
+      title: 'Edit Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Edit' }
+      ]
+    },
+    '/customers/$customerId/show': {
+      title: 'Show Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Show' }
+      ]
     },
     '/machines': {
       title: 'Machines',

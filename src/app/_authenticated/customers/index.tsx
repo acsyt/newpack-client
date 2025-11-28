@@ -1,9 +1,52 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
+import { CustomTable } from '@/components/shared/CustomTable';
+import { useAuth } from '@/features/auth/hooks/mutations';
+import { columns } from '@/features/customers/components/customer-table/columns';
+import { useCustomerQuery } from '@/features/customers/hook/customer.query';
+import { RowActions } from '@/features/customers/components/customer-table/actions';
+import { Box, Button } from '@mui/material';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
 
 export const Route = createFileRoute('/_authenticated/customers/')({
   component: RouteComponent
 });
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/customers/"!</div>;
+
+  const { permissions } = useAuth();
+
+  const memoizedColumns = useMemo(() => columns, []);
+
+  return (
+        <DashboardLayoutContainer title='Clientes registrados'>
+             <CustomTable
+                enableRowActions
+                queryHook={useCustomerQuery}
+                queryProps={{
+                    options: {}
+                }}
+                columns={memoizedColumns}
+                positionActionsColumn='last'
+                renderTopToolbarCustomActions={() => (
+                  <Box display='flex' gap={1}>
+                        {permissions.includes('users.create') && (
+                          <Link to='/customers/create'>
+                            <Button
+                              variant='contained'
+                              color='primary'
+                              startIcon={<Plus size={18} />}
+                            >
+                              Crear usuario
+                            </Button>
+                          </Link>
+                        )}
+                  </Box>
+                )}
+                renderRowActions={({ row }) => <RowActions customer={row.original}/>}
+              />
+        </DashboardLayoutContainer>
+    
+  )
 }
