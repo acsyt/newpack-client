@@ -2,6 +2,8 @@ import type { FC } from 'react';
 
 import { useMemo, useState } from 'react';
 
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -30,49 +32,49 @@ export const DashboardListItem: FC<DashboardListItemProps> = ({
 
   const currentPath = location.pathname;
 
-  const isSelected = useMemo(() => {
+  // Para items con dropdown, verificamos si alguno de sus hijos está activo
+  const hasActiveChild = useMemo(() => {
+    if (!('menuItems' in item)) return false;
+
     const normalizePath = (path: string) => path.split('/').filter(Boolean);
     const currentSegments = normalizePath(currentPath);
 
-    // Función para verificar si una ruta es la activa o es padre de la activa
-    const isActiveRoute = (routeSegments: string[]) => {
-      // Coincidencia exacta - misma cantidad de segmentos y todos coinciden
-      const exactMatch =
-        routeSegments.length === currentSegments.length &&
-        routeSegments.every(
+    return item.menuItems.some(subItem => {
+      const subItemSegments = normalizePath(subItem.href);
+
+      return (
+        subItemSegments.length === currentSegments.length &&
+        subItemSegments.every(
           (segment, index) => currentSegments[index] === segment
-        );
-
-      // Coincidencia parcial - la ruta actual comienza con esta ruta (es una subruta)
-      const isSubroute =
-        currentSegments.length > routeSegments.length &&
-        routeSegments.every(
-          (segment, index) => currentSegments[index] === segment
-        );
-
-      return exactMatch || isSubroute;
-    };
-
-    // Si es un elemento con enlace directo
-    if ('href' in item) {
-      const itemSegments = normalizePath(item.href);
-
-      return isActiveRoute(itemSegments);
-    }
-
-    // Si es un elemento con submenú
-    if ('menuItems' in item) {
-      return item.menuItems.some(subItem => {
-        const subItemSegments = normalizePath(subItem.href);
-
-        return isActiveRoute(subItemSegments);
-      });
-    }
-
-    return false;
+        )
+      );
+    });
   }, [currentPath, item]);
 
-  const [isOpenMenu, setIsOpenMenu] = useState(isOpen || isSelected);
+  // isSelected solo para items con href directo
+  const isSelected = useMemo(() => {
+    if (!('href' in item)) return false;
+
+    const normalizePath = (path: string) => path.split('/').filter(Boolean);
+    const currentSegments = normalizePath(currentPath);
+    const itemSegments = normalizePath(item.href);
+
+    const exactMatch =
+      itemSegments.length === currentSegments.length &&
+      itemSegments.every(
+        (segment, index) => currentSegments[index] === segment
+      );
+
+    const isSubroute =
+      currentSegments.length > itemSegments.length &&
+      itemSegments.every(
+        (segment, index) => currentSegments[index] === segment
+      );
+
+    return exactMatch || isSubroute;
+  }, [currentPath, item]);
+
+  const [isOpenMenu, setIsOpenMenu] = useState(isOpen || hasActiveChild);
 
   const onToggleMenu = () => {
     if (!isDashboardDrawerOpen) return;
@@ -93,7 +95,7 @@ export const DashboardListItem: FC<DashboardListItemProps> = ({
             justifyContent: 'center',
             borderRadius: theme.shape.borderRadius,
             boxShadow: `0 2px 4px ${theme.palette.grey[300]}`,
-            transition: 'border-radius 0.3s ease, box-shadow 0.3s ease',
+            transition: 'all 0.3s ease',
             '&.Mui-selected, &.Mui-selected:hover': {
               bgcolor: theme.palette.primary.main,
               '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
@@ -127,43 +129,35 @@ export const DashboardListItem: FC<DashboardListItemProps> = ({
       ) : (
         <>
           <ListItemButton
-            selected={isSelected}
             disabled={!item.isEnabled}
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              transition: 'border-radius 0.3s ease, box-shadow 0.3s ease',
-              '&.Mui-selected, &.Mui-selected:hover': {
-                bgcolor: theme.palette.primary.main,
-                '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
-                  {
-                    color: theme.palette.primary.contrastText
-                  }
-              },
+              transition: 'all 0.3s ease',
+              boxShadow: `0 2px 4px ${theme.palette.grey[300]}`,
+              borderRadius:
+                isOpenMenu && isDashboardDrawerOpen
+                  ? '16px 16px 0 0'
+                  : theme.shape.borderRadius,
+              bgcolor: hasActiveChild
+                ? theme.palette.primary.main
+                : theme.palette.background.paper,
+              color: hasActiveChild
+                ? theme.palette.primary.contrastText
+                : theme.palette.text.primary,
               '&:hover': {
-                bgcolor: isOpenMenu
-                  ? theme.palette.primary.dark
-                  : theme.palette.primary.main,
+                bgcolor: theme.palette.primary.dark,
                 '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
                   {
                     color: theme.palette.primary.contrastText
                   }
               },
-              ...(isOpenMenu && isDashboardDrawerOpen
-                ? {
-                    boxShadow: `0 2px 4px ${theme.palette.grey[300]}`,
-                    borderBottom: 'none',
-                    borderRadius: '16px 16px 0 0',
-                    bgcolor: theme.palette.primary.main,
-                    '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
-                      {
-                        color: theme.palette.primary.contrastText
-                      }
-                  }
-                : {
-                    boxShadow: `0 2px 4px ${theme.palette.grey[300]}`,
-                    borderRadius: theme.shape.borderRadius
-                  })
+              '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
+                {
+                  color: hasActiveChild
+                    ? theme.palette.primary.contrastText
+                    : theme.palette.text.primary
+                }
             }}
             onClick={onToggleMenu}
           >
@@ -175,10 +169,26 @@ export const DashboardListItem: FC<DashboardListItemProps> = ({
             <ListItemText
               sx={{
                 opacity: isDashboardDrawerOpen ? 1 : 0,
-                textWrap: 'wrap'
+                textWrap: 'wrap',
+                flex: 1
               }}
               primary={item.title}
             />
+            {isDashboardDrawerOpen && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  ml: 1
+                }}
+              >
+                {isOpenMenu ? (
+                  <ExpandLessIcon fontSize='small' />
+                ) : (
+                  <ExpandMoreIcon fontSize='small' />
+                )}
+              </Box>
+            )}
           </ListItemButton>
           <Collapse
             unmountOnExit
@@ -222,32 +232,46 @@ const ChildMenuItem: FC<ChildMenuItemProps> = ({
 }) => {
   const theme = useTheme();
 
+  const isSelected = useMemo(() => {
+    const currentSegments = currentPath.split('/').filter(Boolean);
+    const itemSegments = childItem.href.split('/').filter(Boolean);
+
+    return (
+      currentSegments.length === itemSegments.length &&
+      currentSegments.every((segment, index) => itemSegments[index] === segment)
+    );
+  }, [currentPath, childItem.href]);
+
   return (
     <ListItemButton
       key={childItem.title}
       disabled={!childItem.isEnabled}
+      selected={isSelected}
       sx={{
-        bgcolor: (() => {
-          const currentSegments = currentPath.split('/').filter(Boolean);
-          const itemSegments = childItem.href.split('/').filter(Boolean);
-
-          const exactMatch =
-            currentSegments.length === itemSegments.length &&
-            currentSegments.every(
-              (segment, index) => itemSegments[index] === segment
-            );
-
-          return exactMatch
-            ? theme.palette.primary.dark
-            : theme.palette.primary.main;
-        })(),
-        color: theme.palette.primary.contrastText,
+        bgcolor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         boxShadow: `0 2px 4px ${theme.palette.grey[300]}`,
         borderTop: `1px solid ${theme.palette.grey[300]}`,
         borderRadius: index === itemLength - 1 ? '0 0 16px 16px' : 0,
-        transition: 'border-radius 0.3s ease, box-shadow 0.3s ease',
+        transition: 'all 0.3s ease',
+        '&.Mui-selected, &.Mui-selected:hover': {
+          bgcolor: theme.palette.primary.main,
+          color: theme.palette.primary.contrastText,
+          '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
+            {
+              color: theme.palette.primary.contrastText
+            },
+          '& .MuiListItemText-primary': {
+            fontWeight: 600
+          }
+        },
         '&:hover': {
-          bgcolor: theme.palette.primary.dark
+          bgcolor: theme.palette.primary.dark,
+          color: theme.palette.primary.contrastText,
+          '& .MuiListItemIcon-root, & .MuiListItemText-primary, & .MuiSvgIcon-root':
+            {
+              color: theme.palette.primary.contrastText
+            }
         }
       }}
       component={Link}

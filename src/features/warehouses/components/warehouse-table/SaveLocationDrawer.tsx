@@ -1,15 +1,7 @@
 import { useMemo, useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Drawer,
-  Typography,
-  IconButton,
-  TextField,
-  Button,
-  Grid
-} from '@mui/material';
-import { X } from 'lucide-react';
+import { TextField, Button, Grid } from '@mui/material';
 import { DefaultValues, useForm, Controller } from 'react-hook-form';
 
 import { useSaveWarehouseLocationMutation } from '../../hooks/warehouses.query';
@@ -19,6 +11,7 @@ import {
   warehouseLocationSchema
 } from '../../warehouse.schema';
 
+import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Environment } from '@/config/env';
 import { ErrorMapper } from '@/config/error.mapper';
@@ -89,133 +82,114 @@ export const SaveLocationDrawer = ({
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
+  const title = {
+    [ModeAction.Create]: 'Nueva Ubicación',
+    [ModeAction.Edit]: 'Editar Ubicación',
+    [ModeAction.Show]: 'Detalle Ubicación'
+  }[mode];
+
   return (
-    <Drawer
+    <CustomDrawer
       open={isOpen}
-      anchor='right'
-      ModalProps={{
-        keepMounted: false,
-        disablePortal: false
-      }}
+      title={title}
+      width={400}
+      sx={{ zIndex: 1501 }}
       slotProps={{
         backdrop: {
           sx: { zIndex: 1500 }
         }
       }}
       PaperProps={{
-        className:
-          'w-[calc(100%-16px)] sm:w-[400px] m-1 h-[calc(100%-16px)] sm:h-[calc(100%-32px)] rounded-xl border border-divider shadow-2xl',
         sx: { zIndex: 1501 }
       }}
-      sx={{ zIndex: 1501 }}
+      footer={
+        ![ModeAction.Show].includes(mode) && (
+          <Button
+            fullWidth
+            type='submit'
+            variant='contained'
+            color='primary'
+            size='large'
+            disabled={mutation.isPending}
+            onClick={form.handleSubmit(data => {
+              mutation.mutate(data, {
+                onSuccess: () => {
+                  onClose();
+                },
+                onError: error => {
+                  const errors = ErrorMapper.mapErrorToApiResponse(error);
+
+                  FormHelper.setFormErrors(errors.errors, form.setError);
+                }
+              });
+            })}
+          >
+            {mutation.isPending ? 'Guardando...' : 'Guardar'}
+          </Button>
+        )
+      }
       onClose={onClose}
     >
-      <form
-        className='flex flex-col h-full'
-        onSubmit={form.handleSubmit(data => {
-          mutation.mutate(data, {
-            onSuccess: () => {
-              onClose();
-            },
-            onError: error => {
-              const errors = ErrorMapper.mapErrorToApiResponse(error);
-
-              FormHelper.setFormErrors(errors.errors, form.setError);
-            }
-          });
-        })}
-      >
-        <div className='p-5 flex items-center justify-between border-b border-divider'>
-          <Typography variant='h6' fontWeight={600}>
-            {
-              {
-                [ModeAction.Create]: 'Nueva Ubicación',
-                [ModeAction.Edit]: 'Editar Ubicación',
-                [ModeAction.Show]: 'Detalle Ubicación'
-              }[mode]
-            }
-          </Typography>
-          <IconButton size='small' onClick={onClose}>
-            <X size={20} />
-          </IconButton>
-        </div>
-
-        <div className='flex-1 overflow-auto p-6'>
-          <Grid container spacing={2.5}>
-            <Grid size={12}>
-              <Controller
-                control={form.control}
-                name='aisle'
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label='Pasillo'
-                    error={!!error}
-                    helperText={error?.message}
-                    disabled={isShow}
-                    placeholder='Ej: A-01'
-                    value={field.value || ''}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid size={12}>
-              <Controller
-                control={form.control}
-                name='shelf'
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label='Estante'
-                    error={!!error}
-                    helperText={error?.message}
-                    disabled={isShow}
-                    placeholder='Ej: S-02'
-                    value={field.value || ''}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid size={12}>
-              <Controller
-                control={form.control}
-                name='section'
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label='Sección'
-                    error={!!error}
-                    helperText={error?.message}
-                    disabled={isShow}
-                    placeholder='Ej: L-03'
-                    value={field.value || ''}
-                  />
-                )}
-              />
-            </Grid>
+      <form className='flex flex-col h-full'>
+        <Grid container spacing={2.5}>
+          <Grid size={12}>
+            <Controller
+              control={form.control}
+              name='aisle'
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label='Pasillo'
+                  error={!!error}
+                  helperText={error?.message}
+                  disabled={isShow}
+                  placeholder='Ej: A-01'
+                  value={field.value || ''}
+                />
+              )}
+            />
           </Grid>
-        </div>
 
-        {![ModeAction.Show].includes(mode) && (
-          <div className='p-5 border-t border-divider'>
-            <Button
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              size='large'
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? 'Guardando...' : 'Guardar'}
-            </Button>
-          </div>
-        )}
+          <Grid size={12}>
+            <Controller
+              control={form.control}
+              name='shelf'
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label='Estante'
+                  error={!!error}
+                  helperText={error?.message}
+                  disabled={isShow}
+                  placeholder='Ej: S-02'
+                  value={field.value || ''}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={12}>
+            <Controller
+              control={form.control}
+              name='section'
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label='Sección'
+                  error={!!error}
+                  helperText={error?.message}
+                  disabled={isShow}
+                  placeholder='Ej: L-03'
+                  value={field.value || ''}
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
       </form>
-    </Drawer>
+    </CustomDrawer>
   );
 };
