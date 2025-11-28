@@ -239,6 +239,7 @@ export const DashboardLayout: FC<PropsWithChildren<DashboardLayoutProps>> = ({
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain'
           }}
+          className='bg-gray-50'
         >
           {!isDesktop && (
             <Box sx={{ mb: 2 }}>

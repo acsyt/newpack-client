@@ -40,9 +40,10 @@ export class AuthService {
 
   static validateUser = async (): Promise<SessionUser> => {
     try {
-      const { data } = await apiFetcher.get<SessionUser>('/auth/user');
+      const { data } =
+        await apiFetcher.get<DataResponse<SessionUser>>('/auth/user');
 
-      return data;
+      return data.data;
     } catch (error) {
       throw new Error(getErrorMessage(error));
     }

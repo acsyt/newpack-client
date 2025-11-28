@@ -1,41 +1,41 @@
 export class Color {
-  static primary: string = '#101828';
+  static primary = '#101828' as const;
 
-  static secondary: string = '#5A544D';
+  static secondary = '#5A544D' as const;
 
-  static warning: string = '#F2994A';
+  static warning = '#F2994A' as const;
 
-  static error: string = '#E53E51';
+  static error = '#E53E51' as const;
 
-  static black: string = '#050708';
+  static black = '#050708' as const;
 
-  static white: string = '#FFF';
+  static white = '#FFF' as const;
 
-  static success: string = '#219653';
+  static success = '#219653' as const;
 
-  static darkGray: string = '#474954';
+  static darkGray = '#474954' as const;
 
-  static gray: string = '#828282';
+  static gray = '#828282' as const;
 
-  static blue: string = '#58A9FB';
+  static blue = '#58A9FB' as const;
 
-  static yellow: string = '#FFAD33';
+  static yellow = '#FFAD33' as const;
 
-  static orange: string = '#F87B33';
+  static orange = '#F87B33' as const;
 
   //static green: string = "#67DF9C";
 
-  static green: string = '#34C759';
+  static green = '#34C759' as const;
 
-  static red: string = '#FF2B2B';
+  static red = '#FF2B2B' as const;
 
-  static purple: string = '#7262C9';
+  static purple = '#7262C9' as const;
 
-  static brown: string = '#5A544D';
+  static brown = '#5A544D' as const;
 
-  static lightGray: string = '#D6BBC0';
+  static lightGray = '#D6BBC0' as const;
 
-  static background = '#fff';
+  static background = '#fff' as const;
 
-  static lightGreen = '#02b6af';
+  static lightGreen = '#02b6af' as const;
 }

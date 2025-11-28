@@ -53,10 +53,85 @@ export type Permission =
   | 'users.change-password'
   | 'users.export'
 
-  // CUstomers
+  // Roles
+  | 'roles.index'
+  | 'roles.show'
+  | 'roles.create'
+  | 'roles.edit'
+  | 'roles.export'
+
+  // Classes
+  | 'classes.index'
+  | 'classes.show'
+  | 'classes.create'
+  | 'classes.edit'
+  | 'classes.export'
+
+  // Subclasses
+  | 'subclasses.index'
+  | 'subclasses.show'
+  | 'subclasses.create'
+  | 'subclasses.edit'
+  | 'subclasses.export'
+
+  // Machines
+  | 'machines.index'
+  | 'machines.show'
+  | 'machines.create'
+  | 'machines.edit'
+  | 'machines.export'
+
+  // Processes
+  | 'processes.index'
+  | 'processes.show'
+  | 'processes.create'
+  | 'processes.edit'
+  | 'processes.export'
+
+  // Raw materials
+  | 'raw-materials.index'
+  | 'raw-materials.show'
+  | 'raw-materials.create'
+  | 'raw-materials.edit'
+  | 'raw-materials.export'
+
+  // Suppliers
+  | 'suppliers.index'
+  | 'suppliers.show'
+  | 'suppliers.create'
+  | 'suppliers.edit'
+  | 'suppliers.export'
+
+  // Customers
   | 'customers.index'
   | 'customers.show'
   | 'customers.create'
   | 'customers.edit'
   | 'customers.change-password'
-  | 'customers.export';
+  | 'customers.export'
+  | 'customers.export'
+
+  // Warehouses
+  | 'warehouses.index'
+  | 'warehouses.show'
+  | 'warehouses.create'
+  | 'warehouses.edit'
+  | 'warehouses.export'
+
+  // Warehouse Locations
+  | 'warehouse-locations.index'
+  | 'warehouse-locations.create'
+  | 'warehouse-locations.edit'
+  | 'warehouse-locations.delete'
+
+  // Movements
+  | 'inventory-movements.index'
+  | 'inventory-movements.create-entry'
+  | 'inventory-movements.create-exit'
+  | 'inventory-movements.create-transfer'
+  | 'inventory-movements.show'
+  | 'inventory-movements.export'
+
+  // Stock
+  | 'inventory-stocks.index'
+  | 'inventory-stocks.export';

@@ -17,18 +17,14 @@ import type {
 import { useEffect, useMemo, useState } from 'react';
 
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { FilterX } from 'lucide-react';
 import {
   MaterialReactTable,
   MaterialReactTableProps,
   MRT_ShowHideColumnsButton,
   MRT_ToggleDensePaddingButton,
-  MRT_ToggleFullScreenButton,
-  MRT_ToggleGlobalFilterButton
+  MRT_ToggleFullScreenButton
 } from 'material-react-table';
 import { useDebounce } from 'use-debounce';
 
@@ -38,13 +34,9 @@ import {
   INITIAL_PAGE_SIZE
 } from '@/config/constants/app.constants';
 
-interface Params<J = Record<string, any[]>, F = string> {
-  options: BasePaginationParams<J, F>;
-}
-
 interface CustomTableProps<
   T extends MRT_RowData,
-  J,
+  P = any,
   Y = Record<string, any[]>,
   F = string
 > extends Omit<
@@ -55,8 +47,8 @@ interface CustomTableProps<
     | 'table'
     | 'onRowSelectionChange'
   > {
-  queryHook: (props: J & Params) => UseQueryResult<PaginationResponse<T>>;
-  queryProps: J & Params;
+  queryHook: (props: { options: P }) => UseQueryResult<PaginationResponse<T>>;
+  queryProps: { options: P };
   columns: MRT_ColumnDef<T>[];
   queryPrefetch?: (
     queryClient: QueryClient,
@@ -69,7 +61,7 @@ interface CustomTableProps<
 
 export const CustomTable = <
   T extends Record<string, any>,
-  J,
+  P = any,
   F extends Record<string, any[]> = Record<string, any[]>,
   I = string
 >({
@@ -82,7 +74,7 @@ export const CustomTable = <
   onRowSelectionChange,
   allowFullWidthActions = false,
   ...rest
-}: CustomTableProps<T, J, F, I>) => {
+}: CustomTableProps<T, P, F, I>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const queryClient = useQueryClient();
@@ -94,9 +86,11 @@ export const CustomTable = <
     DEBOUNCE_FILTER_TIME
   );
 
+  const optionsParams = queryProps.options as any;
+
   const immutableFilters = useMemo(
-    () => queryProps.options?.filter ?? ({} as F),
-    [queryProps.options?.filter]
+    () => optionsParams?.filter ?? ({} as F),
+    [optionsParams?.filter]
   );
 
   const mutableFilters = useMemo(() => {
@@ -159,14 +153,16 @@ export const CustomTable = <
     return desc ? `-${id}` : id;
   }, [sorting]);
 
-  const options = useMemo<any>(
+  const options = useMemo<BasePaginationParams<F, I>>(
     () => ({
       page: pagination.pageIndex + 1,
-      pageSize: pagination.pageSize,
-      filters: combinedFilters as F,
+      per_page: pagination.pageSize,
+      filter: {
+        ...(combinedFilters as F),
+        ...(globalFilter ? { search: globalFilter } : {})
+      },
       sort,
-      term: globalFilter,
-      include: (queryProps.options.include || []) as string[]
+      include: (optionsParams?.include || []) as I[]
     }),
     [
       pagination.pageIndex,
@@ -174,14 +170,14 @@ export const CustomTable = <
       combinedFilters,
       sort,
       globalFilter,
-      queryProps.options.include
+      optionsParams?.include
     ]
   );
 
   const newQueryProps = useMemo(
     () => ({
       ...queryProps,
-      options
+      options: options as unknown as P
     }),
     [queryProps, options]
   );
@@ -214,16 +210,6 @@ export const CustomTable = <
     queryPrefetch
   ]);
 
-  const clearFilters = () => {
-    setPagination({
-      pageIndex: INITIAL_PAGE - 1,
-      pageSize: INITIAL_PAGE_SIZE
-    });
-    setGlobalFilter('');
-    setSorting([]);
-    setColumnFilters([]);
-  };
-
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
   const handleRowSelectionChange: MaterialReactTableProps<T>['onRowSelectionChange'] =
@@ -254,17 +240,52 @@ export const CustomTable = <
   return (
     <MaterialReactTable
       {...rest}
-      manualFiltering
+      enableRowActions
       manualPagination
+      manualFiltering
       manualSorting
-      enableColumnResizing
       enableStickyHeader
+      enableColumnResizing={false}
+      layoutMode='semantic'
+      positionActionsColumn='last'
+      columnResizeMode={'onEnd'}
       data={paginationData}
       columns={memoizedColumns}
       getRowId={row => row.id}
+      rowCount={data?.meta?.total || 0}
       enableRowSelection={enableRowSelection}
-      columnResizeMode={'onEnd'}
-      muiTableContainerProps={{ sx: { maxHeight: '550px' } }}
+      enableGlobalFilter={enableGlobalFilter}
+      enableColumnFilters={false}
+      enableSorting={false}
+      initialState={{
+        ...rest.initialState,
+        showColumnFilters: false,
+        showGlobalFilter: Boolean(globalFilter),
+        columnPinning: { right: ['mrt-row-actions'] }
+      }}
+      columnFilterDisplayMode='popover'
+      muiTableContainerProps={{
+        className: 'max-h-[650px]',
+        sx: {
+          maxHeight: '650px',
+          borderRadius: '12px',
+          overflow: 'auto', // Fixed: Changed from hidden to auto to enable scrollbars
+          boxShadow: 'none'
+        }
+      }}
+      muiTablePaperProps={{
+        elevation: 0,
+        sx: {
+          borderRadius: '12px',
+          backgroundColor: 'transparent',
+          overflow: 'hidden'
+        }
+      }}
+      muiTopToolbarProps={{
+        sx: {
+          backgroundColor: 'transparent'
+        }
+      }}
       muiTableBodyCellProps={({ cell }) => {
         if (cell.column.id === 'mrt-row-actions') {
           return {
@@ -296,6 +317,11 @@ export const CustomTable = <
 
         return {
           sx: {
+            paddingY: 2,
+            fontSize: '0.9375rem',
+            color: '#101828',
+            borderBottom: '1px solid #F3F4F6',
+            backgroundColor: '#FFFFFF',
             maxWidth: '200px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -316,23 +342,21 @@ export const CustomTable = <
 
         return {
           sx: {
-            maxWidth: '200px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            backgroundColor: '#101828',
+            color: '#FFFFFF',
+            fontWeight: 700,
+            fontSize: '0.875rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            borderBottom: 'none',
+            paddingY: 2,
             whiteSpace: 'nowrap'
           }
         };
       }}
-      rowCount={data?.meta?.total || 0}
-      layoutMode='semantic'
-      positionActionsColumn='last'
-      initialState={{
-        ...rest.initialState,
-        showColumnFilters: true,
-        showGlobalFilter: Boolean(globalFilter),
-        columnPinning: { right: ['mrt-row-actions'] }
-      }}
-      columnFilterDisplayMode='popover'
+      mrtTheme={theme => ({
+        baseBackgroundColor: theme.palette.background.default
+      })}
       renderTopToolbarCustomActions={params => (
         <Box>{rest.renderTopToolbarCustomActions?.(params)}</Box>
       )}
@@ -343,14 +367,6 @@ export const CustomTable = <
           justifyContent={'flex-end'}
         >
           <Box display='flex' justifyContent={'flex-end'}>
-            {enableGlobalFilter && (
-              <MRT_ToggleGlobalFilterButton table={table} />
-            )}
-            <Tooltip title={'Clear filters'}>
-              <IconButton onClick={clearFilters}>
-                <FilterX size={20} />
-              </IconButton>
-            </Tooltip>
             <MRT_ShowHideColumnsButton table={table} />
             <MRT_ToggleDensePaddingButton table={table} />
             <MRT_ToggleFullScreenButton table={table} />
@@ -376,18 +392,9 @@ export const CustomTable = <
         globalFilter,
         rowSelection: enableRowSelection ? rowSelection : {}
       }}
-      enableGlobalFilter={enableGlobalFilter}
-      onRowSelectionChange={
-        enableRowSelection ? handleRowSelectionChange : undefined
-      }
-      onColumnFiltersChange={filters => setColumnFilters(filters)}
+      paginationDisplayMode='pages'
+      onRowSelectionChange={handleRowSelectionChange}
       onPaginationChange={pagination => setPagination(pagination)}
-      onSortingChange={sorting => setSorting(sorting)}
-      onGlobalFilterChange={value => {
-        const filterValue = typeof value === 'string' ? value : '';
-
-        setGlobalFilter(filterValue);
-      }}
     />
   );
 };

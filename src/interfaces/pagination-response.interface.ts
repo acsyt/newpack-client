@@ -31,7 +31,7 @@ export interface BasePaginationParams<
   TRelation = string
 > {
   include?: TRelation[];
-  filter?: TFilter & { q?: string };
+  filter?: TFilter & { search?: string };
   has_pagination?: boolean;
   page?: number;
   per_page?: number;

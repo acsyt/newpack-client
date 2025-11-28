@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from '@tanstack/react-router';
-import { DefaultValues, useForm } from 'react-hook-form';
+import { DefaultValues, FieldErrors, useForm } from 'react-hook-form';
 
 import { useUsersMutation } from '../hooks/users.mutation';
 
@@ -54,7 +54,7 @@ export const UserForm: FC<UserFormProps> = ({ mode, user }) => {
     mutation.mutateAsync({ data, id: userId });
   };
 
-  const onError = (errors: any) => {};
+  const onError = (_errors: FieldErrors<UserDto>) => {};
 
   return (
     <form onSubmit={handleSubmit(onSaveUser, onError)}>

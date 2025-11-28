@@ -72,11 +72,11 @@ export const PageNotFound = ({
       </Box>
       <Box px={3} mx={3}>
         <picture>
-          <source srcSet='/images/logo.avif' type='image/avif' />
-          <source srcSet='/images/logo.webp' type='image/webp' />
+          <source srcSet='/assets/images/logo.avif' type='image/avif' />
+          <source srcSet='/assets/images/logo.webp' type='image/webp' />
           <img
             loading='lazy'
-            src='/images/logo.png'
+            src='/assets/images/logo.png'
             width='150'
             height='150'
             alt='Logo'

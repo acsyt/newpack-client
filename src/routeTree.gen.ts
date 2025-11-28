@@ -15,12 +15,16 @@ import { Route as AuthResetPasswordRouteImport } from './app/auth/reset-password
 import { Route as AuthLoginRouteImport } from './app/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './app/auth/forgot-password'
 import { Route as AuthenticatedDashboardRouteImport } from './app/_authenticated/dashboard'
+import { Route as AuthenticatedWarehousesIndexRouteImport } from './app/_authenticated/warehouses/index'
 import { Route as AuthenticatedUsersIndexRouteImport } from './app/_authenticated/users/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './app/_authenticated/suppliers/index'
+import { Route as AuthenticatedSubclassesIndexRouteImport } from './app/_authenticated/subclasses/index'
 import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticated/roles/index'
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
 import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authenticated/machines/index'
+import { Route as AuthenticatedInventoryStockIndexRouteImport } from './app/_authenticated/inventory-stock/index'
+import { Route as AuthenticatedInventoryMovementsIndexRouteImport } from './app/_authenticated/inventory-movements/index'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './app/_authenticated/customers/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './app/_authenticated/classes/index'
 import { Route as AuthenticatedUsersCreateRouteImport } from './app/_authenticated/users/create'
@@ -64,6 +68,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedWarehousesIndexRoute =
+  AuthenticatedWarehousesIndexRouteImport.update({
+    id: '/warehouses/',
+    path: '/warehouses/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -73,6 +83,12 @@ const AuthenticatedSuppliersIndexRoute =
   AuthenticatedSuppliersIndexRouteImport.update({
     id: '/suppliers/',
     path: '/suppliers/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSubclassesIndexRoute =
+  AuthenticatedSubclassesIndexRouteImport.update({
+    id: '/subclasses/',
+    path: '/subclasses/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedRolesIndexRoute = AuthenticatedRolesIndexRouteImport.update({
@@ -96,6 +112,18 @@ const AuthenticatedMachinesIndexRoute =
   AuthenticatedMachinesIndexRouteImport.update({
     id: '/machines/',
     path: '/machines/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedInventoryStockIndexRoute =
+  AuthenticatedInventoryStockIndexRouteImport.update({
+    id: '/inventory-stock/',
+    path: '/inventory-stock/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedInventoryMovementsIndexRoute =
+  AuthenticatedInventoryMovementsIndexRouteImport.update({
+    id: '/inventory-movements/',
+    path: '/inventory-movements/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedCustomersIndexRoute =
@@ -190,14 +218,18 @@ export interface FileRoutesByFullPath {
   '/users/create': typeof AuthenticatedUsersCreateRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
+  '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
+  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
+  '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -216,14 +248,18 @@ export interface FileRoutesByTo {
   '/users/create': typeof AuthenticatedUsersCreateRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
+  '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
+  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
+  '/subclasses': typeof AuthenticatedSubclassesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
+  '/warehouses': typeof AuthenticatedWarehousesIndexRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -244,14 +280,18 @@ export interface FileRoutesById {
   '/_authenticated/users/create': typeof AuthenticatedUsersCreateRoute
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
+  '/_authenticated/inventory-movements/': typeof AuthenticatedInventoryMovementsIndexRoute
+  '/_authenticated/inventory-stock/': typeof AuthenticatedInventoryStockIndexRoute
   '/_authenticated/machines/': typeof AuthenticatedMachinesIndexRoute
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
   '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
+  '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
   '/_authenticated/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
+  '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
   '/_authenticated/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/_authenticated/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/_authenticated/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -272,14 +312,18 @@ export interface FileRouteTypes {
     | '/users/create'
     | '/classes'
     | '/customers'
+    | '/inventory-movements'
+    | '/inventory-stock'
     | '/machines'
     | '/processes'
     | '/raw-materials'
     | '/roles'
+    | '/subclasses'
     | '/suppliers'
     | '/users'
     | '/customers/$customerId/edit'
     | '/customers/$customerId/show'
+    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -298,14 +342,18 @@ export interface FileRouteTypes {
     | '/users/create'
     | '/classes'
     | '/customers'
+    | '/inventory-movements'
+    | '/inventory-stock'
     | '/machines'
     | '/processes'
     | '/raw-materials'
     | '/roles'
+    | '/subclasses'
     | '/suppliers'
     | '/users'
     | '/customers/$customerId/edit'
     | '/customers/$customerId/show'
+    | '/warehouses'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -325,14 +373,18 @@ export interface FileRouteTypes {
     | '/_authenticated/users/create'
     | '/_authenticated/classes/'
     | '/_authenticated/customers/'
+    | '/_authenticated/inventory-movements/'
+    | '/_authenticated/inventory-stock/'
     | '/_authenticated/machines/'
     | '/_authenticated/processes/'
     | '/_authenticated/raw-materials/'
     | '/_authenticated/roles/'
+    | '/_authenticated/subclasses/'
     | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
     | '/_authenticated/customers/$customerId/edit'
     | '/_authenticated/customers/$customerId/show'
+    | '/_authenticated/warehouses/'
     | '/_authenticated/suppliers/$supplierId/edit'
     | '/_authenticated/suppliers/$supplierId/show'
     | '/_authenticated/users/$userId/edit'
@@ -390,6 +442,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/warehouses/': {
+      id: '/_authenticated/warehouses/'
+      path: '/warehouses'
+      fullPath: '/warehouses'
+      preLoaderRoute: typeof AuthenticatedWarehousesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -402,6 +461,13 @@ declare module '@tanstack/react-router' {
       path: '/suppliers'
       fullPath: '/suppliers'
       preLoaderRoute: typeof AuthenticatedSuppliersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/subclasses/': {
+      id: '/_authenticated/subclasses/'
+      path: '/subclasses'
+      fullPath: '/subclasses'
+      preLoaderRoute: typeof AuthenticatedSubclassesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/roles/': {
@@ -430,6 +496,20 @@ declare module '@tanstack/react-router' {
       path: '/machines'
       fullPath: '/machines'
       preLoaderRoute: typeof AuthenticatedMachinesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/inventory-stock/': {
+      id: '/_authenticated/inventory-stock/'
+      path: '/inventory-stock'
+      fullPath: '/inventory-stock'
+      preLoaderRoute: typeof AuthenticatedInventoryStockIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/inventory-movements/': {
+      id: '/_authenticated/inventory-movements/'
+      path: '/inventory-movements'
+      fullPath: '/inventory-movements'
+      preLoaderRoute: typeof AuthenticatedInventoryMovementsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/customers/': {
@@ -570,14 +650,18 @@ interface AuthenticatedRouteChildren {
   AuthenticatedUsersCreateRoute: typeof AuthenticatedUsersCreateRoute
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
+  AuthenticatedInventoryMovementsIndexRoute: typeof AuthenticatedInventoryMovementsIndexRoute
+  AuthenticatedInventoryStockIndexRoute: typeof AuthenticatedInventoryStockIndexRoute
   AuthenticatedMachinesIndexRoute: typeof AuthenticatedMachinesIndexRoute
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
   AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
+  AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedCustomersCustomerIdEditRoute: typeof AuthenticatedCustomersCustomerIdEditRoute
   AuthenticatedCustomersCustomerIdShowRoute: typeof AuthenticatedCustomersCustomerIdShowRoute
+  AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -591,16 +675,21 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedUsersCreateRoute: AuthenticatedUsersCreateRoute,
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
+  AuthenticatedInventoryMovementsIndexRoute:
+    AuthenticatedInventoryMovementsIndexRoute,
+  AuthenticatedInventoryStockIndexRoute: AuthenticatedInventoryStockIndexRoute,
   AuthenticatedMachinesIndexRoute: AuthenticatedMachinesIndexRoute,
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,
   AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
+  AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
   AuthenticatedCustomersCustomerIdEditRoute:
     AuthenticatedCustomersCustomerIdEditRoute,
   AuthenticatedCustomersCustomerIdShowRoute:
     AuthenticatedCustomersCustomerIdShowRoute,
+  AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

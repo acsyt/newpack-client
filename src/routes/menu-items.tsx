@@ -3,13 +3,17 @@ import type { MenuItem } from '@/interfaces/menu-item.interface';
 import { useMemo } from 'react';
 
 import {
+  ArrowLeftRight,
   Box,
+  Boxes,
   Building2,
   ChartBarStacked,
   LayoutDashboard,
+  MapPin,
   Shield,
   UserCheckIcon,
-  Users
+  Users,
+  Warehouse
 } from 'lucide-react';
 
 export const useMenuItems = () => {
@@ -45,8 +49,14 @@ export const useMenuItems = () => {
             icon: <ChartBarStacked aria-hidden='true' size={20} />
           },
           {
-            title: 'Clases y Subclases',
+            title: 'Clases',
             href: '/classes',
+            isEnabled: true,
+            icon: <ChartBarStacked aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Subclases',
+            href: '/subclasses',
             isEnabled: true,
             icon: <ChartBarStacked aria-hidden='true' size={20} />
           },
@@ -75,6 +85,31 @@ export const useMenuItems = () => {
         icon: <Building2 aria-hidden='true' size={20} />,
         href: '/suppliers',
         isEnabled: true
+      },
+      {
+        title: 'Almacén',
+        icon: <Warehouse aria-hidden='true' size={20} />,
+        isEnabled: true,
+        menuItems: [
+          {
+            title: 'Existencias',
+            href: '/inventory-stock',
+            isEnabled: true,
+            icon: <Boxes aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Movimientos',
+            href: '/inventory-movements',
+            isEnabled: true,
+            icon: <ArrowLeftRight aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Almacenes',
+            href: '/warehouses',
+            isEnabled: true,
+            icon: <MapPin aria-hidden='true' size={20} />
+          }
+        ]
       }
     ],
     []
