@@ -5,8 +5,9 @@ import type {
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { InventoryMovementDto } from '@/features/inventory-movements/inventory-movement.schema';
 import { InventoryMovementService } from '@/features/inventory-movements/inventory-movement.service';
 
 interface QueryOptions
@@ -55,5 +56,19 @@ export const useInventoryMovementByIdQuery = ({
     queryFn: () => InventoryMovementService.findMovementById(id, options),
     enabled: enabled && id > 0,
     ...rest
+  });
+};
+
+export const useSaveInventoryMovementMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: InventoryMovementDto) =>
+      InventoryMovementService.createMovement(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: inventoryMovementsKeys.all()
+      });
+    }
   });
 };

@@ -1,3 +1,5 @@
+import { User } from '../users/user.interface';
+
 import { Batch } from '@/features/batches/batch.interface';
 import { Product } from '@/features/products/product.interface';
 import {
@@ -6,13 +8,11 @@ import {
 } from '@/features/warehouses/warehouse.interface';
 import { BasePaginationParams } from '@/interfaces/pagination-response.interface';
 
-export type MovementType =
-  | 'purchase_entry'
-  | 'production_output'
-  | 'production_consumption'
-  | 'sales_shipment'
-  | 'adjustment'
-  | 'transfer';
+export enum MovementType {
+  Entry = 'entry',
+  Exit = 'exit',
+  Transfer = 'transfer'
+}
 
 export interface InventoryMovement {
   id: number;
@@ -31,11 +31,7 @@ export interface InventoryMovement {
   warehouse?: Warehouse;
   warehouseLocation?: WarehouseLocation;
   batch?: Batch;
-  user?: {
-    id: number;
-    name: string;
-    lastName: string;
-  };
+  user?: User;
   createdAt: string;
   updatedAt: string;
 }
@@ -46,7 +42,7 @@ export interface InventoryMovementFilter {
   warehouse_location_id?: number;
   type?: MovementType;
   user_id?: number;
-  created_at?: string; // Date range filter
+  created_at?: string;
 }
 
 export type InventoryMovementRelations =

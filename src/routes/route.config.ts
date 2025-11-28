@@ -109,7 +109,7 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/subclasses': ['subclasses.index'],
   '/warehouses': ['warehouses.index'],
   '/inventory-movements': ['inventory-movements.index'],
-  '/inventory-stock': ['inventory-stock.index']
+  '/inventory-stock': ['inventory-stocks.index']
 };
 
 export const useRouteConfig = () => {

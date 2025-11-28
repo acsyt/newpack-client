@@ -124,7 +124,12 @@ export type Permission =
 
   // Movements
   | 'inventory-movements.index'
-  | 'inventory-movements.create'
+  | 'inventory-movements.create-entry'
+  | 'inventory-movements.create-exit'
+  | 'inventory-movements.create-transfer'
+  | 'inventory-movements.show'
+  | 'inventory-movements.export'
 
   // Stock
-  | 'inventory-stock.index';
+  | 'inventory-stocks.index'
+  | 'inventory-stocks.export';

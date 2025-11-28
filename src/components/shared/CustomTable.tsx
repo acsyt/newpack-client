@@ -153,14 +153,16 @@ export const CustomTable = <
     return desc ? `-${id}` : id;
   }, [sorting]);
 
-  const options = useMemo<any>(
+  const options = useMemo<BasePaginationParams<F, I>>(
     () => ({
       page: pagination.pageIndex + 1,
-      pageSize: pagination.pageSize,
-      filters: combinedFilters as F,
+      per_page: pagination.pageSize,
+      filter: {
+        ...(combinedFilters as F),
+        ...(globalFilter ? { search: globalFilter } : {})
+      },
       sort,
-      term: globalFilter,
-      include: (optionsParams?.include || []) as string[]
+      include: (optionsParams?.include || []) as I[]
     }),
     [
       pagination.pageIndex,
@@ -175,7 +177,7 @@ export const CustomTable = <
   const newQueryProps = useMemo(
     () => ({
       ...queryProps,
-      options
+      options: options as unknown as P
     }),
     [queryProps, options]
   );
