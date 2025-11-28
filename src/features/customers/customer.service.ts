@@ -4,8 +4,6 @@ import type {
   CustomerParams,
   CusomerRelations
 } from '@/features/customers/customer.interface';
-//! CAMBIAR ESTA PROP PARA QUE ESTE TOMANDO LAS VALIDACIONES DEL SCHEMA DE CUSTOMER
-import type { UserDto } from '@/features/users/user.schema';
 import type { DataResponse } from '@/interfaces/data-response.interface';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 
@@ -19,9 +17,6 @@ export class CustomerService extends SharedService {
   static findAllCustomers = async (
     options: CustomerParams
   ): Promise<PaginationResponse<Customer>> => {
-    //FIXME: Movere esta prop cuando se tengan los filtros por id en este punto 
-    const props = {...options};
-    delete props.sort;
     return SharedService.findAll<Customer, CustomerFilter, CusomerRelations, CustomerParams>(
       apiFetcher,
       '/customers',
