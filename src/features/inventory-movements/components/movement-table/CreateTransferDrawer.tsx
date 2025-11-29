@@ -363,6 +363,9 @@ const TransferRow = ({
     control,
     setValue,
     getValues,
+    trigger,
+    setError,
+    clearErrors,
     formState: { isSubmitted, errors }
   } = useFormContext<InventoryTransferDto>();
 
@@ -421,6 +424,16 @@ const TransferRow = ({
     return list;
   }, [remoteStocks, selectedStockObj]);
 
+  useEffect(() => {
+    if (productId && !selectedStockObj && remoteStocks.length > 0) {
+      const found = remoteStocks.find(
+        s => s.productId === productId && s.batchId === batchId
+      );
+
+      if (found) setSelectedStockObj(found);
+    }
+  }, [productId, remoteStocks, selectedStockObj, batchId]);
+
   const currentStockLimit = selectedStockObj?.quantity || 0;
 
   return (
@@ -466,10 +479,16 @@ const TransferRow = ({
               );
 
               if (isDuplicate) {
-                alert(
-                  'Este producto con este lote y ubicación ya está agregado en otra fila.'
-                );
+                setError(`products.${index}.product_id`, {
+                  type: 'manual',
+                  message: 'Este producto/lote ya está en otra fila'
+                });
                 setSelectedStockObj(null);
+
+                setTimeout(
+                  () => clearErrors(`products.${index}.product_id`),
+                  3000
+                );
 
                 return;
               }
@@ -522,7 +541,9 @@ const TransferRow = ({
 
               // Calcular uso total en TODO el formulario para este lote
               const allRows = getValues().products || [];
-              const totalUsed = allRows.reduce((acc, row, _) => {
+              const usedInOtherRows = allRows.reduce((acc, row, idx) => {
+                if (idx === index) return acc; // Ignoramos la fila actual aquí
+
                 // Sumar si es el mismo producto/lote/ubicación
                 if (
                   row.product_id === productId &&
@@ -535,9 +556,10 @@ const TransferRow = ({
                 return acc;
               }, 0);
 
-              if (totalUsed > currentStockLimit) {
-                const othersUsed = totalUsed - qty;
-                const remaining = currentStockLimit - othersUsed;
+              const total = usedInOtherRows + qty;
+
+              if (total > currentStockLimit) {
+                const remaining = currentStockLimit - usedInOtherRows;
 
                 return `Max disponible: ${Math.max(0, remaining).toFixed(2)}`;
               }
@@ -573,11 +595,12 @@ const TransferRow = ({
                   e.preventDefault();
                 }
               }}
-              onChange={e => {
+              onChange={async e => {
                 const val = e.target.value;
 
                 if (val.includes('.') && val.split('.')[1].length > 4) return;
                 onChange(val === '' ? undefined : val);
+                await trigger('products');
               }}
               onBlur={onBlur}
             />
