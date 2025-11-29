@@ -25,6 +25,7 @@ import {
   useFormContext,
   FormProvider
 } from 'react-hook-form';
+import { toast } from 'sonner';
 import { useDebounce } from 'use-debounce';
 
 import { useCreateTransferMutation } from '../../hooks/inventory-movements.query';
@@ -35,7 +36,7 @@ import {
 import { useInventoryMovementDrawerStore } from '../../store/useInventoryMovementDrawerStore';
 
 import { CustomDrawer } from '@/components/shared/CustomDrawer';
-import { ErrorMapper } from '@/config/error.mapper';
+import { ErrorMapper, getErrorMessage } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
 import { InventoryStockParams } from '@/features/inventory-stocks/inventory-stock.interface';
@@ -133,10 +134,15 @@ export const CreateTransferDrawer = () => {
   const handleSubmit = (data: InventoryTransferDto) => {
     mutation.mutate(data, {
       onSuccess: () => {
+        toast.success('Transferencia creada exitosamente');
         onClose();
         form.reset();
       },
       onError: error => {
+        const message = getErrorMessage(error);
+
+        toast.error(message);
+
         const errors = ErrorMapper.mapErrorToApiResponse(error);
 
         FormHelper.setFormErrors(errors.errors, form.setError);
@@ -366,7 +372,7 @@ const TransferRow = ({
     trigger,
     setError,
     clearErrors,
-    formState: { isSubmitted, errors }
+    formState: { errors }
   } = useFormContext<InventoryTransferDto>();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -468,11 +474,10 @@ const TransferRow = ({
           filterOptions={x => x}
           onChange={(_, stock) => {
             if (stock) {
-              // VALIDACIÓN: DETECCIÓN DE DUPLICADOS
               const currentProducts = getValues().products;
               const isDuplicate = currentProducts.some(
                 (p, idx) =>
-                  idx !== index && // No compararse con uno mismo
+                  idx !== index &&
                   p.product_id === stock.productId &&
                   p.source_location_id === stock.warehouseLocationId &&
                   p.batch_id === stock.batchId
@@ -535,16 +540,14 @@ const TransferRow = ({
             validate: value => {
               const qty = Number(value);
 
-              if (qty <= 0) return 'Debe ser mayor a 0';
+              if (isNaN(qty) || qty <= 0) return 'Debe ser mayor a 0';
 
               if (!sourceLocationId || !productId) return true;
 
-              // Calcular uso total en TODO el formulario para este lote
               const allRows = getValues().products || [];
               const usedInOtherRows = allRows.reduce((acc, row, idx) => {
-                if (idx === index) return acc; // Ignoramos la fila actual aquí
+                if (idx === index) return acc;
 
-                // Sumar si es el mismo producto/lote/ubicación
                 if (
                   row.product_id === productId &&
                   row.source_location_id === sourceLocationId &&
@@ -569,42 +572,84 @@ const TransferRow = ({
           }}
           render={({
             field: { onChange, value, ref, onBlur },
-            fieldState: { error, isTouched, isDirty }
-          }) => (
-            <TextField
-              fullWidth
-              inputRef={ref}
-              value={value ?? ''}
-              disabled={!productId}
-              type='number'
-              variant='standard'
-              error={!!error && (isTouched || isDirty || isSubmitted)}
-              helperText={
-                error && (isTouched || isDirty || isSubmitted)
-                  ? error.message
-                  : sourceLocationId
-                    ? `Max: ${Number(currentStockLimit).toFixed(2)}`
-                    : ''
-              }
-              InputProps={{ disableUnderline: true }}
-              sx={invisibleInputSx(
-                !!error && (isTouched || isDirty || isSubmitted)
-              )}
-              onKeyDown={e => {
-                if (['e', 'E', '+', '-'].includes(e.key)) {
-                  e.preventDefault();
-                }
-              }}
-              onChange={async e => {
-                const val = e.target.value;
+            fieldState: { error }
+          }) => {
+            const allRows = getValues().products || [];
+            const usedInOtherRows = allRows.reduce((acc, row, idx) => {
+              if (idx === index) return acc;
 
-                if (val.includes('.') && val.split('.')[1].length > 4) return;
-                onChange(val === '' ? undefined : val);
-                await trigger('products');
-              }}
-              onBlur={onBlur}
-            />
-          )}
+              if (
+                row.product_id === productId &&
+                row.source_location_id === sourceLocationId &&
+                row.batch_id === batchId
+              ) {
+                return acc + (Number(row.quantity) || 0);
+              }
+
+              return acc;
+            }, 0);
+
+            const maxAvailable = Math.max(
+              0,
+              currentStockLimit - usedInOtherRows
+            );
+
+            return (
+              <TextField
+                fullWidth
+                inputRef={ref}
+                value={value ?? ''}
+                disabled={!productId}
+                type='number'
+                variant='standard'
+                error={!!error}
+                helperText={
+                  error
+                    ? error.message
+                    : sourceLocationId
+                      ? `Max: ${Number(currentStockLimit).toFixed(2)}`
+                      : ''
+                }
+                InputProps={{
+                  disableUnderline: true,
+                  inputProps: {
+                    min: 0,
+                    max: maxAvailable,
+                    step: 0.0001
+                  }
+                }}
+                sx={invisibleInputSx(!!error)}
+                onKeyDown={e => {
+                  if (['e', 'E', '+', '-'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                onChange={async e => {
+                  const val = e.target.value;
+
+                  // Prevent more than 4 decimal places
+                  if (val.includes('.') && val.split('.')[1].length > 4) return;
+
+                  const numValue = Number(val);
+
+                  // Prevent exceeding max available
+                  if (numValue > maxAvailable) {
+                    onChange(maxAvailable);
+                    await trigger(`products.${index}.quantity`);
+
+                    return;
+                  }
+
+                  onChange(val === '' ? undefined : val);
+                  await trigger(`products.${index}.quantity`);
+                }}
+                onBlur={async () => {
+                  onBlur();
+                  await trigger(`products.${index}.quantity`);
+                }}
+              />
+            );
+          }}
         />
       </TableCell>
 
@@ -613,7 +658,7 @@ const TransferRow = ({
           disabled
           value={
             selectedStockObj?.warehouseLocation
-              ? `${selectedStockObj.warehouseLocation.aisle}-${selectedStockObj.warehouseLocation.shelf}`
+              ? `${selectedStockObj.warehouseLocation.aisle}-${selectedStockObj.warehouseLocation.shelf}-${selectedStockObj.warehouseLocation.section}`
               : '---'
           }
           variant='standard'
