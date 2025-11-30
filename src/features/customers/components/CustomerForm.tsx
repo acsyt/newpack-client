@@ -1,17 +1,19 @@
 import type { FC } from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from '@tanstack/react-router';
-import { DefaultValues, useForm } from 'react-hook-form';
+import { Controller, DefaultValues, useForm } from 'react-hook-form';
 
 import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Customer } from '@/features/customers/customer.interface';
 import { CustomerDto, customerSchema } from '@/features/customers/customer.schema';
 import { useCustomersMutation } from '@/features/customers/hook/customer.mutation';
+import { Autocomplete, TextField } from '@mui/material';
+import { useSuburbsQuery } from '@/features/suburbs/hooks/suburb.query';
 
 type CustomerFormProps = {
   mode: ModeAction;
@@ -21,7 +23,13 @@ type CustomerFormProps = {
 export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
   const navigate = useNavigate();
   const mutation = useCustomersMutation();
+  const isShow = mode === ModeAction.Show;
 
+  const { data: suburbsData } = useSuburbsQuery({
+      options: { has_pagination: false }
+  });
+
+  const suburbs = useMemo(() => suburbsData?.data || [], [suburbsData]);
 
   const defaultValues = useMemo<DefaultValues<CustomerDto>>(() => {
     const userValues: DefaultValues<CustomerDto> = {
@@ -45,8 +53,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
         notes: customer?.notes || '',
     };
     return userValues;
-}, [customer, mode]);
-
+  }, [customer, mode]);
 
   const { control, handleSubmit } = useForm<CustomerDto>({
     mode: 'onBlur',
@@ -148,6 +155,36 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
     </Grid>
 
     {/* Dirección */}
+    <Grid size={12}>
+      <Controller
+        control={control}
+        name='suburb_id'
+        render={({
+          field: { onChange, value },
+          fieldState: { error }
+        }) => (
+          <Autocomplete
+            options={suburbs}
+            getOptionLabel={option => option.name}
+            value={suburbs.find(item => item.id === value) || null}
+            disabled={isShow}
+            renderInput={params => (
+              <TextField
+                {...params}
+                fullWidth
+                label='Colonia'
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+            onChange={(_, newValue) => {
+              onChange(newValue ? newValue.id : null);
+            }}
+          />
+        )}
+      />
+    </Grid>
+
     <Grid size={12}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6 }}>
