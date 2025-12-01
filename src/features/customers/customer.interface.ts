@@ -6,7 +6,7 @@ export interface Customer {
   lastName: string;
   fullName: string;
   email: string;
-  emailVerifiedAt: string; // ISO date string
+  emailVerifiedAt: string;
   phone: string;
   phoneSecondary: string;
   suburbId: number;
@@ -29,8 +29,6 @@ export interface Customer {
   deletedAt: string | null;
   suburb: Suburb;
   legalName: string | null;
-  // cfdiUse: string | null;
-  // taxSystem: string | null;
 }
 
 export interface Suburb {
@@ -48,6 +46,13 @@ interface ZipCode {
 
 interface City {
   id: number,
+  name: string
+  state: State
+}
+
+interface State {
+  id: number,
+  code: string,
   name: string
 }
 

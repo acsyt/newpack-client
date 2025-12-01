@@ -14,13 +14,11 @@ export const baseSchema = z.object({
     address_reference: z.string().optional(),
     rfc: z.string().regex(/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/i, "Formato de RFC no válido"),
     legal_name: z.string().min(1, "La razón social es obligatoria"),
-    // taxSystem: z.string().min(1, "El régimen fiscal es obligatorio"),
-    // cfdiUse: z.string().min(1, "El uso de CFDI es obligatorio"),
     status: z.string(),
-    // client_type: z.string(),
     notes: z.string().optional(),
     zip_code: z.string({ required_error: 'El código postal es obligatorio'}).min(1, 'El código postal es obligatorio'),
-    city: z.string()
+    city: z.string(),
+    state: z.string()
 });
 
 const createSchema = z.object({
