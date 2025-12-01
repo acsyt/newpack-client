@@ -91,6 +91,71 @@ export const columns: MRT_ColumnDef<InventoryMovement>[] = [
     size: 150
   },
   {
+    header: 'Orden de Compra',
+    id: 'purchaseOrder',
+    accessorFn: row => {
+      if (row.type === MovementType.Entry && row.referenceId) {
+        return `#${row.referenceId}`;
+      }
+
+      return '-';
+    },
+    size: 160,
+    Cell: ({ row: { original } }) => {
+      if (original.type === MovementType.Entry && original.referenceId) {
+        return <span style={{ fontWeight: 500 }}>#{original.referenceId}</span>;
+      }
+
+      return '-';
+    }
+  },
+  {
+    header: 'Pedido Interno',
+    id: 'internalOrder',
+    accessorFn: row => {
+      if (row.type === MovementType.Exit && row.referenceId) {
+        return `#${row.referenceId}`;
+      }
+
+      return '-';
+    },
+    size: 160,
+    Cell: ({ row: { original } }) => {
+      if (original.type === MovementType.Exit && original.referenceId) {
+        return <span style={{ fontWeight: 500 }}>#{original.referenceId}</span>;
+      }
+
+      return '-';
+    }
+  },
+  {
+    header: 'Origen',
+    id: 'sourceWarehouse',
+    accessorFn: row => {
+      if (
+        row.type === MovementType.Transfer &&
+        row.relatedMovement?.warehouse
+      ) {
+        return row.relatedMovement.warehouse.name;
+      }
+
+      return '-';
+    },
+    size: 150
+  },
+  {
+    header: 'Destino',
+    id: 'destinationWarehouse',
+    accessorFn: row => {
+      if (row.type === MovementType.Transfer && row.warehouse) {
+        return row.warehouse.name;
+      }
+
+      return '-';
+    },
+    size: 150
+  },
+  {
     header: 'Cantidad',
     id: 'quantity',
     accessorKey: 'quantity',

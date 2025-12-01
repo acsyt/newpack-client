@@ -255,11 +255,11 @@ export const CustomTable = <
       rowCount={data?.meta?.total || 0}
       enableRowSelection={enableRowSelection}
       enableGlobalFilter={enableGlobalFilter}
-      enableColumnFilters={false}
+      enableColumnFilters={true}
       enableSorting={false}
       initialState={{
         ...rest.initialState,
-        showColumnFilters: false,
+        showColumnFilters: true,
         showGlobalFilter: Boolean(globalFilter),
         columnPinning: { right: ['mrt-row-actions'] }
       }}
@@ -269,7 +269,7 @@ export const CustomTable = <
         sx: {
           maxHeight: '650px',
           borderRadius: '12px',
-          overflow: 'auto', // Fixed: Changed from hidden to auto to enable scrollbars
+          overflow: 'auto',
           boxShadow: 'none'
         }
       }}

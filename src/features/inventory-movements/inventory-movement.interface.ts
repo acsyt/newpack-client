@@ -27,11 +27,13 @@ export interface InventoryMovement {
   referenceType: string | null;
   referenceId: number | null;
   notes: string | null;
+  relatedMovementId: number | null;
   product?: Product;
   warehouse?: Warehouse;
   warehouseLocation?: WarehouseLocation;
   batch?: Batch;
   user?: User;
+  relatedMovement?: InventoryMovement;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,7 +54,9 @@ export type InventoryMovementRelations =
   | 'warehouseLocation'
   | 'batch'
   | 'user'
-  | 'reference';
+  | 'reference'
+  | 'relatedMovement'
+  | 'relatedMovement.warehouse';
 
 export interface InventoryMovementParams
   extends BasePaginationParams<

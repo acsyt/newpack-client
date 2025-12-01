@@ -8,7 +8,7 @@
     "build": "bun lint && vite build",
     "lint": "bun tsc --noEmit && eslint . --ext .ts,.tsx",
     "start": "vite preview",
-    "start:build": "bun build && bun start",
+    "start:build": "bun run build && bun run start",
     "optimize": "bun scripts/img-opt.ts"
   },
   "dependencies": {

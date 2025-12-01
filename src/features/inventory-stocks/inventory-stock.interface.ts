@@ -34,6 +34,7 @@ export interface InventoryStockFilter {
   warehouse_location_id?: number;
   batch_id?: number;
   status?: InventoryStockStatus;
+  product_type_id?: number;
 }
 
 export type InventoryStockRelations =

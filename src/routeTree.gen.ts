@@ -23,7 +23,7 @@ import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticate
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
 import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authenticated/machines/index'
-import { Route as AuthenticatedInventoryStockIndexRouteImport } from './app/_authenticated/inventory-stock/index'
+import { Route as AuthenticatedInventoryStocksIndexRouteImport } from './app/_authenticated/inventory-stocks/index'
 import { Route as AuthenticatedInventoryMovementsIndexRouteImport } from './app/_authenticated/inventory-movements/index'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './app/_authenticated/customers/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './app/_authenticated/classes/index'
@@ -111,10 +111,10 @@ const AuthenticatedMachinesIndexRoute =
     path: '/machines/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedInventoryStockIndexRoute =
-  AuthenticatedInventoryStockIndexRouteImport.update({
-    id: '/inventory-stock/',
-    path: '/inventory-stock/',
+const AuthenticatedInventoryStocksIndexRoute =
+  AuthenticatedInventoryStocksIndexRouteImport.update({
+    id: '/inventory-stocks/',
+    path: '/inventory-stocks/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedInventoryMovementsIndexRoute =
@@ -197,7 +197,7 @@ export interface FileRoutesByFullPath {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
@@ -224,7 +224,7 @@ export interface FileRoutesByTo {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
@@ -253,7 +253,7 @@ export interface FileRoutesById {
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
   '/_authenticated/inventory-movements/': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/_authenticated/inventory-stock/': typeof AuthenticatedInventoryStockIndexRoute
+  '/_authenticated/inventory-stocks/': typeof AuthenticatedInventoryStocksIndexRoute
   '/_authenticated/machines/': typeof AuthenticatedMachinesIndexRoute
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
@@ -282,7 +282,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/customers'
     | '/inventory-movements'
-    | '/inventory-stock'
+    | '/inventory-stocks'
     | '/machines'
     | '/processes'
     | '/raw-materials'
@@ -309,7 +309,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/customers'
     | '/inventory-movements'
-    | '/inventory-stock'
+    | '/inventory-stocks'
     | '/machines'
     | '/processes'
     | '/raw-materials'
@@ -337,7 +337,7 @@ export interface FileRouteTypes {
     | '/_authenticated/classes/'
     | '/_authenticated/customers/'
     | '/_authenticated/inventory-movements/'
-    | '/_authenticated/inventory-stock/'
+    | '/_authenticated/inventory-stocks/'
     | '/_authenticated/machines/'
     | '/_authenticated/processes/'
     | '/_authenticated/raw-materials/'
@@ -459,11 +459,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMachinesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/inventory-stock/': {
-      id: '/_authenticated/inventory-stock/'
-      path: '/inventory-stock'
-      fullPath: '/inventory-stock'
-      preLoaderRoute: typeof AuthenticatedInventoryStockIndexRouteImport
+    '/_authenticated/inventory-stocks/': {
+      id: '/_authenticated/inventory-stocks/'
+      path: '/inventory-stocks'
+      fullPath: '/inventory-stocks'
+      preLoaderRoute: typeof AuthenticatedInventoryStocksIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/inventory-movements/': {
@@ -590,7 +590,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
   AuthenticatedInventoryMovementsIndexRoute: typeof AuthenticatedInventoryMovementsIndexRoute
-  AuthenticatedInventoryStockIndexRoute: typeof AuthenticatedInventoryStockIndexRoute
+  AuthenticatedInventoryStocksIndexRoute: typeof AuthenticatedInventoryStocksIndexRoute
   AuthenticatedMachinesIndexRoute: typeof AuthenticatedMachinesIndexRoute
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
@@ -613,7 +613,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
   AuthenticatedInventoryMovementsIndexRoute:
     AuthenticatedInventoryMovementsIndexRoute,
-  AuthenticatedInventoryStockIndexRoute: AuthenticatedInventoryStockIndexRoute,
+  AuthenticatedInventoryStocksIndexRoute:
+    AuthenticatedInventoryStocksIndexRoute,
   AuthenticatedMachinesIndexRoute: AuthenticatedMachinesIndexRoute,
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,

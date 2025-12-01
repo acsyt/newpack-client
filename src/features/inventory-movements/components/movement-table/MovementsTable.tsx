@@ -46,7 +46,9 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
       'warehouse',
       'warehouseLocation',
       'batch',
-      'user'
+      'user',
+      'relatedMovement',
+      'relatedMovement.warehouse'
     ],
     filter: {
       ...(selectedWarehouse && { warehouse_id: selectedWarehouse }),

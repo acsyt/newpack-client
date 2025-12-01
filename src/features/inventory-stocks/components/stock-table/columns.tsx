@@ -2,18 +2,24 @@ import type { MRT_ColumnDef } from 'material-react-table';
 
 import { Chip } from '@mui/material';
 
-import { InventoryStock } from '../../inventory-stock.interface';
+import {
+  InventoryStock,
+  InventoryStockStatus
+} from '../../inventory-stock.interface';
 
-const statusColors = {
-  available: 'success',
-  reserved: 'warning',
-  damaged: 'error'
+const statusColors: Record<
+  InventoryStockStatus,
+  'success' | 'error' | 'warning' | 'info' | 'default'
+> = {
+  [InventoryStockStatus.Available]: 'success',
+  [InventoryStockStatus.Reserved]: 'warning',
+  [InventoryStockStatus.Damaged]: 'error'
 } as const;
 
-const statusLabels = {
-  available: 'Disponible',
-  reserved: 'Reservado',
-  damaged: 'Dañado'
+const statusLabels: Record<InventoryStockStatus, string> = {
+  [InventoryStockStatus.Available]: 'Disponible',
+  [InventoryStockStatus.Reserved]: 'Reservado',
+  [InventoryStockStatus.Damaged]: 'Dañado'
 } as const;
 
 export const columns: MRT_ColumnDef<InventoryStock>[] = [
@@ -34,6 +40,12 @@ export const columns: MRT_ColumnDef<InventoryStock>[] = [
     id: 'product',
     accessorFn: row => row.product?.name || '-',
     size: 200
+  },
+  {
+    header: 'Tipo',
+    id: 'productType',
+    accessorFn: row => row.product?.productType?.name || '-',
+    size: 180
   },
   {
     header: 'Almacén',
@@ -61,7 +73,7 @@ export const columns: MRT_ColumnDef<InventoryStock>[] = [
     size: 100
   },
   {
-    header: 'Cantidad',
+    header: 'Stock Actual',
     id: 'quantity',
     accessorKey: 'quantity',
     size: 100,
