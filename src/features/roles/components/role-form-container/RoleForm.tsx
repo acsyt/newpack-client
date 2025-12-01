@@ -405,6 +405,15 @@ const PermissionContainer: FC<PermissionContainerProps> = ({
       </Box>
 
       <Stack spacing={2}>
+        {modules.length === 0 && (
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            sx={{ fontStyle: 'italic' }}
+          >
+            No hay permisos asignados a este rol.
+          </Typography>
+        )}
         {modules.map(({ id, name, permissions: modulePermissions }) => {
           const originalPermissions = groupedPermissions[id] || [];
 
