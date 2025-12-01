@@ -23,7 +23,7 @@ import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticate
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
 import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authenticated/machines/index'
-import { Route as AuthenticatedInventoryStockIndexRouteImport } from './app/_authenticated/inventory-stock/index'
+import { Route as AuthenticatedInventoryStocksIndexRouteImport } from './app/_authenticated/inventory-stocks/index'
 import { Route as AuthenticatedInventoryMovementsIndexRouteImport } from './app/_authenticated/inventory-movements/index'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './app/_authenticated/customers/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './app/_authenticated/classes/index'
@@ -31,10 +31,13 @@ import { Route as AuthenticatedUsersCreateRouteImport } from './app/_authenticat
 import { Route as AuthenticatedUsersUserIdRouteImport } from './app/_authenticated/users/$userId'
 import { Route as AuthenticatedSuppliersCreateRouteImport } from './app/_authenticated/suppliers/create'
 import { Route as AuthenticatedSuppliersSupplierIdRouteImport } from './app/_authenticated/suppliers/$supplierId'
+import { Route as AuthenticatedCustomersCreateRouteImport } from './app/_authenticated/customers/create'
 import { Route as AuthenticatedUsersUserIdShowRouteImport } from './app/_authenticated/users/$userId.show'
 import { Route as AuthenticatedUsersUserIdEditRouteImport } from './app/_authenticated/users/$userId.edit'
 import { Route as AuthenticatedSuppliersSupplierIdShowRouteImport } from './app/_authenticated/suppliers/$supplierId.show'
 import { Route as AuthenticatedSuppliersSupplierIdEditRouteImport } from './app/_authenticated/suppliers/$supplierId.edit'
+import { Route as AuthenticatedCustomersCustomerIdShowRouteImport } from './app/_authenticated/customers/$customerId.show'
+import { Route as AuthenticatedCustomersCustomerIdEditRouteImport } from './app/_authenticated/customers/$customerId.edit'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -111,10 +114,10 @@ const AuthenticatedMachinesIndexRoute =
     path: '/machines/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedInventoryStockIndexRoute =
-  AuthenticatedInventoryStockIndexRouteImport.update({
-    id: '/inventory-stock/',
-    path: '/inventory-stock/',
+const AuthenticatedInventoryStocksIndexRoute =
+  AuthenticatedInventoryStocksIndexRouteImport.update({
+    id: '/inventory-stocks/',
+    path: '/inventory-stocks/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedInventoryMovementsIndexRoute =
@@ -159,6 +162,12 @@ const AuthenticatedSuppliersSupplierIdRoute =
     path: '/suppliers/$supplierId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedCustomersCreateRoute =
+  AuthenticatedCustomersCreateRouteImport.update({
+    id: '/customers/create',
+    path: '/customers/create',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsersUserIdShowRoute =
   AuthenticatedUsersUserIdShowRouteImport.update({
     id: '/show',
@@ -183,6 +192,18 @@ const AuthenticatedSuppliersSupplierIdEditRoute =
     path: '/edit',
     getParentRoute: () => AuthenticatedSuppliersSupplierIdRoute,
   } as any)
+const AuthenticatedCustomersCustomerIdShowRoute =
+  AuthenticatedCustomersCustomerIdShowRouteImport.update({
+    id: '/customers/$customerId/show',
+    path: '/customers/$customerId/show',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedCustomersCustomerIdEditRoute =
+  AuthenticatedCustomersCustomerIdEditRouteImport.update({
+    id: '/customers/$customerId/edit',
+    path: '/customers/$customerId/edit',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -190,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
+  '/customers/create': typeof AuthenticatedCustomersCreateRoute
   '/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
   '/suppliers/create': typeof AuthenticatedSuppliersCreateRoute
   '/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
@@ -197,7 +219,7 @@ export interface FileRoutesByFullPath {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
@@ -206,6 +228,8 @@ export interface FileRoutesByFullPath {
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/warehouses': typeof AuthenticatedWarehousesIndexRoute
+  '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
+  '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -217,6 +241,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
+  '/customers/create': typeof AuthenticatedCustomersCreateRoute
   '/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
   '/suppliers/create': typeof AuthenticatedSuppliersCreateRoute
   '/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
@@ -224,7 +249,7 @@ export interface FileRoutesByTo {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/inventory-stock': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
@@ -233,6 +258,8 @@ export interface FileRoutesByTo {
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/warehouses': typeof AuthenticatedWarehousesIndexRoute
+  '/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
+  '/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
   '/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -246,6 +273,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/customers/create': typeof AuthenticatedCustomersCreateRoute
   '/_authenticated/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
   '/_authenticated/suppliers/create': typeof AuthenticatedSuppliersCreateRoute
   '/_authenticated/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
@@ -253,7 +281,7 @@ export interface FileRoutesById {
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
   '/_authenticated/inventory-movements/': typeof AuthenticatedInventoryMovementsIndexRoute
-  '/_authenticated/inventory-stock/': typeof AuthenticatedInventoryStockIndexRoute
+  '/_authenticated/inventory-stocks/': typeof AuthenticatedInventoryStocksIndexRoute
   '/_authenticated/machines/': typeof AuthenticatedMachinesIndexRoute
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
@@ -262,6 +290,8 @@ export interface FileRoutesById {
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/warehouses/': typeof AuthenticatedWarehousesIndexRoute
+  '/_authenticated/customers/$customerId/edit': typeof AuthenticatedCustomersCustomerIdEditRoute
+  '/_authenticated/customers/$customerId/show': typeof AuthenticatedCustomersCustomerIdShowRoute
   '/_authenticated/suppliers/$supplierId/edit': typeof AuthenticatedSuppliersSupplierIdEditRoute
   '/_authenticated/suppliers/$supplierId/show': typeof AuthenticatedSuppliersSupplierIdShowRoute
   '/_authenticated/users/$userId/edit': typeof AuthenticatedUsersUserIdEditRoute
@@ -275,6 +305,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/'
+    | '/customers/create'
     | '/suppliers/$supplierId'
     | '/suppliers/create'
     | '/users/$userId'
@@ -282,7 +313,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/customers'
     | '/inventory-movements'
-    | '/inventory-stock'
+    | '/inventory-stocks'
     | '/machines'
     | '/processes'
     | '/raw-materials'
@@ -291,6 +322,8 @@ export interface FileRouteTypes {
     | '/suppliers'
     | '/users'
     | '/warehouses'
+    | '/customers/$customerId/edit'
+    | '/customers/$customerId/show'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -302,6 +335,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/'
+    | '/customers/create'
     | '/suppliers/$supplierId'
     | '/suppliers/create'
     | '/users/$userId'
@@ -309,7 +343,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/customers'
     | '/inventory-movements'
-    | '/inventory-stock'
+    | '/inventory-stocks'
     | '/machines'
     | '/processes'
     | '/raw-materials'
@@ -318,6 +352,8 @@ export interface FileRouteTypes {
     | '/suppliers'
     | '/users'
     | '/warehouses'
+    | '/customers/$customerId/edit'
+    | '/customers/$customerId/show'
     | '/suppliers/$supplierId/edit'
     | '/suppliers/$supplierId/show'
     | '/users/$userId/edit'
@@ -330,6 +366,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/_authenticated/'
+    | '/_authenticated/customers/create'
     | '/_authenticated/suppliers/$supplierId'
     | '/_authenticated/suppliers/create'
     | '/_authenticated/users/$userId'
@@ -337,7 +374,7 @@ export interface FileRouteTypes {
     | '/_authenticated/classes/'
     | '/_authenticated/customers/'
     | '/_authenticated/inventory-movements/'
-    | '/_authenticated/inventory-stock/'
+    | '/_authenticated/inventory-stocks/'
     | '/_authenticated/machines/'
     | '/_authenticated/processes/'
     | '/_authenticated/raw-materials/'
@@ -346,6 +383,8 @@ export interface FileRouteTypes {
     | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
     | '/_authenticated/warehouses/'
+    | '/_authenticated/customers/$customerId/edit'
+    | '/_authenticated/customers/$customerId/show'
     | '/_authenticated/suppliers/$supplierId/edit'
     | '/_authenticated/suppliers/$supplierId/show'
     | '/_authenticated/users/$userId/edit'
@@ -459,11 +498,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMachinesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/inventory-stock/': {
-      id: '/_authenticated/inventory-stock/'
-      path: '/inventory-stock'
-      fullPath: '/inventory-stock'
-      preLoaderRoute: typeof AuthenticatedInventoryStockIndexRouteImport
+    '/_authenticated/inventory-stocks/': {
+      id: '/_authenticated/inventory-stocks/'
+      path: '/inventory-stocks'
+      fullPath: '/inventory-stocks'
+      preLoaderRoute: typeof AuthenticatedInventoryStocksIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/inventory-movements/': {
@@ -515,6 +554,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuppliersSupplierIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/customers/create': {
+      id: '/_authenticated/customers/create'
+      path: '/customers/create'
+      fullPath: '/customers/create'
+      preLoaderRoute: typeof AuthenticatedCustomersCreateRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/users/$userId/show': {
       id: '/_authenticated/users/$userId/show'
       path: '/show'
@@ -542,6 +588,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/suppliers/$supplierId/edit'
       preLoaderRoute: typeof AuthenticatedSuppliersSupplierIdEditRouteImport
       parentRoute: typeof AuthenticatedSuppliersSupplierIdRoute
+    }
+    '/_authenticated/customers/$customerId/show': {
+      id: '/_authenticated/customers/$customerId/show'
+      path: '/customers/$customerId/show'
+      fullPath: '/customers/$customerId/show'
+      preLoaderRoute: typeof AuthenticatedCustomersCustomerIdShowRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/customers/$customerId/edit': {
+      id: '/_authenticated/customers/$customerId/edit'
+      path: '/customers/$customerId/edit'
+      fullPath: '/customers/$customerId/edit'
+      preLoaderRoute: typeof AuthenticatedCustomersCustomerIdEditRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
@@ -583,6 +643,7 @@ const AuthenticatedUsersUserIdRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedCustomersCreateRoute: typeof AuthenticatedCustomersCreateRoute
   AuthenticatedSuppliersSupplierIdRoute: typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
   AuthenticatedSuppliersCreateRoute: typeof AuthenticatedSuppliersCreateRoute
   AuthenticatedUsersUserIdRoute: typeof AuthenticatedUsersUserIdRouteWithChildren
@@ -590,7 +651,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
   AuthenticatedInventoryMovementsIndexRoute: typeof AuthenticatedInventoryMovementsIndexRoute
-  AuthenticatedInventoryStockIndexRoute: typeof AuthenticatedInventoryStockIndexRoute
+  AuthenticatedInventoryStocksIndexRoute: typeof AuthenticatedInventoryStocksIndexRoute
   AuthenticatedMachinesIndexRoute: typeof AuthenticatedMachinesIndexRoute
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
@@ -599,11 +660,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedWarehousesIndexRoute: typeof AuthenticatedWarehousesIndexRoute
+  AuthenticatedCustomersCustomerIdEditRoute: typeof AuthenticatedCustomersCustomerIdEditRoute
+  AuthenticatedCustomersCustomerIdShowRoute: typeof AuthenticatedCustomersCustomerIdShowRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedCustomersCreateRoute: AuthenticatedCustomersCreateRoute,
   AuthenticatedSuppliersSupplierIdRoute:
     AuthenticatedSuppliersSupplierIdRouteWithChildren,
   AuthenticatedSuppliersCreateRoute: AuthenticatedSuppliersCreateRoute,
@@ -613,7 +677,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
   AuthenticatedInventoryMovementsIndexRoute:
     AuthenticatedInventoryMovementsIndexRoute,
-  AuthenticatedInventoryStockIndexRoute: AuthenticatedInventoryStockIndexRoute,
+  AuthenticatedInventoryStocksIndexRoute:
+    AuthenticatedInventoryStocksIndexRoute,
   AuthenticatedMachinesIndexRoute: AuthenticatedMachinesIndexRoute,
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,
@@ -622,6 +687,10 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
   AuthenticatedWarehousesIndexRoute: AuthenticatedWarehousesIndexRoute,
+  AuthenticatedCustomersCustomerIdEditRoute:
+    AuthenticatedCustomersCustomerIdEditRoute,
+  AuthenticatedCustomersCustomerIdShowRoute:
+    AuthenticatedCustomersCustomerIdShowRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

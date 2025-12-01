@@ -93,7 +93,7 @@ export const useMenuItems = () => {
         menuItems: [
           {
             title: 'Existencias',
-            href: '/inventory-stock',
+            href: '/inventory-stocks',
             isEnabled: true,
             icon: <Boxes aria-hidden='true' size={20} />
           },

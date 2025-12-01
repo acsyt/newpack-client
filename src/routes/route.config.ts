@@ -98,6 +98,9 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/users/$userId/show': ['users.show'],
   '/classes': ['classes.index'],
   '/customers': ['customers.index'],
+  '/customers/create': ['customers.create'],
+  '/customers/$customerId/edit': ['customers.edit'],
+  '/customers/$customerId/show': ['customers.show'],
   '/machines': ['machines.index'],
   '/processes': ['processes.index'],
   '/raw-materials': ['raw-materials.index'],
@@ -109,7 +112,7 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/subclasses': ['subclasses.index'],
   '/warehouses': ['warehouses.index'],
   '/inventory-movements': ['inventory-movements.index'],
-  '/inventory-stock': ['inventory-stocks.index']
+  '/inventory-stocks': ['inventory-stocks.index']
 };
 
 export const useRouteConfig = () => {
@@ -161,6 +164,32 @@ export const useRouteConfig = () => {
     '/customers': {
       title: 'Clientes',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clientes' }]
+    },
+    '/customers/create': {
+      title: 'Create Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: 'Create' }
+      ]
+    },
+    '/customers/$customerId/edit': {
+      title: 'Edit Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Edit' }
+      ]
+    },
+    '/customers/$customerId/show': {
+      title: 'Show Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Show' }
+      ]
     },
     '/machines': {
       title: 'Máquinas',
@@ -219,7 +248,7 @@ export const useRouteConfig = () => {
       title: 'Movimientos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Movimientos' }]
     },
-    '/inventory-stock': {
+    '/inventory-stocks': {
       title: 'Existencias',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Existencias' }]
     }

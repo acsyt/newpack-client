@@ -13,7 +13,7 @@ export interface InventoryStock {
   warehouseLocationId: number | null;
   batchId: number | null;
   quantity: number;
-  status: 'available' | 'reserved' | 'damaged';
+  status: InventoryStockStatus;
   product?: Product;
   warehouse?: Warehouse;
   warehouseLocation?: WarehouseLocation;
@@ -22,17 +22,25 @@ export interface InventoryStock {
   updatedAt: string;
 }
 
+export enum InventoryStockStatus {
+  Available = 'available',
+  Reserved = 'reserved',
+  Damaged = 'damaged'
+}
+
 export interface InventoryStockFilter {
   product_id?: number;
   warehouse_id?: number;
   warehouse_location_id?: number;
   batch_id?: number;
-  status?: 'available' | 'reserved' | 'damaged';
+  status?: InventoryStockStatus;
+  product_type_id?: number;
 }
 
 export type InventoryStockRelations =
   | 'product'
   | 'product.measureUnit'
+  | 'product.productType'
   | 'warehouse'
   | 'warehouseLocation'
   | 'batch';

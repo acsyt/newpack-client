@@ -40,11 +40,18 @@ export const inventoryTransferSchema = z
       .array(
         z.object({
           product_id: z.number({ required_error: 'El producto es requerido' }),
-          quantity: z
-            .number({ required_error: 'La cantidad es requerida' })
+          quantity: z.coerce
+            .number({
+              required_error: 'La cantidad es requerida',
+              invalid_type_error: 'La cantidad es requerida'
+            })
             .positive('La cantidad debe ser mayor a 0'),
-          source_location_id: z.number().nullable().optional(),
-          destination_location_id: z.number().nullable().optional(),
+          source_location_id: z.number({
+            required_error: 'Ubic. Origen requerida'
+          }),
+          destination_location_id: z.number({
+            required_error: 'Ubic. Destino requerida'
+          }),
           batch_id: z.number().nullable().optional()
         })
       )
