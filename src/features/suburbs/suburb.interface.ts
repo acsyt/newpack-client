@@ -8,6 +8,7 @@ export interface Suburb {
 
 export interface SuburbFilter {
   id?: number[];
+  name?: string
 }
 
 export type SuburbRelations = '';
