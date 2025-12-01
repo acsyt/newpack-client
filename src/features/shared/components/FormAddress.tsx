@@ -50,16 +50,13 @@ export function FormAddress<T extends FieldValues & { city: string; state: strin
       const response = await apiFetcher.get<ZipCodeLookupResponse>(
         `/addresses/lookup/${zipCode}`
       );
-
       const options = response.data.data.suburbs.map((item) => ({
         key: item.id,
         value: item.id,
         label: item.name,
       }));
-
       setValue(labels.city, response.data.data.city.name as PathValue<T, Path<T>>);
       setValue(labels.state, response.data.data.state.name as PathValue<T, Path<T>>);
-
       return options;
     } catch {
       return [];

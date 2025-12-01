@@ -274,7 +274,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
                   control={control}
                   disabled={isDisabled}
                   multiline
-                  rows={1}
+                  rows={3}
                 />
             </Grid>
           </Grid>

@@ -15,6 +15,7 @@ import { ModeAction } from '@/config/enums/mode-action.enum';
 import { SupplierDto, supplierSchema } from '@/features/suppliers/supplier.schema';
 import type { Supplier } from '@/features/suppliers/supplier.interface';
 import { CustomOption } from '@/interfaces/custom-option.interface';
+import { FormAddress } from '@/features/shared/components/FormAddress';
 
 type SupplierFormProps = {
   mode: ModeAction;
@@ -33,7 +34,7 @@ export const SupplierForm: FC<SupplierFormProps> = ({ mode, supplier }) => {
         email: supplier?.email ?? '',
         phone: supplier?.phone ?? '',
         phone_secondary: supplier?.phoneSecondary ?? '',
-        suburb_id: supplier?.suburbId ?? 1,
+        suburb_id: supplier?.suburbId ?? 0,
         street: supplier?.street ?? '',
         exterior_number: supplier?.exteriorNumber ?? '',
         interior_number: supplier?.interiorNumber ?? '',
@@ -42,13 +43,16 @@ export const SupplierForm: FC<SupplierFormProps> = ({ mode, supplier }) => {
         legal_name: supplier?.legalName ?? '',
         tax_system: supplier?.taxSystem ?? '',
         status: supplier?.status ?? 'active',
-        notes: supplier?.notes ?? ''
+        notes: supplier?.notes ?? '',
+        zip_code: supplier?.suburb?.zipCode?.name ?? '',
+        city: supplier?.suburb?.zipCode?.city?.name ?? '',
+        state: supplier?.suburb.zipCode?.city?.state?.name ?? ''
     };
 
     return userValues;
   }, [mode, supplier]);
 
-  const { control, handleSubmit } = useForm<SupplierDto>({
+  const { control, handleSubmit, watch, setValue } = useForm<SupplierDto>({
     mode: 'onBlur',
     resolver: zodResolver(supplierSchema),
     defaultValues: defaultValues
@@ -64,7 +68,9 @@ export const SupplierForm: FC<SupplierFormProps> = ({ mode, supplier }) => {
     mutation.mutateAsync({ data, id: supplierId });
   };
 
-  const onError = (_errors: FieldErrors<SupplierDto>) => {};
+  const onError = (_errors: FieldErrors<SupplierDto>) => {
+    console.log('errors: ', _errors);
+  };
 
   const supplierStatusOptions: CustomOption[] = [
     {
@@ -198,51 +204,63 @@ export const SupplierForm: FC<SupplierFormProps> = ({ mode, supplier }) => {
           </Grid>
         </Grid>
 
-        {/* === Dirección === */}
-        <Grid size={12}>
+         {/* Dirección */}
+        <FormAddress 
+          control={control}
+          isDisabled={isDisabled}
+          labels={{
+            city: 'city',
+            state: 'state',
+            suburb_id: 'suburb_id',
+            zip_code: 'zip_code'
+          }}
+          setValue={setValue}
+          watch={watch}
+        />
+
+         <Grid size={12}>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 5 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <CustomFormTextField
-                fieldType="text"
-                name="street"
-                label="Calle"
-                placeholder="Ingrese la calle"
+                fieldType='text'
+                name='street'
+                label='Calle'
+                placeholder='Ingrese la calle'
                 control={control}
                 disabled={isDisabled}
-                inputProps={{ maxLength: 100 }}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 2 }}>
-              <CustomFormTextField
-                fieldType="text"
-                name="exterior_number"
-                label="Número exterior"
-                placeholder="Ej. 123"
-                control={control}
-                disabled={isDisabled}
-                inputProps={{ maxLength: 10 }}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, md: 2 }}>
-              <CustomFormTextField
-                fieldType="text"
-                name="interior_number"
-                label="Número interior"
-                placeholder="Ej. A"
-                control={control}
-                disabled={isDisabled}
-                inputProps={{ maxLength: 10 }}
-              />
-            </Grid>
+
             <Grid size={{ xs: 12, md: 3 }}>
               <CustomFormTextField
-                fieldType="text"
-                name="address_reference"
-                label="Referencia de dirección"
-                placeholder="Ej. Frente al parque"
+                fieldType='text'
+                name='exterior_number'
+                label='Número exterior'
+                placeholder='Ingrese el número exterior'
                 control={control}
                 disabled={isDisabled}
-                inputProps={{ maxLength: 150 }}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 3 }}>
+              <CustomFormTextField
+                fieldType='text'
+                name='interior_number'
+                label='Número interior'
+                placeholder='Ingrese el número interior'
+                control={control}
+                disabled={isDisabled}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+              <CustomFormTextField
+                fieldType='text'
+                name='address_reference'
+                label='Referencia de dirección'
+                placeholder='Ingrese una referencia'
+                control={control}
+                disabled={isDisabled}
               />
             </Grid>
           </Grid>

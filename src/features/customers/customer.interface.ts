@@ -18,7 +18,7 @@ export interface Customer {
   rfc: string;
   razonSocial: string;
   regimenFiscal: string;
-  status: string; 
+  status: 'active' | 'inactive' | 'suspended' | 'blacklisted';
   clientType: string;
   notes: string;
   createdBy: number;
@@ -31,7 +31,7 @@ export interface Customer {
   legalName: string | null;
 }
 
-export interface Suburb {
+interface Suburb {
   id: number;
   name: string;
   zipCodeId: number;

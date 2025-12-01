@@ -16,7 +16,7 @@ export interface Supplier {
   rfc: string;
   legalName: string;
   taxSystem: string;
-  status: string;
+  status: 'active' | 'inactive' | 'suspended' | 'blacklisted';
   notes?: string | null;
   createdBy: number;
   updatedBy: number;
@@ -24,18 +24,40 @@ export interface Supplier {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
-  suburb: {
-    id: number;
-    name: string;
-    zipCodeId: number;
-  };
+  suburb: Suburb
 };
+
+interface Suburb {
+  id: number;
+  name: string;
+  zipCodeId: number;
+  zipCode: ZipCode
+}
+
+interface ZipCode {
+  id: number,
+  name: string,
+  city: City
+};
+
+interface City {
+  id: number,
+  name: string
+  state: State
+}
+
+interface State {
+  id: number,
+  code: string,
+  name: string
+}
+
 
 export interface SupplierFilter {
   id?: number[];
 }
 
-export type SupplierRelations = '';
+export type SupplierRelations = 'suburb.zipCode';
 
 export interface SupplierParams
   extends BasePaginationParams<SupplierFilter, SupplierRelations> {}

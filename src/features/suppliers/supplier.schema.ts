@@ -15,8 +15,11 @@ export const baseSchema = z.object({
   rfc: z.string().regex(/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/, "RFC inválido"),
   legal_name: z.string().min(1, "La razón social es obligatoria"),
   tax_system: z.string().min(1, "El régimen fiscal es obligatorio"),
-  status: z.string(),
+  status: z.enum(['active', 'inactive', 'suspended', 'blacklisted']),
   notes: z.string().optional(),
+  zip_code: z.string({ required_error: 'El código postal es obligatorio'}).min(1, 'El código postal es obligatorio'),
+  city: z.string(),
+  state: z.string()
 });
 
 const createSchema = z.object({
