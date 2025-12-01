@@ -21,7 +21,7 @@ interface WarehouseQueryOptions
     UseQueryOptions<PaginationResponse<Warehouse>>,
     'queryKey' | 'queryFn'
   > {
-  options: WarehouseParams;
+  options?: WarehouseParams;
 }
 
 export const warehousesKeys = {
@@ -31,7 +31,7 @@ export const warehousesKeys = {
 } as const;
 
 export const useWarehousesQuery = ({
-  options,
+  options = {},
   ...rest
 }: WarehouseQueryOptions) => {
   return useQuery({

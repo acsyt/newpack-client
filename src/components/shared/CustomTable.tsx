@@ -74,6 +74,7 @@ interface CustomTableProps<
   enableRowSelection?: boolean;
   onRowSelectionChange?: (selectedIds: number[]) => void;
   allowFullWidthActions?: boolean;
+  customFilters?: ColumnFiltersState;
 }
 
 export const CustomTable = <
@@ -90,6 +91,7 @@ export const CustomTable = <
   enableRowSelection = false,
   onRowSelectionChange,
   allowFullWidthActions = false,
+  customFilters,
   ...rest
 }: CustomTableProps<T, P, F, I>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -113,38 +115,45 @@ export const CustomTable = <
   const mutableFilters = useMemo(() => {
     const filters = {} as Record<string, string[]>;
 
-    debouncedColumnFilters?.forEach(({ id, value }) => {
-      const isArray = Array.isArray(value);
+    const processFilters = (filterList: ColumnFiltersState) => {
+      filterList?.forEach(({ id, value }) => {
+        const isArray = Array.isArray(value);
 
-      if (!isArray) {
-        if (typeof value === 'string') {
-          filters[id] = [value];
-        } else if (typeof value === 'number') {
-          filters[id] = [value.toString()];
-        } else if (typeof value === 'boolean') {
-          filters[id] = [value ? 'true' : 'false'];
-        } else if (dayjs.isDayjs(value)) {
-          filters[id] = [value.toISOString().split('T')[0]];
-        } else if (value instanceof Date) {
-          filters[id] = [value.toISOString().split('T')[0]];
-        } else {
-          filters[id] = [String(value)];
-        }
-      } else {
-        filters[id] = value.map(item => {
-          if (dayjs.isDayjs(item)) {
-            return item.toISOString().split('T')[0];
-          } else if (item instanceof Date) {
-            return item.toISOString().split('T')[0];
+        if (!isArray) {
+          if (typeof value === 'string') {
+            filters[id] = [value];
+          } else if (typeof value === 'number') {
+            filters[id] = [value.toString()];
+          } else if (typeof value === 'boolean') {
+            filters[id] = [value ? 'true' : 'false'];
+          } else if (dayjs.isDayjs(value)) {
+            filters[id] = [value.toISOString().split('T')[0]];
+          } else if (value instanceof Date) {
+            filters[id] = [value.toISOString().split('T')[0]];
           } else {
-            return String(item);
+            filters[id] = [String(value)];
           }
-        });
-      }
-    });
+        } else {
+          filters[id] = value.map(item => {
+            if (dayjs.isDayjs(item)) {
+              return item.toISOString().split('T')[0];
+            } else if (item instanceof Date) {
+              return item.toISOString().split('T')[0];
+            } else {
+              return String(item);
+            }
+          });
+        }
+      });
+    };
+
+    processFilters(debouncedColumnFilters);
+    if (customFilters) {
+      processFilters(customFilters);
+    }
 
     return filters as F;
-  }, [debouncedColumnFilters]);
+  }, [debouncedColumnFilters, customFilters]);
 
   const combinedFilters = useMemo(() => {
     return {
@@ -308,7 +317,31 @@ export const CustomTable = <
       sx: {
         maxHeight: '550px',
         borderRadius: '12px',
-        boxShadow: 'none'
+        boxShadow: 'none',
+        '&::-webkit-scrollbar': {
+          width: '8px',
+          height: '8px'
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent'
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(0,0,0,0.1)',
+          borderRadius: '4px'
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: 'rgba(0,0,0,0.2)'
+        }
+      }
+    },
+    muiTableBodyRowProps: {
+      hover: true,
+      sx: {
+        cursor: 'pointer',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          backgroundColor: 'rgba(0, 0, 0, 0.02) !important'
+        }
       }
     },
     muiTableBodyCellProps: ({ cell }) => {
@@ -383,6 +416,10 @@ export const CustomTable = <
           },
           '& .MuiButtonBase-root': {
             color: 'inherit'
+          },
+          transition: 'background-color 0.2s',
+          '&:hover': {
+            backgroundColor: 'primary.dark'
           }
         }
       };
@@ -502,10 +539,11 @@ export const CustomTable = <
       globalFilter,
       rowSelection: enableRowSelection ? rowSelection : {}
     },
+    enableRowActions: true,
     onRowSelectionChange: enableRowSelection
       ? handleRowSelectionChange
       : undefined,
-    onColumnFiltersChange: filters => setColumnFilters(filters),
+    onColumnFiltersChange: setColumnFilters,
     onPaginationChange: pagination => setPagination(pagination),
     onSortingChange: sorting => setSorting(sorting),
     onGlobalFilterChange: value => {

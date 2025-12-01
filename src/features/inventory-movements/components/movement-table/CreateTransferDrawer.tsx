@@ -390,7 +390,7 @@ const TransferRow = ({
   const stockQueryOptions = useMemo<InventoryStockParams>(
     () => ({
       filter: {
-        warehouse_id: sourceWarehouseId,
+        warehouse_id: sourceWarehouseId ? [sourceWarehouseId] : [],
         search: debouncedSearchTerm
       },
       include: [
