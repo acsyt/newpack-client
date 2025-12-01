@@ -132,4 +132,11 @@ export type Permission =
 
   // Stock
   | 'inventory-stocks.index'
-  | 'inventory-stocks.export';
+  | 'inventory-stocks.export'
+
+  // Currencies
+  | 'currencies.index'
+  | 'currencies.show'
+  | 'currencies.create'
+  | 'currencies.edit'
+  | 'currencies.export';

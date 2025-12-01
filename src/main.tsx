@@ -1,4 +1,5 @@
 import { StrictMode } from 'react';
+import './extensions/string.extensions';
 import { createRoot } from 'react-dom/client';
 
 import { MainApp } from './MainApp.tsx';

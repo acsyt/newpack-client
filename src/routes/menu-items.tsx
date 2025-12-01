@@ -13,7 +13,8 @@ import {
   Shield,
   UserCheckIcon,
   Users,
-  Warehouse
+  Warehouse,
+  Coins
 } from 'lucide-react';
 
 export const useMenuItems = () => {
@@ -65,6 +66,12 @@ export const useMenuItems = () => {
             href: '/machines',
             isEnabled: true,
             icon: <ChartBarStacked aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Monedas',
+            href: '/currencies',
+            isEnabled: true,
+            icon: <Coins aria-hidden='true' size={20} />
           }
         ]
       },

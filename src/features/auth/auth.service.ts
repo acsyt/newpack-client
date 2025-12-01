@@ -1,4 +1,4 @@
-import { Permission } from '../role/role.interface';
+import { Permission } from '../roles/role.interface';
 
 import { apiFetcher } from '@/config/api-fetcher';
 import { getErrorMessage } from '@/config/error.mapper';

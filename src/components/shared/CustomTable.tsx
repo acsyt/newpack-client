@@ -50,6 +50,7 @@ import {
   INITIAL_PAGE,
   INITIAL_PAGE_SIZE
 } from '@/config/constants/app.constants';
+import { MRT_Localization_ES } from '@/config/i18n/mrt-localization.es';
 
 interface CustomTableProps<
   T extends MRT_RowData,
@@ -410,9 +411,22 @@ export const CustomTable = <
           '& .MuiSvgIcon-root': {
             color: 'inherit'
           },
+          '& .MuiTableSortLabel-root': {
+            color: 'inherit !important',
+            '&:hover': {
+              color: 'inherit !important'
+            },
+            '&.Mui-active': {
+              color: 'inherit !important',
+              '& .MuiTableSortLabel-icon': {
+                color: 'inherit !important',
+                opacity: 1
+              }
+            }
+          },
           '& .MuiTableSortLabel-icon': {
             color: 'inherit !important',
-            opacity: 1
+            opacity: 0.5
           },
           '& .MuiButtonBase-root': {
             color: 'inherit'
@@ -539,6 +553,7 @@ export const CustomTable = <
       globalFilter,
       rowSelection: enableRowSelection ? rowSelection : {}
     },
+    localization: MRT_Localization_ES,
     enableRowActions: true,
     onRowSelectionChange: enableRowSelection
       ? handleRowSelectionChange

@@ -1,16 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
-import { RoleTable } from '@/features/roles/components/role-table/RoleTable';
+import { CurrencyTable } from '@/features/currencies/components/currency-table/CurrencyTable';
 
-export const Route = createFileRoute('/_authenticated/roles/')({
+export const Route = createFileRoute('/_authenticated/currencies/')({
   component: RouteComponent
 });
 
 function RouteComponent() {
   return (
-    <DashboardLayoutContainer title={'Listado de Roles'}>
-      <RoleTable />
+    <DashboardLayoutContainer title='Listado de Tipos de Monedas'>
+      <CurrencyTable />
     </DashboardLayoutContainer>
   );
 }

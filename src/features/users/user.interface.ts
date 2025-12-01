@@ -1,5 +1,5 @@
 import { BasePaginationParams } from '../../interfaces/pagination-response.interface';
-import { Role } from '../role/role.interface';
+import { Role } from '../roles/role.interface';
 
 export interface User {
   id: number;
