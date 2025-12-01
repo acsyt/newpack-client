@@ -290,7 +290,27 @@ export const CustomTable = <
     columnFilterDisplayMode: 'custom',
     enableFacetedValues: true,
     enableGlobalFilter: enableGlobalFilter,
-    muiTableContainerProps: { sx: { maxHeight: '550px' } },
+
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: {
+        borderRadius: '12px',
+        backgroundColor: 'transparent',
+        overflow: 'hidden'
+      }
+    },
+    muiTopToolbarProps: {
+      sx: {
+        backgroundColor: 'transparent'
+      }
+    },
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: '550px',
+        borderRadius: '12px',
+        boxShadow: 'none'
+      }
+    },
     muiTableBodyCellProps: ({ cell }) => {
       if (cell.column.id === 'mrt-row-actions') {
         return {
@@ -324,7 +344,9 @@ export const CustomTable = <
           maxWidth: '200px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
+          borderBottom: '1px solid',
+          borderColor: 'divider'
         }
       };
     },
@@ -334,7 +356,9 @@ export const CustomTable = <
           sx: {
             minWidth: 'auto',
             width: 'auto',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            backgroundColor: 'primary.main',
+            color: 'primary.contrastText'
           }
         };
       }
@@ -344,7 +368,22 @@ export const CustomTable = <
           maxWidth: '200px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
+          backgroundColor: 'primary.main',
+          color: 'primary.contrastText',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          fontSize: '0.875rem',
+          '& .MuiSvgIcon-root': {
+            color: 'inherit'
+          },
+          '& .MuiTableSortLabel-icon': {
+            color: 'inherit !important',
+            opacity: 1
+          },
+          '& .MuiButtonBase-root': {
+            color: 'inherit'
+          }
         }
       };
     },
