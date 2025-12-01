@@ -4,10 +4,6 @@ import { useMemo, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import { ArrowDown, ArrowUp, Plus } from 'lucide-react';
 
 import { MovementType } from '../../inventory-movement.interface';
@@ -80,7 +76,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
         }}
         renderTopToolbarCustomActions={() => (
           <Box display='flex' gap={2} alignItems='flex-end' flexWrap='wrap'>
-            <FormControl size='small' sx={{ minWidth: 200 }}>
+            {/* <FormControl size='small' sx={{ minWidth: 200 }}>
               <InputLabel>Almacén</InputLabel>
               <Select
                 displayEmpty
@@ -158,7 +154,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
               >
                 Limpiar filtros
               </Button>
-            )}
+            )} */}
 
             <Box display='flex' gap={1} marginLeft='auto'>
               {permissions.includes('inventory-movements.create-entry') && (

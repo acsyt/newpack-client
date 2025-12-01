@@ -2,6 +2,7 @@ import type { MRT_ColumnDef } from 'material-react-table';
 
 import { Chip } from '@mui/material';
 
+import { InventoryStockHelper } from '../../inventory-stock.helper';
 import {
   InventoryStock,
   InventoryStockStatus
@@ -31,31 +32,31 @@ export const columns: MRT_ColumnDef<InventoryStock>[] = [
   },
   {
     header: 'SKU',
-    id: 'sku',
+    id: 'product.sku',
     accessorFn: row => row.product?.sku || '-',
     size: 120
   },
   {
     header: 'Producto',
-    id: 'product',
+    id: 'product.name',
     accessorFn: row => row.product?.name || '-',
     size: 200
   },
   {
     header: 'Tipo',
-    id: 'productType',
+    id: 'product.productType.name',
     accessorFn: row => row.product?.productType?.name || '-',
     size: 180
   },
   {
     header: 'Almacén',
-    id: 'warehouse',
+    id: 'warehouse.name',
     accessorFn: row => (row.warehouse ? row.warehouse.name : '-'),
     size: 150
   },
   {
     header: 'Ubicación',
-    id: 'location',
+    id: 'warehouseLocation.aisle',
     accessorFn: row =>
       row.warehouseLocation
         ? row.warehouseLocation.aisle +
@@ -68,7 +69,7 @@ export const columns: MRT_ColumnDef<InventoryStock>[] = [
   },
   {
     header: 'Lote',
-    id: 'batch',
+    id: 'batch.code',
     accessorFn: row => row.batch?.code || '-',
     size: 100
   },
@@ -93,14 +94,10 @@ export const columns: MRT_ColumnDef<InventoryStock>[] = [
     accessorKey: 'status',
     size: 120,
     filterVariant: 'select',
-    filterSelectOptions: [
-      { label: 'Disponible', value: 'available' },
-      { label: 'Reservado', value: 'reserved' },
-      { label: 'Dañado', value: 'damaged' }
-    ],
+    filterSelectOptions: InventoryStockHelper.getHumanStatuses(),
     Cell: ({ row: { original } }) => (
       <Chip
-        label={statusLabels[original.status]}
+        label={InventoryStockHelper.humanReadableStatus(original.status)}
         color={statusColors[original.status]}
         size='small'
       />

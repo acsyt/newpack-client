@@ -134,23 +134,6 @@ function RouteComponent() {
               </Select>
             </FormControl>
 
-            <FormControl size='small' sx={{ minWidth: 180 }}>
-              <InputLabel>Estado</InputLabel>
-              <Select
-                displayEmpty
-                value={selectedStatus}
-                label='Estado'
-                onChange={e => setSelectedStatus(e.target.value)}
-              >
-                <MenuItem value=''>
-                  <em>Todos los estados</em>
-                </MenuItem>
-                <MenuItem value='available'>Disponible</MenuItem>
-                <MenuItem value='reserved'>Reservado</MenuItem>
-                <MenuItem value='damaged'>Dañado</MenuItem>
-              </Select>
-            </FormControl>
-
             {hasActiveFilters && (
               <Button
                 variant='outlined'
