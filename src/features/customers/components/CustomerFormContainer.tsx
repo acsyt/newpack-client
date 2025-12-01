@@ -16,10 +16,10 @@ type CustomerFormContainerProps = {
 export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({ mode, customerId, title }) => {
   const { data: customer,isLoading: customerLoading, error, refetch, isRefetching } = useCustomerByIdQuery({
     id: customerId!,
-    options: {},
+    options: {include: ['suburb.zipCode']},
     enabled: mode !== ModeAction.Create,
     retry: false,
-    staleTime: 5 * 60 * 1000
+    staleTime: 5 * 60 * 1000,
   });
   
   if (mode === ModeAction.Create) {

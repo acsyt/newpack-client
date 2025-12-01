@@ -37,14 +37,25 @@ export interface Suburb {
   id: number;
   name: string;
   zipCodeId: number;
+  zipCode: ZipCode
 }
 
+interface ZipCode {
+  id: number,
+  name: string,
+  city: City
+};
+
+interface City {
+  id: number,
+  name: string
+}
 
 export interface CustomerFilter {
   id?: number[];
 }
 
-export type CusomerRelations = '';
+export type CusomerRelations = 'suburb.zipCode';
 
 export interface CustomerParams
   extends BasePaginationParams<CustomerFilter, CusomerRelations> {}

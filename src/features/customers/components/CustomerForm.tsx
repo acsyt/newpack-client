@@ -13,7 +13,6 @@ import { Customer } from '@/features/customers/customer.interface';
 import { CustomerDto, customerSchema } from '@/features/customers/customer.schema';
 import { useCustomersMutation } from '@/features/customers/hook/customer.mutation';
 import { Autocomplete, TextField } from '@mui/material';
-import { useSuburbsQuery } from '@/features/suburbs/hooks/suburb.query';
 import { CustomOption } from '@/interfaces/custom-option.interface';
 
 type CustomerFormProps = {
@@ -34,7 +33,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
         email: customer?.email || '',
         phone: customer?.phone || '',
         phone_secondary: customer?.phoneSecondary || '',
-        suburb_id: customer?.suburbId || 1,
+        suburb_id: customer?.suburbId || 0,
         street: customer?.street || '',
         exterior_number: customer?.exteriorNumber || '',
         interior_number: customer?.interiorNumber || '',
@@ -46,11 +45,15 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
         status: customer?.status || 'active',
         // clientType: customer?.clientType || 'individual',
         notes: customer?.notes || '',
+        // /
+        zip_code: customer?.suburb?.zipCode?.name ?? '',
+        city: customer?.suburb?.zipCode?.city?.name ?? ''
+        
     };
     return userValues;
   }, [customer, mode]);
 
-  const { control, handleSubmit } = useForm<CustomerDto>({
+  const { control, handleSubmit, watch } = useForm<CustomerDto>({
     mode: 'onBlur',
     resolver: zodResolver(customerSchema),
     defaultValues: defaultValues
@@ -97,6 +100,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
 
   const onError = (errors: any) => {};
 
+  const valueZipCode = watch('zip_code');
+
+  useEffect(()=>{
+      console.log('Me dispare: ', valueZipCode);
+  }, [valueZipCode]);
+  
   return (
     <form onSubmit={handleSubmit(onSaveUser, onError)}>
       <Grid container spacing={3}>
@@ -179,38 +188,51 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
 
         {/* Dirección */}
         <Grid size={12}>
-          {/* <Controller
-            control={control}
-            name='suburb_id'
-            render={({
-              field: { onChange, value },
-              fieldState: { error }
-            }) => (
-              <Autocomplete
-                options={suburbs}
-                getOptionLabel={option => option.name}
-                value={suburbs.find(item => item.id === value) || null}
-                disabled={isShow}
-                onInputChange={(_, inputValue, reason) => {
-                  if (reason === "input") {
-                    console.log("Usuario está escribiendo:", inputValue);
-                  }
-                }}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    label='Colonia'
-                    error={!!error}
-                    helperText={error?.message}
-                  />
-                )}
-                onChange={(_, newValue) => {
-                  onChange(newValue ? newValue.id : null);
-                }}
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <CustomFormTextField
+                fieldType='text'
+                name='city'
+                label='Ciudad'
+                control={control}
+                disabled={true}
               />
-            )}
-          /> */}
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 5  }}>
+                {/* TODO: En este punto hacer el selector multiple en este punto de la inog */}
+                <CustomFormTextField
+                  fieldType='text'
+                  name='suburb_id'
+                  label='Colonia'
+                  placeholder='Ingresa la colonia'
+                  control={control}
+                  disabled={isDisabled}
+                />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 3 }}>
+              <CustomFormTextField
+                fieldType='text'
+                name='zip_code'
+                label='Codigo postal'
+                placeholder='Ingrese el codigo postal'
+                control={control}
+                disabled={isDisabled}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+              <CustomFormTextField
+                fieldType='text'
+                name='address_reference'
+                label='Referencia de dirección'
+                placeholder='Ingrese una referencia'
+                control={control}
+                disabled={isDisabled}
+              />
+            </Grid>
+          </Grid>
         </Grid>
 
         <Grid size={12}>

@@ -19,6 +19,8 @@ export const baseSchema = z.object({
     status: z.string(),
     // client_type: z.string(),
     notes: z.string().optional(),
+    zip_code: z.string({ required_error: 'El código postal es obligatorio'}).min(1, 'El código postal es obligatorio'),
+    city: z.string()
 });
 
 const createSchema = z.object({
