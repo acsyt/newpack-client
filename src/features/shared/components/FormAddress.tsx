@@ -18,6 +18,7 @@ interface FormAddressProps<T extends FieldValues> {
   labels: LabelsValues<T>;
   setValue: UseFormSetValue<T>;
   watch: UseFormWatch<T>;
+  zipCode: string | undefined;
 }
 
 interface LabelsValues<T extends FieldValues> {
@@ -43,6 +44,7 @@ export function FormAddress<T extends FieldValues & { city: string; state: strin
   labels,
   setValue,
   watch,
+  zipCode
 }: FormAddressProps<T>) {
     
   const getOptionsSuburbs = async (zipCode: string): Promise<CustomOption[]> => {
@@ -63,12 +65,12 @@ export function FormAddress<T extends FieldValues & { city: string; state: strin
     }
   };
 
-  const zipCode = watch(labels.zip_code); 
+  const zip = (zipCode) ? zipCode : watch(labels.zip_code); 
 
   const { data: suburbs, refetch } = useQuery({
-    queryKey: ['address', zipCode],
-    queryFn: () => getOptionsSuburbs(zipCode),
-    enabled: false,
+    queryKey: ['address', zip],
+    queryFn: () => getOptionsSuburbs(zip),
+    enabled: zipCode ?  true : false,
   });
 
   return (

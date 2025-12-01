@@ -174,6 +174,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
           }}
           setValue={setValue}
           watch={watch}
+          zipCode={customer?.suburb?.zipCode?.name}
         />
 
         <Grid size={12}>
