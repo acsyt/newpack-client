@@ -107,6 +107,8 @@ export type Permission =
   | 'customers.show'
   | 'customers.create'
   | 'customers.edit'
+  | 'customers.change-password'
+  | 'customers.export'
   | 'customers.export'
 
   // Warehouses
