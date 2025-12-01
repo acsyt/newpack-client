@@ -1,3 +1,5 @@
+import { ModeAction } from '@/config/enums/mode-action.enum';
+import { SuppliersFormContainer } from '@/features/suppliers/components/SupplierFormContainer';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_authenticated/suppliers/create')({
@@ -5,5 +7,5 @@ export const Route = createFileRoute('/_authenticated/suppliers/create')({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/suppliers/create"!</div>;
+  return <SuppliersFormContainer mode={ModeAction.Create} title='Crear proveedor' />
 }
