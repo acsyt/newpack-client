@@ -1,4 +1,7 @@
-import type { CurrencyParams, Currency } from '@/features/currencies/currency.interface';
+import type {
+  CurrencyParams,
+  Currency
+} from '@/features/currencies/currency.interface';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 import type { UseQueryOptions } from '@tanstack/react-query';
 

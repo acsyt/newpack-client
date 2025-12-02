@@ -38,8 +38,12 @@ interface ReceiveFormValues {
   items: {
     transfer_item_id: number;
     product_name: string;
+    product_type: string;
+    measure_unit: string;
     quantity_sent: number;
     quantity_received: number;
+    quantity_missing: number;
+    quantity_damaged: number;
     location_suggested: string;
   }[];
   receiving_notes: string;
@@ -56,6 +60,8 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
       include: [
         'items',
         'items.product',
+        'items.product.productType',
+        'items.product.measureUnit',
         'sourceWarehouse',
         'destinationWarehouse'
       ]
@@ -71,14 +77,19 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
     });
 
   const { fields } = useFieldArray({ control, name: 'items' });
+  const items = watch('items');
 
   useEffect(() => {
     if (transfer && transfer.items) {
       const formItems = transfer.items.map((item: any) => ({
         transfer_item_id: item.id,
         product_name: item.product?.name || 'Desconocido',
+        product_type: item.product?.productType?.name || '-',
+        measure_unit: item.product?.measureUnit?.code || 'U',
         quantity_sent: Number(item.quantitySent),
         quantity_received: Number(item.quantitySent),
+        quantity_missing: 0,
+        quantity_damaged: 0,
         location_suggested: item.destinationLocation
           ? 'Pasillo X (Planificado)'
           : 'Sin asignar'
@@ -95,7 +106,9 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
     const payload = {
       items: data.items.map(item => ({
         transfer_item_id: item.transfer_item_id,
-        quantity_received: Number(item.quantity_received)
+        quantity_received: Number(item.quantity_received),
+        quantity_missing: Number(item.quantity_missing),
+        quantity_damaged: Number(item.quantity_damaged)
       })),
       receiving_notes: data.receiving_notes
     };
@@ -117,7 +130,7 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
     <CustomDrawer
       open={isOpen}
       title={`Recibir Transferencia #${transfer?.transferNumber || '...'}`}
-      width='900px'
+      width='1000px'
       footer={
         <Box display='flex' justifyContent='flex-end' gap={2} width='100%'>
           <Button color='inherit' onClick={onClose}>
@@ -167,12 +180,19 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
                   sx={{ '& th': { bgcolor: '#F1F5F9', fontWeight: 600 } }}
                 >
                   <TableCell>Producto</TableCell>
+                  <TableCell>Tipo</TableCell>
                   <TableCell align='center'>Ubicación Destino</TableCell>
                   <TableCell align='right' width={100}>
                     Enviado
                   </TableCell>
-                  <TableCell align='right' width={120}>
+                  <TableCell align='right' width={100}>
                     Recibido
+                  </TableCell>
+                  <TableCell align='right' width={100}>
+                    Faltante
+                  </TableCell>
+                  <TableCell align='right' width={100}>
+                    Dañado
                   </TableCell>
                   <TableCell align='center' width={50}>
                     Status
@@ -182,12 +202,40 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
               <TableBody>
                 {fields.map((field, index) => {
                   const received = watch(`items.${index}.quantity_received`);
+                  const missing = watch(`items.${index}.quantity_missing`);
+                  const damaged = watch(`items.${index}.quantity_damaged`);
                   const sent = field.quantity_sent;
-                  const isDifference = Number(received) !== sent;
+
+                  const totalAccounted =
+                    Number(received) + Number(missing) + Number(damaged);
+                  const isDifference = totalAccounted !== sent;
 
                   return (
                     <TableRow key={field.id}>
-                      <TableCell>{field.product_name}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography variant='body2' fontWeight={500}>
+                            {field.product_name}
+                          </Typography>
+                          <Typography variant='caption' color='textSecondary'>
+                            U.M.: {field.measure_unit}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant='caption'
+                          sx={{
+                            bgcolor: '#F1F5F9',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
+                            fontWeight: 500
+                          }}
+                        >
+                          {field.product_type}
+                        </Typography>
+                      </TableCell>
                       <TableCell align='center'>
                         <Typography
                           variant='caption'
@@ -217,15 +265,61 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
                               type='number'
                               size='small'
                               variant='standard'
-                              error={isDifference}
                               InputProps={{ disableUnderline: true }}
                               sx={{
                                 ...inputSx,
-                                bgcolor: isDifference
-                                  ? '#FEF2F2'
-                                  : 'transparent',
+                                bgcolor: 'transparent',
                                 borderRadius: 1,
-                                px: 1
+                                px: 1,
+                                border: '1px solid #e2e8f0'
+                              }}
+                            />
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Controller
+                          name={`items.${index}.quantity_missing`}
+                          control={control}
+                          rules={{ min: 0 }}
+                          render={({ field: inputProps }) => (
+                            <TextField
+                              {...inputProps}
+                              type='number'
+                              size='small'
+                              variant='standard'
+                              InputProps={{ disableUnderline: true }}
+                              sx={{
+                                ...inputSx,
+                                bgcolor: 'transparent',
+                                borderRadius: 1,
+                                px: 1,
+                                border: '1px solid #e2e8f0',
+                                '& .MuiInputBase-input': { color: '#d97706' }
+                              }}
+                            />
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Controller
+                          name={`items.${index}.quantity_damaged`}
+                          control={control}
+                          rules={{ min: 0 }}
+                          render={({ field: inputProps }) => (
+                            <TextField
+                              {...inputProps}
+                              type='number'
+                              size='small'
+                              variant='standard'
+                              InputProps={{ disableUnderline: true }}
+                              sx={{
+                                ...inputSx,
+                                bgcolor: 'transparent',
+                                borderRadius: 1,
+                                px: 1,
+                                border: '1px solid #e2e8f0',
+                                '& .MuiInputBase-input': { color: '#dc2626' }
                               }}
                             />
                           )}
@@ -233,7 +327,7 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
                       </TableCell>
                       <TableCell align='center'>
                         {isDifference ? (
-                          <Tooltip title='Diferencia detectada (Faltante/Sobrante)'>
+                          <Tooltip title='La suma (Recibido + Faltante + Dañado) no coincide con lo Enviado'>
                             <AlertTriangle
                               size={18}
                               className='text-amber-500'
@@ -250,8 +344,12 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
             </Table>
           </TableContainer>
 
-          {watch('items').some(
-            i => Number(i.quantity_received) !== i.quantity_sent
+          {items.some(
+            i =>
+              Number(i.quantity_received) +
+                Number(i.quantity_missing) +
+                Number(i.quantity_damaged) !==
+              i.quantity_sent
           ) && (
             <Alert severity='warning'>
               Hay diferencias entre lo enviado y lo recibido. Estas se

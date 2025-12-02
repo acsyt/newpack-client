@@ -1,8 +1,9 @@
-import { Warehouse } from '../warehouses/warehouse.interface';
-import { User } from '../users/user.interface';
-import { Product } from '../products/product.interface';
-import { WarehouseLocation } from '../warehouses/warehouse.interface';
 import { Batch } from '../batches/batch.interface';
+import { Product } from '../products/product.interface';
+import { User } from '../users/user.interface';
+import { Warehouse } from '../warehouses/warehouse.interface';
+import { WarehouseLocation } from '../warehouses/warehouse.interface';
+
 import { BasePaginationParams } from '@/interfaces/pagination-response.interface';
 
 export enum TransferStatus {

@@ -118,13 +118,14 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
     [warehousesData]
   );
 
-  const { data: destLocationsData } = useWarehouseLocationsQuery({
-    options: {
-      has_pagination: false,
-      filter: { warehouse_id: destWarehouseId ? [destWarehouseId] : [] }
-    },
-    enabled: !!destWarehouseId
-  });
+  const { data: destLocationsData, isSuccess: isDestLocationsSuccess } =
+    useWarehouseLocationsQuery({
+      options: {
+        has_pagination: false,
+        filter: { warehouse_id: destWarehouseId ? [destWarehouseId] : [] }
+      },
+      enabled: !!destWarehouseId
+    });
   const sortedWarehouses = useMemo(() => {
     return [...warehouses].sort((a, b) => {
       const stockA = a.stocksCount || 0;
@@ -146,7 +147,7 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
   const destLocations = destLocationsData?.data || [];
 
   const destWarehouseHasNoLocations =
-    !!destWarehouseId && destLocations.length === 0;
+    !!destWarehouseId && isDestLocationsSuccess && destLocations.length === 0;
   const selectedSourceWarehouse = warehouses.find(
     w => w.id === sourceWarehouseId
   );

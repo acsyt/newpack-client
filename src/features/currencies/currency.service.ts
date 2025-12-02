@@ -17,31 +17,34 @@ export class CurrencyService extends SharedService {
   static findAllCurrencies = async (
     options: CurrencyParams
   ): Promise<PaginationResponse<Currency>> => {
-    return SharedService.findAll<Currency, CurrencyFilter, CurrencyRelations, CurrencyParams>(
-      apiFetcher,
-      '/currencies',
-      options
-    );
+    return SharedService.findAll<
+      Currency,
+      CurrencyFilter,
+      CurrencyRelations,
+      CurrencyParams
+    >(apiFetcher, '/currencies', options);
   };
 
   static findCurrencyByIdAction = async (
     id: number,
     options: CurrencyParams
   ): Promise<Currency> => {
-    return SharedService.findOne<Currency, CurrencyFilter, CurrencyRelations, CurrencyParams>(
-      apiFetcher,
-      `/currencies/${id}`,
-      options
-    );
+    return SharedService.findOne<
+      Currency,
+      CurrencyFilter,
+      CurrencyRelations,
+      CurrencyParams
+    >(apiFetcher, `/currencies/${id}`, options);
   };
 
-  static createCurrency = async (currencyDto: CurrencyDto): Promise<DataResponse<Currency>> => {
+  static createCurrency = async (
+    currencyDto: CurrencyDto
+  ): Promise<DataResponse<Currency>> => {
     try {
-      const data = await SharedService.create<DataResponse<Currency>, CurrencyDto>(
-        apiFetcher,
-        '/currencies',
-        currencyDto
-      );
+      const data = await SharedService.create<
+        DataResponse<Currency>,
+        CurrencyDto
+      >(apiFetcher, '/currencies', currencyDto);
 
       return data;
     } catch (error) {
@@ -54,11 +57,10 @@ export class CurrencyService extends SharedService {
     currencyDto: CurrencyDto
   ): Promise<DataResponse<Currency>> => {
     try {
-      const data = await SharedService.update<DataResponse<Currency>, CurrencyDto>(
-        apiFetcher,
-        `/currencies/${id}`,
-        currencyDto
-      );
+      const data = await SharedService.update<
+        DataResponse<Currency>,
+        CurrencyDto
+      >(apiFetcher, `/currencies/${id}`, currencyDto);
 
       return data;
     } catch (error) {

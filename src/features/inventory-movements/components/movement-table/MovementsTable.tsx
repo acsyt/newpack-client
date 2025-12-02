@@ -14,7 +14,16 @@ import {
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import dayjs from 'dayjs';
-import { ArrowDown, ArrowUp, Plus } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowDownCircle,
+  ArrowRightCircle,
+  ArrowUp,
+  ArrowUpCircle,
+  FileText,
+  Plus,
+  UserIcon
+} from 'lucide-react';
 import { MRT_ColumnDef } from 'material-react-table';
 
 import { InventoryMovementHelper } from '../../inventory-movement.helper';
@@ -33,14 +42,6 @@ import { useWarehousesQuery } from '@/features/warehouses/hooks/warehouses.query
 
 interface MovementsTableProps {}
 
-const typeColors: Record<
-  MovementType,
-  'success' | 'error' | 'warning' | 'info' | 'default'
-> = {
-  [MovementType.Entry]: 'success',
-  [MovementType.Exit]: 'success'
-};
-
 const isEntryType = (type: MovementType): boolean => {
   return type === MovementType.Entry;
 };
@@ -54,180 +55,197 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   const memoizedColumns = useMemo<MRT_ColumnDef<InventoryMovement>[]>(
     () => [
       {
-        id: 'id',
-        header: 'ID',
-        accessorKey: 'id',
-        size: 60
-      },
-      {
-        header: 'Fecha/Hora',
+        header: 'Cuándo',
         id: 'created_at',
         accessorKey: 'createdAt',
-        filterVariant: 'date-range',
-        size: 160,
-        accessorFn: row =>
-          row.createdAt
-            ? dayjs(row.createdAt)
-                .tz(dayjs.tz.guess())
-                .format('DD/MM/YYYY HH:mm')
-            : '-'
-      },
-      {
-        header: 'Tipo',
-        id: 'type',
-        accessorKey: 'type',
-        size: 180,
-        filterVariant: 'select',
-        filterSelectOptions: InventoryMovementHelper.getHumanTypes(),
+        size: 100,
         Cell: ({ row: { original } }) => (
-          <Chip
-            label={InventoryMovementHelper.humanReadableType(original.type)}
-            color={typeColors[original.type]}
-            size='small'
-            icon={
-              isEntryType(original.type) ? (
-                <ArrowUp size={16} />
-              ) : (
-                <ArrowDown size={16} />
-              )
-            }
-          />
+          <div className='flex flex-col'>
+            <span className='text-sm font-semibold text-gray-900'>
+              {dayjs(original.createdAt).format('DD MMM, YYYY')}
+            </span>
+            <span className='text-xs text-gray-500'>
+              {dayjs(original.createdAt).format('HH:mm a')}
+            </span>
+          </div>
         )
       },
+
       {
-        header: 'SKU',
-        id: 'sku',
-        accessorFn: row => row.product?.sku || '-',
-        size: 120
+        header: 'Movimiento',
+        id: 'type',
+        accessorKey: 'type',
+        size: 130,
+        Cell: ({ row: { original } }) => {
+          const isEntry = isEntryType(original.type);
+          const isTransfer = !!original.relatedMovement;
+
+          let color = isEntry ? 'success' : 'error';
+          let Icon = isEntry ? ArrowUpCircle : ArrowDownCircle;
+          let label = InventoryMovementHelper.humanReadableType(original.type);
+
+          if (isTransfer) {
+            color = 'info';
+            Icon = ArrowRightCircle;
+            label = isEntry ? 'Recepción Transf.' : 'Envío Transf.';
+          }
+
+          return (
+            <Chip
+              icon={<Icon size={16} />}
+              label={label}
+              size='small'
+              color={color as any}
+              variant='outlined'
+              sx={{ fontWeight: 600, border: 'none', bgcolor: `${color}.50` }}
+            />
+          );
+        }
       },
+
       {
         header: 'Producto',
-        id: 'product.name',
-        accessorFn: row => row.product?.name || '-',
-        size: 200
+        id: 'product_details',
+        accessorFn: row => row.product?.name,
+        size: 280,
+        Cell: ({ row: { original } }) => (
+          <div className='flex flex-col'>
+            <span className='text-sm font-bold leading-tight text-gray-800'>
+              {original.product?.name}
+            </span>
+            <span className='font-mono text-xs text-gray-500'>
+              SKU: {original.product?.sku}
+            </span>
+          </div>
+        )
       },
-      {
-        header: 'Almacén',
-        id: 'warehouse.name',
-        accessorFn: row => (row.warehouse ? row.warehouse.name : '-'),
-        size: 150
-      },
-      {
-        header: 'Orden de Compra',
-        id: 'purchase_order',
-        accessorFn: row => {
-          if (row.type === MovementType.Entry && row.referenceId) {
-            return `#${row.referenceId}`;
-          }
 
-          return '-';
-        },
-        size: 160,
-        Cell: ({ row: { original } }) => {
-          if (original.type === MovementType.Entry && original.referenceId) {
-            return (
-              <span style={{ fontWeight: 500 }}>#{original.referenceId}</span>
-            );
-          }
-
-          return '-';
-        }
-      },
-      {
-        header: 'Pedido Interno',
-        id: 'internal_order',
-        accessorFn: row => {
-          if (row.type === MovementType.Exit && row.referenceId)
-            return `#${row.referenceId}`;
-
-          return '-';
-        },
-        size: 160,
-        Cell: ({ row: { original } }) => {
-          if (original.type === MovementType.Exit && original.referenceId) {
-            return (
-              <span style={{ fontWeight: 500 }}>#{original.referenceId}</span>
-            );
-          }
-
-          return '-';
-        }
-      },
       {
         header: 'Origen',
         id: 'source_warehouse',
         accessorFn: row => {
-          if (
-            row.type === MovementType.Exit &&
-            row.relatedMovement?.warehouse
-          ) {
+          if (row.type === MovementType.Entry && row.relatedMovement?.warehouse)
             return row.relatedMovement.warehouse.name;
-          }
+          if (row.type === MovementType.Exit && row.warehouse)
+            return row.warehouse.name;
 
           return '-';
         },
         size: 150
       },
+
       {
         header: 'Destino',
         id: 'destination_warehouse',
-        accessorFn: row =>
-          row.type === MovementType.Exit && row.warehouse
-            ? row.warehouse.name
-            : '-',
+        accessorFn: row => {
+          if (row.type === MovementType.Exit && row.relatedMovement?.warehouse)
+            return row.relatedMovement.warehouse.name;
+
+          if (row.type === MovementType.Entry && row.warehouse)
+            return row.warehouse.name;
+
+          return '-';
+        },
         size: 150
       },
+
+      {
+        header: 'Referencia',
+        id: 'reference_unified',
+        size: 160,
+        Cell: ({ row: { original } }) => {
+          let text = 'Ajuste Manual';
+          let subtext = '';
+
+          if (original.referenceId) {
+            if (original.type === MovementType.Entry) {
+              text = `Orden Compra #${original.referenceId}`;
+            } else {
+              text = `Pedido #${original.referenceId}`;
+            }
+          } else if (original.relatedMovement) {
+            text = 'Transferencia';
+            subtext =
+              original.type === MovementType.Exit
+                ? `Hacia: ${original.relatedMovement.warehouse?.name}`
+                : `Desde: ${original.relatedMovement.warehouse?.name}`;
+          }
+
+          return (
+            <div className='flex items-center gap-2'>
+              <FileText size={16} className='text-gray-400' />
+              <div className='flex flex-col'>
+                <span className='text-sm text-gray-700'>{text}</span>
+                {subtext && (
+                  <span className='text-xs text-gray-500'>{subtext}</span>
+                )}
+              </div>
+            </div>
+          );
+        }
+      },
+
       {
         header: 'Cantidad',
         id: 'quantity',
         accessorKey: 'quantity',
-        size: 100,
+        size: 110,
+        muiTableHeadCellProps: { align: 'right' },
+        muiTableBodyCellProps: { align: 'right' },
         Cell: ({ row: { original } }) => {
-          const quantity = Number(original.quantity);
-          const isEntry = isEntryType(original.type);
+          const val = Number(original.quantity);
+          const isPositive = val > 0;
 
           return (
-            <span
-              style={{
-                fontWeight: 'bold',
-                color: isEntry ? 'green' : 'red'
-              }}
-            >
-              {isEntry ? '+' : '-'}
-              {Math.abs(quantity).toFixed(2)}{' '}
-              {original.product?.measureUnit?.code || ''}
-            </span>
+            <div className='flex items-baseline justify-end gap-1'>
+              <span
+                className={`text-sm font-bold tabular-nums ${
+                  isPositive ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {isPositive ? '+' : ''}
+                {val.toFixed(2)}
+              </span>
+              <span className='text-xs text-gray-500'>
+                {original.product?.measureUnit?.code}
+              </span>
+            </div>
           );
         }
       },
+
       {
-        header: 'Saldo Resultante',
-        id: 'balance_after',
-        size: 140,
-        Cell: ({ row: { original } }) => {
-          const balance = Number(original.balanceAfter);
-
-          return (
-            <span style={{ fontWeight: 'bold' }}>
-              {balance.toFixed(2)} {original.product?.measureUnit?.code || ''}
+        header: 'Stock',
+        id: 'balance',
+        accessorKey: 'balanceAfter',
+        size: 100,
+        muiTableHeadCellProps: { align: 'right' },
+        muiTableBodyCellProps: { align: 'right' },
+        Cell: ({ row: { original } }) => (
+          <div className='flex items-baseline justify-end gap-1'>
+            <span className='text-sm font-medium tabular-nums text-gray-900'>
+              {Number(original.balanceAfter).toFixed(2)}
             </span>
-          );
-        }
+            <span className='text-xs text-gray-500'>
+              {original.product?.measureUnit?.code}
+            </span>
+          </div>
+        )
       },
+
       {
         header: 'Usuario',
-        id: 'user.full_name',
-        accessorFn: row => row.user?.fullName || '-',
-        size: 150
-      },
-      {
-        header: 'Referencia',
-        id: 'reference',
-        accessorFn: row =>
-          row.referenceType && row.referenceId
-            ? `${row.referenceType.split('\\').pop()} #${row.referenceId}`
-            : '-',
-        size: 150
+        id: 'user',
+        accessorFn: row => row.user?.fullName,
+        size: 150,
+        Cell: ({ row: { original } }) => (
+          <div className='flex items-center gap-2'>
+            <UserIcon size={16} className='text-gray-400 opacity-50' />
+            <span className='max-w-[140px] truncate text-sm text-gray-600'>
+              {original.user?.fullName || 'Sistema'}
+            </span>
+          </div>
+        )
       }
     ],
     []
@@ -329,16 +347,14 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
                     <em>Todos los tipos</em>
                   </MenuItem>
                   <MenuItem value='entry'>
-                    <Box display='flex' alignItems='center' gap={1}>
-                      <ArrowUp size={16} color='green' />
-                      Entrada
-                    </Box>
+                    <div className='flex items-center gap-2'>
+                      <ArrowUp size={16} className='text-green-600' /> Entrada
+                    </div>
                   </MenuItem>
                   <MenuItem value='exit'>
-                    <Box display='flex' alignItems='center' gap={1}>
-                      <ArrowDown size={16} color='red' />
-                      Salida
-                    </Box>
+                    <div className='flex items-center gap-2'>
+                      <ArrowDown size={16} className='text-red-600' /> Salida
+                    </div>
                   </MenuItem>
                 </Select>
               </FormControl>

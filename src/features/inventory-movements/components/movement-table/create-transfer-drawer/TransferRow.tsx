@@ -126,8 +126,9 @@ export const TransferRow: FC<TransferRowProps> = ({
           getOptionLabel={s => {
             if (!s.product) return '';
             const batchInfo = s.batch ? ` | Lote: ${s.batch.code}` : '';
+            const uom = s.product?.measureUnit?.code || 'U';
 
-            return `${s.product.sku} - ${s.product.name}${batchInfo}`;
+            return `${s.product.sku} - ${s.product.name}${batchInfo} (${uom})`;
           }}
           renderOption={(props, option) => (
             <li
@@ -158,7 +159,8 @@ export const TransferRow: FC<TransferRowProps> = ({
 
                 <div className='flex flex-col items-end gap-1 shrink-0'>
                   <span className='text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100'>
-                    {Number(option.quantity).toFixed(2)}
+                    {Number(option.quantity).toFixed(2)}{' '}
+                    {option.product?.measureUnit?.code}
                   </span>
                   {option.batch && (
                     <span className='text-[10px] font-medium text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100'>
@@ -291,12 +293,21 @@ export const TransferRow: FC<TransferRowProps> = ({
                   error
                     ? error.message
                     : sourceLocationId
-                      ? `Max: ${Number(maxAvailable).toFixed(2)}`
+                      ? `Max: ${Number(maxAvailable).toFixed(2)} ${selectedStockObj?.product?.measureUnit?.code || ''}`
                       : ''
                 }
                 InputProps={{
                   disableUnderline: true,
-                  inputProps: { min: 0, max: maxAvailable, step: 0.0001 }
+                  inputProps: { min: 0, max: maxAvailable, step: 0.0001 },
+                  endAdornment: selectedStockObj?.product?.measureUnit?.code ? (
+                    <Typography
+                      variant='caption'
+                      color='text.secondary'
+                      sx={{ ml: 1 }}
+                    >
+                      {selectedStockObj.product.measureUnit.code}
+                    </Typography>
+                  ) : null
                 }}
                 sx={invisibleInputSx(!!error)}
                 onChange={async e => {
