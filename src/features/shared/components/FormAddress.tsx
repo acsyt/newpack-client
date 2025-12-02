@@ -76,6 +76,18 @@ export function FormAddress<T extends FieldValues & { city: string; state: strin
   return (
     <Grid size={12}>
       <Grid container spacing={2}>
+         <Grid size={{ xs: 12, md: 3 }}>
+          <CustomFormTextField
+            fieldType="text"
+            name={labels.zip_code}
+            label="Código postal"
+            placeholder="Ingrese el código postal"
+            control={control}
+            disabled={isDisabled}
+            onBlur={() => refetch()}
+          />
+        </Grid>
+
         <Grid size={{ xs: 12, md: 3 }}>
           <CustomFormTextField
             fieldType="text"
@@ -106,19 +118,7 @@ export function FormAddress<T extends FieldValues & { city: string; state: strin
             disabled={isDisabled || suburbs?.length === 0}
             options={suburbs ?? []}
           />
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 3 }}>
-          <CustomFormTextField
-            fieldType="text"
-            name={labels.zip_code}
-            label="Código postal"
-            placeholder="Ingrese el código postal"
-            control={control}
-            disabled={isDisabled}
-            onBlur={() => refetch()}
-          />
-        </Grid>
+        </Grid>       
       </Grid>
     </Grid>
   );
