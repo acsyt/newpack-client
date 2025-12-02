@@ -25,7 +25,7 @@ import {
 
 import { CustomTable } from '@/components/shared/CustomTable';
 import { useAuth } from '@/features/auth/hooks/mutations';
-import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/CreateTransferDrawer';
+import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/create-transfer-drawer/CreateTransferDrawer';
 import { TransfersTab } from '@/features/inventory-movements/components/movement-table/TransfersTab';
 import { useInventoryMovementsQuery } from '@/features/inventory-movements/hooks/inventory-movements.query';
 import { InventoryMovementParams } from '@/features/inventory-movements/inventory-movement.interface';
@@ -39,11 +39,6 @@ const typeColors: Record<
 > = {
   [MovementType.Entry]: 'success',
   [MovementType.Exit]: 'success'
-};
-
-const typeLabels: Record<MovementType, string> = {
-  [MovementType.Entry]: 'Entrada',
-  [MovementType.Exit]: 'Salida'
 };
 
 const isEntryType = (type: MovementType): boolean => {

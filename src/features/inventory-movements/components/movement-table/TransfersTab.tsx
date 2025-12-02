@@ -3,6 +3,8 @@ import { FC, useMemo, useState } from 'react';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es-mx';
 import { PackageCheck, Eye } from 'lucide-react';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -52,21 +54,25 @@ export const TransfersTab: FC = () => {
   const columns: MRT_ColumnDef<Transfer>[] = useMemo(
     () => [
       {
+        id: 'transfer_number',
         accessorKey: 'transferNumber',
         header: 'N° Transferencia',
         size: 150
       },
       {
+        id: 'sourceWarehouse.name',
         accessorKey: 'sourceWarehouse.name',
         header: 'Almacén Origen',
         size: 180
       },
       {
+        id: 'destinationWarehouse.name',
         accessorKey: 'destinationWarehouse.name',
         header: 'Almacén Destino',
         size: 180
       },
       {
+        id: 'status',
         accessorKey: 'status',
         header: 'Estado',
         size: 130,
@@ -80,40 +86,30 @@ export const TransfersTab: FC = () => {
         )
       },
       {
+        id: 'total_items_count',
         accessorKey: 'totalItemsCount',
         header: 'Items',
         size: 80,
-        Cell: ({ row }) =>
-          row.original.totalItemsCount || row.original.items?.length || 0
+        Cell: ({ row }) => row.original.totalItemsCount || 0
       },
       {
+        id: 'shipped_at',
         accessorKey: 'shippedAt',
         header: 'Fecha Envío',
         size: 150,
         Cell: ({ row }) =>
           row.original.shippedAt
-            ? new Date(row.original.shippedAt).toLocaleDateString('es-MX', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })
+            ? dayjs(row.original.shippedAt).format('DD MMM YYYY, HH:mm')
             : '-'
       },
       {
+        id: 'received_at',
         accessorKey: 'receivedAt',
         header: 'Fecha Recepción',
         size: 150,
         Cell: ({ row }) =>
           row.original.receivedAt
-            ? new Date(row.original.receivedAt).toLocaleDateString('es-MX', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })
+            ? dayjs(row.original.receivedAt).format('DD MMM YYYY, HH:mm')
             : '-'
       }
     ],

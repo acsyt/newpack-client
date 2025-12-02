@@ -1,7 +1,9 @@
-import { FC, useMemo } from 'react';
+import { useEffect, FC } from 'react';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,18 +12,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Check } from 'lucide-react';
-import { Controller, useForm } from 'react-hook-form';
+import { Save, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import {
-  useReceiveTransferMutation,
-  useTransferQuery
-} from '../../../transfers/hooks/transfers.query';
-
 import { CustomDrawer } from '@/components/shared/CustomDrawer';
-import { getErrorMessage } from '@/config/error.mapper';
+import {
+  useTransferQuery,
+  useReceiveTransferMutation
+} from '@/features/transfers/hooks/transfers.query';
+
+const inputSx = {
+  '& .MuiInputBase-input': { textAlign: 'right', fontWeight: 'bold' }
+};
 
 interface ReceiveTransferDrawerProps {
   isOpen: boolean;
@@ -29,15 +34,16 @@ interface ReceiveTransferDrawerProps {
   transferId: number | null;
 }
 
-type ReceiveFormData = {
-  receiving_notes?: string;
-  items: Array<{
+interface ReceiveFormValues {
+  items: {
     transfer_item_id: number;
+    product_name: string;
+    quantity_sent: number;
     quantity_received: number;
-    quantity_missing?: number;
-    quantity_damaged?: number;
-  }>;
-};
+    location_suggested: string;
+  }[];
+  receiving_notes: string;
+}
 
 export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
   isOpen,
@@ -45,272 +51,224 @@ export const ReceiveTransferDrawer: FC<ReceiveTransferDrawerProps> = ({
   transferId
 }) => {
   const { data: transfer, isLoading } = useTransferQuery({
-    id: transferId || 0,
+    id: transferId!,
     options: {
       include: [
         'items',
         'items.product',
-        'items.product.measureUnit',
-        'items.sourceLocation',
-        'items.destinationLocation',
         'sourceWarehouse',
         'destinationWarehouse'
       ]
     },
-    enabled: isOpen && !!transferId
+    enabled: !!transferId
   });
 
-  const receiveMutation = useReceiveTransferMutation();
+  const mutation = useReceiveTransferMutation();
 
-  const defaultValues = useMemo(() => {
-    if (!transfer?.items) return { receiving_notes: '', items: [] };
+  const { control, handleSubmit, setValue, watch, reset } =
+    useForm<ReceiveFormValues>({
+      defaultValues: { items: [], receiving_notes: '' }
+    });
 
-    return {
-      receiving_notes: '',
-      items: transfer.items.map(item => ({
+  const { fields } = useFieldArray({ control, name: 'items' });
+
+  useEffect(() => {
+    if (transfer && transfer.items) {
+      const formItems = transfer.items.map((item: any) => ({
         transfer_item_id: item.id,
-        quantity_received: Number(item.quantitySent) || 0,
-        quantity_missing: 0,
-        quantity_damaged: 0
-      }))
-    };
-  }, [transfer]);
+        product_name: item.product?.name || 'Desconocido',
+        quantity_sent: Number(item.quantitySent),
+        quantity_received: Number(item.quantitySent),
+        location_suggested: item.destinationLocation
+          ? 'Pasillo X (Planificado)'
+          : 'Sin asignar'
+      }));
 
-  const { control, handleSubmit, reset } = useForm<ReceiveFormData>({
-    defaultValues,
-    values: defaultValues
-  });
+      setValue('items', formItems);
+      setValue('receiving_notes', '');
+    }
+  }, [transfer, setValue]);
 
-  const onSubmit = (data: ReceiveFormData) => {
+  const onSubmit = (data: ReceiveFormValues) => {
     if (!transferId) return;
 
-    receiveMutation.mutate(
-      { id: transferId, data },
+    const payload = {
+      items: data.items.map(item => ({
+        transfer_item_id: item.transfer_item_id,
+        quantity_received: Number(item.quantity_received)
+      })),
+      receiving_notes: data.receiving_notes
+    };
+
+    mutation.mutate(
+      { id: transferId, data: payload },
       {
         onSuccess: () => {
-          toast.success('Transferencia recibida exitosamente');
-          reset();
+          toast.success('Recepción confirmada exitosamente');
           onClose();
+          reset();
         },
-        onError: (error: any) => {
-          const message = getErrorMessage(error);
-
-          toast.error(message);
-        }
+        onError: () => toast.error('Error al procesar la recepción')
       }
     );
   };
 
-  if (isLoading) {
-    return (
-      <CustomDrawer
-        open={isOpen}
-        title='Recibir Transferencia'
-        onClose={onClose}
-      >
-        <Box display='flex' justifyContent='center' p={4}>
-          <Typography>Cargando...</Typography>
-        </Box>
-      </CustomDrawer>
-    );
-  }
-
-  if (!transfer) return null;
-
   return (
     <CustomDrawer
       open={isOpen}
-      title={`Recibir Transferencia ${transfer.transferNumber}`}
+      title={`Recibir Transferencia #${transfer?.transferNumber || '...'}`}
       width='900px'
       footer={
-        <Box display='flex' justifyContent='space-between' width='100%' gap={2}>
-          <Typography variant='caption' color='text.secondary'>
-            {transfer.sourceWarehouse?.name} →{' '}
-            {transfer.destinationWarehouse?.name}
-          </Typography>
-          <Box display='flex' gap={2}>
-            <Button color='inherit' onClick={onClose}>
-              Cancelar
-            </Button>
-            <Button
-              disableElevation
-              variant='contained'
-              disabled={receiveMutation.isPending}
-              startIcon={<Check size={18} />}
-              onClick={handleSubmit(onSubmit)}
-            >
-              {receiveMutation.isPending
-                ? 'Procesando...'
-                : 'Confirmar Recepción'}
-            </Button>
-          </Box>
+        <Box display='flex' justifyContent='flex-end' gap={2} width='100%'>
+          <Button color='inherit' onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            disabled={mutation.isPending}
+            startIcon={<Save size={18} />}
+            onClick={handleSubmit(onSubmit)}
+          >
+            {mutation.isPending ? 'Procesando...' : 'Confirmar Entrada'}
+          </Button>
         </Box>
       }
       onClose={onClose}
     >
-      <Box className='flex flex-col gap-4'>
-        <Box
-          sx={{
-            p: 2,
-            bgcolor: '#EFF6FF',
-            border: '1px solid #BFDBFE',
-            borderRadius: 2
-          }}
-        >
-          <Typography variant='body2' color='text.secondary'>
-            Ingresa la cantidad <strong>realmente recibida</strong> para cada
-            producto. Si hay diferencias (daños, faltantes), solo se agregará al
-            stock la cantidad que confirmes.
-          </Typography>
+      {isLoading ? (
+        <Box display='flex' justifyContent='center' p={5}>
+          <CircularProgress />
         </Box>
+      ) : (
+        <Box display='flex' flexDirection='column' gap={3}>
+          <Paper variant='outlined' sx={{ p: 2, bgcolor: '#F8FAFC' }}>
+            <Typography variant='subtitle2' color='textSecondary'>
+              Ruta del Envío
+            </Typography>
+            <Box display='flex' alignItems='center' gap={2} mt={1}>
+              <Typography fontWeight={600}>
+                {transfer?.sourceWarehouse?.name}
+              </Typography>
+              <Typography color='textSecondary'>→</Typography>
+              <Typography fontWeight={600}>
+                {transfer?.destinationWarehouse?.name}
+              </Typography>
+            </Box>
+            <Typography variant='caption' display='block' mt={1}>
+              Notas de envío: {transfer?.notes || 'Ninguna'}
+            </Typography>
+          </Paper>
 
-        <TableContainer
-          component={Paper}
-          variant='outlined'
-          sx={{ borderRadius: 2 }}
-        >
-          <Table size='small'>
-            <TableHead>
-              <TableRow
-                sx={{ '& th': { bgcolor: '#F1F5F9', fontWeight: 600 } }}
-              >
-                <TableCell width='30%'>Producto</TableCell>
-                <TableCell width='12%' align='right'>
-                  Qty Enviada
-                </TableCell>
-                <TableCell width='14%' align='center'>
-                  Qty Recibida
-                </TableCell>
-                <TableCell width='13%' align='center'>
-                  Faltantes
-                </TableCell>
-                <TableCell width='13%' align='center'>
-                  Dañados
-                </TableCell>
-                <TableCell width='18%'>Ubicación Destino</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transfer.items?.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <Box>
-                      <Typography variant='body2' fontWeight={500}>
-                        {item.product?.name || 'N/A'}
-                      </Typography>
-                      <Typography variant='caption' color='text.secondary'>
-                        SKU: {item.product?.sku || 'N/A'}
-                      </Typography>
-                    </Box>
+          <TableContainer component={Paper} variant='outlined'>
+            <Table size='small'>
+              <TableHead>
+                <TableRow
+                  sx={{ '& th': { bgcolor: '#F1F5F9', fontWeight: 600 } }}
+                >
+                  <TableCell>Producto</TableCell>
+                  <TableCell align='center'>Ubicación Destino</TableCell>
+                  <TableCell align='right' width={100}>
+                    Enviado
                   </TableCell>
-
-                  <TableCell align='right'>
-                    <Typography
-                      variant='body2'
-                      fontWeight={600}
-                      color='primary.main'
-                    >
-                      {Number(item.quantitySent).toFixed(2)}
-                    </Typography>
+                  <TableCell align='right' width={120}>
+                    Recibido
                   </TableCell>
-
-                  <TableCell>
-                    <Controller
-                      control={control}
-                      name={`items.${index}.quantity_received`}
-                      rules={{
-                        required: 'Requerido',
-                        min: { value: 0, message: 'Debe ser >= 0' }
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <TextField
-                          {...field}
-                          fullWidth
-                          type='number'
-                          size='small'
-                          error={!!error}
-                          helperText={error?.message}
-                          inputProps={{ min: 0, step: 0.0001 }}
-                          sx={{ maxWidth: 120 }}
-                        />
-                      )}
-                    />
-                  </TableCell>
-
-                  <TableCell>
-                    <Controller
-                      control={control}
-                      name={`items.${index}.quantity_missing`}
-                      rules={{
-                        min: { value: 0, message: '>= 0' }
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <TextField
-                          {...field}
-                          fullWidth
-                          type='number'
-                          size='small'
-                          error={!!error}
-                          helperText={error?.message}
-                          inputProps={{ min: 0, step: 0.0001 }}
-                          sx={{ maxWidth: 110 }}
-                        />
-                      )}
-                    />
-                  </TableCell>
-
-                  <TableCell>
-                    <Controller
-                      control={control}
-                      name={`items.${index}.quantity_damaged`}
-                      rules={{
-                        min: { value: 0, message: '>= 0' }
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <TextField
-                          {...field}
-                          fullWidth
-                          type='number'
-                          size='small'
-                          error={!!error}
-                          helperText={error?.message}
-                          inputProps={{ min: 0, step: 0.0001 }}
-                          sx={{ maxWidth: 110 }}
-                        />
-                      )}
-                    />
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography variant='body2' color='text.secondary'>
-                      {item.destinationLocation
-                        ? `${item.destinationLocation.aisle}-${item.destinationLocation.shelf}-${item.destinationLocation.section}`
-                        : 'N/A'}
-                    </Typography>
+                  <TableCell align='center' width={50}>
+                    Status
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {fields.map((field, index) => {
+                  const received = watch(`items.${index}.quantity_received`);
+                  const sent = field.quantity_sent;
+                  const isDifference = Number(received) !== sent;
 
-        <Controller
-          control={control}
-          name='receiving_notes'
-          render={({ field }) => (
-            <TextField
-              {...field}
-              multiline
-              fullWidth
-              label='Notas de Recepción (Opcional)'
-              rows={3}
-              placeholder='Ej: 2 unidades llegaron dañadas, 1 faltante...'
-              variant='outlined'
-              size='small'
-            />
+                  return (
+                    <TableRow key={field.id}>
+                      <TableCell>{field.product_name}</TableCell>
+                      <TableCell align='center'>
+                        <Typography
+                          variant='caption'
+                          sx={{
+                            bgcolor: '#EFF6FF',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1
+                          }}
+                        >
+                          {field.location_suggested}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Typography variant='body2' color='textSecondary'>
+                          {field.quantity_sent}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Controller
+                          name={`items.${index}.quantity_received`}
+                          control={control}
+                          rules={{ min: 0 }}
+                          render={({ field: inputProps }) => (
+                            <TextField
+                              {...inputProps}
+                              type='number'
+                              size='small'
+                              variant='standard'
+                              error={isDifference}
+                              InputProps={{ disableUnderline: true }}
+                              sx={{
+                                ...inputSx,
+                                bgcolor: isDifference
+                                  ? '#FEF2F2'
+                                  : 'transparent',
+                                borderRadius: 1,
+                                px: 1
+                              }}
+                            />
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell align='center'>
+                        {isDifference ? (
+                          <Tooltip title='Diferencia detectada (Faltante/Sobrante)'>
+                            <AlertTriangle
+                              size={18}
+                              className='text-amber-500'
+                            />
+                          </Tooltip>
+                        ) : (
+                          <CheckCircle size={18} className='text-green-500' />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          {watch('items').some(
+            i => Number(i.quantity_received) !== i.quantity_sent
+          ) && (
+            <Alert severity='warning'>
+              Hay diferencias entre lo enviado y lo recibido. Estas se
+              registrarán como incidencias.
+            </Alert>
           )}
-        />
-      </Box>
+
+          <TextField
+            {...control.register('receiving_notes')}
+            multiline
+            fullWidth
+            label='Notas de Recepción'
+            placeholder='Ej: Llegó una caja mojada, faltaron piezas...'
+            rows={2}
+          />
+        </Box>
+      )}
     </CustomDrawer>
   );
 };
