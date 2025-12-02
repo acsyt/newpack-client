@@ -130,6 +130,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
                 placeholder='Ingrese el teléfono'
                 control={control}
                 disabled={isDisabled}
+                type='tel'
+                inputMode='numeric'
+                onInput={(e) => {
+                  const input = e.target as HTMLInputElement;
+                  input.value = input.value.replace(/\D/g, "");
+                }}
               />
             </Grid>
 
@@ -141,6 +147,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
                 placeholder='Ingrese otro teléfono'
                 control={control}
                 disabled={isDisabled}
+                type='tel'
+                inputMode='numeric'
+                onInput={(e) => {
+                  const input = e.target as HTMLInputElement;
+                  input.value = input.value.replace(/\D/g, "");
+                }}                
               />
             </Grid>
           </Grid>
