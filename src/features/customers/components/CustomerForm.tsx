@@ -1,5 +1,6 @@
 import type { FC } from 'react';
-import { useMemo} from 'react';
+
+import { useMemo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
@@ -10,45 +11,49 @@ import { DefaultValues, useForm } from 'react-hook-form';
 import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Customer } from '@/features/customers/customer.interface';
-import { CustomerDto, customerSchema } from '@/features/customers/customer.schema';
+import {
+  CustomerDto,
+  customerSchema
+} from '@/features/customers/customer.schema';
 import { useCustomersMutation } from '@/features/customers/hook/customer.mutation';
-import { CustomOption } from '@/interfaces/custom-option.interface';
 import { FormAddress } from '@/features/shared/components/FormAddress';
+import { CustomOption } from '@/interfaces/custom-option.interface';
 
 type CustomerFormProps = {
   mode: ModeAction;
   customer?: Customer;
 };
 
-export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
+export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
   const navigate = useNavigate();
   const mutation = useCustomersMutation();
-  
+
   const defaultValues = useMemo<DefaultValues<CustomerDto>>(() => {
     const userValues: DefaultValues<CustomerDto> = {
-        mode: mode,
-        name: customer?.name || '',
-        last_name: customer?.lastName || '',
-        email: customer?.email || '',
-        phone: customer?.phone || '',
-        phone_secondary: customer?.phoneSecondary || '',
-        suburb_id: customer?.suburbId || 0,
-        street: customer?.street || '',
-        exterior_number: customer?.exteriorNumber || '',
-        interior_number: customer?.interiorNumber || '',
-        address_reference: customer?.addressReference || '',
-        rfc: customer?.rfc || '',
-        legal_name: customer?.legalName || '',
-        status: customer?.status || 'active',
-        notes: customer?.notes || '',
-        zip_code: customer?.suburb?.zipCode?.name ?? '',
-        city: customer?.suburb?.zipCode?.city?.name ?? '',
-        state: customer?.suburb.zipCode?.city?.state?.name ?? ''
+      mode: mode,
+      name: customer?.name || '',
+      last_name: customer?.lastName || '',
+      email: customer?.email || '',
+      phone: customer?.phone || '',
+      phone_secondary: customer?.phoneSecondary || '',
+      suburb_id: customer?.suburbId || 0,
+      street: customer?.street || '',
+      exterior_number: customer?.exteriorNumber || '',
+      interior_number: customer?.interiorNumber || '',
+      address_reference: customer?.addressReference || '',
+      rfc: customer?.rfc || '',
+      legal_name: customer?.legalName || '',
+      status: customer?.status || 'active',
+      notes: customer?.notes || '',
+      zip_code: customer?.suburb?.zipCode?.name ?? '',
+      city: customer?.suburb?.zipCode?.city?.name ?? '',
+      state: customer?.suburb.zipCode?.city?.state?.name ?? ''
     };
+
     return userValues;
   }, [customer, mode]);
 
-  const { control, handleSubmit, watch, setValue} = useForm<CustomerDto>({
+  const { control, handleSubmit, watch, setValue } = useForm<CustomerDto>({
     mode: 'onBlur',
     resolver: zodResolver(customerSchema),
     defaultValues: defaultValues
@@ -60,12 +65,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
   );
 
   const onSaveUser = (data: CustomerDto) => {
-    mutation.mutateAsync({ 
-        id: customer ? customer.id : null, 
-        data: data
+    mutation.mutateAsync({
+      id: customer ? customer.id : null,
+      data: data
     });
   };
-  
+
   const supplierStatusOptions: CustomOption[] = [
     {
       key: 'active',
@@ -90,7 +95,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
       value: 'blacklisted',
       label: 'En lista negra',
       disabled: false
-    },
+    }
   ];
 
   const onError = (errors: any) => {};
@@ -121,7 +126,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
                 control={control}
                 disabled={isDisabled}
               />
-            </Grid>            
+            </Grid>
           </Grid>
         </Grid>
 
@@ -163,7 +168,7 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
         </Grid>
 
         {/* Dirección */}
-        <FormAddress 
+        <FormAddress
           control={control}
           isDisabled={isDisabled}
           labels={{
@@ -257,26 +262,26 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 4 }}>
               <CustomFormTextField
-                fieldType="select"
-                name="status"
-                label="Estatus"
-                placeholder="Estatus"
+                fieldType='select'
+                name='status'
+                label='Estatus'
+                placeholder='Estatus'
                 control={control}
                 disabled={isDisabled}
                 options={supplierStatusOptions}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>
-                <CustomFormTextField
-                  fieldType='text'
-                  name='notes'
-                  label='Notas'
-                  placeholder='Ingrese notas adicionales'
-                  control={control}
-                  disabled={isDisabled}
-                  multiline
-                  rows={3}
-                />
+              <CustomFormTextField
+                multiline
+                fieldType='text'
+                name='notes'
+                label='Notas'
+                placeholder='Ingrese notas adicionales'
+                control={control}
+                disabled={isDisabled}
+                rows={3}
+              />
             </Grid>
           </Grid>
         </Grid>

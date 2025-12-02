@@ -7,7 +7,7 @@ import { Eye, Pencil } from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/mutations';
 import { Supplier } from '@/features/suppliers/supplier.interface';
 
-export const RowActions = ({ supplier }: { supplier: Supplier}) => {
+export const RowActions = ({ supplier }: { supplier: Supplier }) => {
   const { permissions } = useAuth();
 
   return (
@@ -15,7 +15,10 @@ export const RowActions = ({ supplier }: { supplier: Supplier}) => {
       <Box display='flex' gap={1}>
         {permissions.includes('suppliers.show') && (
           <Tooltip title='Show'>
-            <Link to='/suppliers/$supplierId/show' params={{ supplierId: String(supplier.id) }}>
+            <Link
+              to='/suppliers/$supplierId/show'
+              params={{ supplierId: String(supplier.id) }}
+            >
               <IconButton>
                 <Eye size={18} />
               </IconButton>
@@ -24,7 +27,10 @@ export const RowActions = ({ supplier }: { supplier: Supplier}) => {
         )}
         {permissions.includes('suppliers.edit') && (
           <Tooltip title={'Edit'}>
-            <Link to='/suppliers/$supplierId/edit' params={{ supplierId: String(supplier.id) }}>
+            <Link
+              to='/suppliers/$supplierId/edit'
+              params={{ supplierId: String(supplier.id) }}
+            >
               <IconButton>
                 <Pencil size={18} />
               </IconButton>

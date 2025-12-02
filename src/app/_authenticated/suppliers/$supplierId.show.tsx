@@ -1,6 +1,7 @@
+import { createFileRoute } from '@tanstack/react-router';
+
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { SuppliersFormContainer } from '@/features/suppliers/components/SupplierFormContainer';
-import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute(
   '/_authenticated/suppliers/$supplierId/show'
@@ -10,12 +11,12 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   const { supplierId } = Route.useParams();
-  
-    return (
-      <SuppliersFormContainer
-        mode={ModeAction.Show}
-        supplierId={Number(supplierId)}
-        title='Detalles proveedor'
-      />
-    );
+
+  return (
+    <SuppliersFormContainer
+      mode={ModeAction.Show}
+      supplierId={Number(supplierId)}
+      title='Detalles proveedor'
+    />
+  );
 }
