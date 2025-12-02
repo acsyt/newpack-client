@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, FC } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -33,7 +33,6 @@ import {
   InventoryTransferDto,
   inventoryTransferSchema
 } from '../../inventory-movement.schema';
-import { useInventoryMovementDrawerStore } from '../../store/useInventoryMovementDrawerStore';
 
 import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ErrorMapper, getErrorMessage } from '@/config/error.mapper';
@@ -55,8 +54,15 @@ const invisibleInputSx = (error: boolean) => ({
   '&.Mui-focused': { bgcolor: 'white', boxShadow: '0 0 0 1px #3B82F6 inset' }
 });
 
-export const CreateTransferDrawer = () => {
-  const { isOpen, onClose } = useInventoryMovementDrawerStore();
+interface CreateTransferDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
+  isOpen,
+  onClose
+}) => {
   const mutation = useCreateTransferMutation();
 
   const form = useForm<InventoryTransferDto>({
@@ -350,20 +356,22 @@ export const CreateTransferDrawer = () => {
   );
 };
 
-const TransferRow = ({
-  index,
-  remove,
-  destLocations,
-  sourceWarehouseId,
-  destWarehouseId,
-  isSingleRow
-}: {
+interface TransferRowProps {
   index: number;
   remove: (index: number) => void;
   destLocations: WarehouseLocation[];
   sourceWarehouseId?: number;
   destWarehouseId?: number;
   isSingleRow: boolean;
+}
+
+const TransferRow: FC<TransferRowProps> = ({
+  index,
+  remove,
+  destLocations,
+  sourceWarehouseId,
+  destWarehouseId,
+  isSingleRow
 }) => {
   const {
     control,

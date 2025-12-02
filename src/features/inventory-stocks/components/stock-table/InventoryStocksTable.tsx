@@ -161,7 +161,7 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
       },
       {
         header: 'Almacén',
-        id: 'warehouse.id',
+        id: 'warehouse_id',
         accessorFn: row => (row.warehouse ? row.warehouse.name : '-'),
         size: 150,
         filterVariant: 'select',
