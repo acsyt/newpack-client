@@ -28,26 +28,32 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
   const navigate = useNavigate();
   const mutation = useCustomersMutation();
 
+  const statusBoolean = (status: string) : boolean => {
+    if(!status || status === 'active') return true;
+    return false;
+  };
+  
   const defaultValues = useMemo<DefaultValues<CustomerDto>>(() => {
     const userValues: DefaultValues<CustomerDto> = {
-      mode: mode,
-      name: customer?.name || '',
-      last_name: customer?.lastName || '',
-      email: customer?.email || '',
-      phone: customer?.phone || '',
-      phone_secondary: customer?.phoneSecondary || '',
-      suburb_id: customer?.suburbId || 0,
-      street: customer?.street || '',
-      exterior_number: customer?.exteriorNumber || '',
-      interior_number: customer?.interiorNumber || '',
-      address_reference: customer?.addressReference || '',
-      rfc: customer?.rfc || '',
-      legal_name: customer?.legalName || '',
-      status: customer?.status || 'active',
-      notes: customer?.notes || '',
-      zip_code: customer?.suburb?.zipCode?.name ?? '',
-      city: customer?.suburb?.zipCode?.city?.name ?? '',
-      state: customer?.suburb.zipCode?.city?.state?.name ?? ''
+        mode: mode,
+        name: customer?.name || '',
+        last_name: customer?.lastName || '',
+        email: customer?.email || '',
+        phone: customer?.phone || '',
+        phone_secondary: customer?.phoneSecondary || '',
+        suburb_id: customer?.suburbId || 0,
+        street: customer?.street || '',
+        exterior_number: customer?.exteriorNumber || '',
+        interior_number: customer?.interiorNumber || '',
+        address_reference: customer?.addressReference || '',
+        rfc: customer?.rfc || '',
+        legal_name: customer?.legalName || '',
+        statusBoolean: statusBoolean(customer?.status ?? 'active'),
+        status: customer?.status ?? 'active',
+        notes: customer?.notes || '',
+        zip_code: customer?.suburb?.zipCode?.name ?? '',
+        city: customer?.suburb?.zipCode?.city?.name ?? '',
+        state: customer?.suburb.zipCode?.city?.state?.name ?? ''
     };
 
     return userValues;
@@ -65,41 +71,14 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
   );
 
   const onSaveUser = (data: CustomerDto) => {
-    mutation.mutateAsync({
-      id: customer ? customer.id : null,
-      data: data
+    data['status'] = data['statusBoolean'] ? 'active' : 'inactive';  
+    mutation.mutateAsync({ 
+        id: customer ? customer.id : null, 
+        data: data
     });
   };
 
-  const supplierStatusOptions: CustomOption[] = [
-    {
-      key: 'active',
-      value: 'active',
-      label: 'Activo',
-      disabled: false
-    },
-    {
-      key: 'inactive',
-      value: 'inactive',
-      label: 'Inactivo',
-      disabled: false
-    },
-    {
-      key: 'suspended',
-      value: 'suspended',
-      label: 'Suspendido',
-      disabled: false
-    },
-    {
-      key: 'blacklisted',
-      value: 'blacklisted',
-      label: 'En lista negra',
-      disabled: false
-    }
-  ];
-
   const onError = (errors: any) => {};
-
   return (
     <form onSubmit={handleSubmit(onSaveUser, onError)}>
       <Grid container spacing={3}>
@@ -262,13 +241,13 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 4 }}>
               <CustomFormTextField
-                fieldType='select'
-                name='status'
-                label='Estatus'
-                placeholder='Estatus'
+                fieldType='switch'
                 control={control}
+                name='statusBoolean'
+                label='Estatus'
                 disabled={isDisabled}
-                options={supplierStatusOptions}
+                labelFalse='Inactivo'
+                labelTrue='Activo'
               />
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>
