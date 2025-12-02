@@ -48,7 +48,7 @@ export const RootProvider: FC<PropsWithChildren<RootProviderProps>> = ({
               esES.components.MuiLocalizationProvider.defaultProps.localeText
             }
           >
-            <Toaster />
+            <Toaster richColors />
             {children}
           </LocalizationProvider>
         </ThemeRegistry>

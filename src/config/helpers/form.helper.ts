@@ -26,10 +26,7 @@ export class FormHelper {
     return null;
   }
 
-  static showFirstFormError<T extends FieldValues>(
-    errors: FieldErrors<T>,
-    title: string = 'Validation Error'
-  ) {
+  static showFirstFormError<T extends FieldValues>(errors: FieldErrors<T>) {
     const errorMessage = FormHelper.findFirstErrorMessage(errors);
 
     if (errorMessage) {

@@ -4,7 +4,6 @@ import type {
   InventoryMovementFilter,
   InventoryMovementRelations
 } from '@/features/inventory-movements/inventory-movement.interface';
-import type { InventoryMovementDto } from '@/features/inventory-movements/inventory-movement.schema';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 
 import { SharedService } from '../shared/shared.service';
@@ -35,10 +34,8 @@ export class InventoryMovementService extends SharedService {
     >(apiFetcher, `/inventory/movements/${id}`, options);
   };
 
-  static createMovement = async (
-    data: InventoryMovementDto
-  ): Promise<InventoryMovement> => {
-    return SharedService.create<InventoryMovement, InventoryMovementDto>(
+  static createMovement = async (data: any): Promise<InventoryMovement> => {
+    return SharedService.create<InventoryMovement, any>(
       apiFetcher,
       '/inventory/movements',
       data

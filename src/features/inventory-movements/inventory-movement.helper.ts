@@ -5,8 +5,7 @@ import { CustomOption } from '@/interfaces/custom-option.interface';
 export class InventoryMovementHelper {
   public static humanTypes: Record<MovementType, string> = {
     [MovementType.Entry]: 'Entrada',
-    [MovementType.Exit]: 'Salida',
-    [MovementType.Transfer]: 'Transferencia'
+    [MovementType.Exit]: 'Salida'
   };
 
   public static humanReadableType(type: MovementType): string {
