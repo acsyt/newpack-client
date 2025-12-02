@@ -1,35 +1,31 @@
 import { BasePaginationParams } from "@/interfaces/pagination-response.interface";
 
-export interface Customer {
+export interface Supplier {
   id: number;
-  name: string;
-  lastName: string;
-  fullName: string;
+  companyName: string;
+  contactName: string;
   email: string;
-  emailVerifiedAt: string;
   phone: string;
   phoneSecondary: string;
   suburbId: number;
   street: string;
   exteriorNumber: string;
-  interiorNumber: string;
-  addressReference: string;
+  interiorNumber?: string | null;
+  addressReference?: string | null;
   fullAddress: string;
   rfc: string;
-  razonSocial: string;
-  regimenFiscal: string;
+  legalName: string;
+  taxSystem: string;
   status: 'active' | 'inactive' | 'suspended' | 'blacklisted';
-  clientType: string;
-  notes: string;
+  notes?: string | null;
   createdBy: number;
   updatedBy: number;
-  deletedBy: number | null;
+  deletedBy?: number | null;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string | null;
-  suburb: Suburb;
-  legalName: string | null;
-}
+  deletedAt?: string | null;
+  suburb: Suburb
+};
 
 interface Suburb {
   id: number;
@@ -56,11 +52,13 @@ interface State {
   name: string
 }
 
-export interface CustomerFilter {
+
+export interface SupplierFilter {
   id?: number[];
 }
 
-export type CusomerRelations = 'suburb.zipCode';
+export type SupplierRelations = 'suburb.zipCode';
 
-export interface CustomerParams
-  extends BasePaginationParams<CustomerFilter, CusomerRelations> {}
+export interface SupplierParams
+  extends BasePaginationParams<SupplierFilter, SupplierRelations> {}
+
