@@ -20,3 +20,10 @@ export const useProductsQuery = ({
     queryFn: () => ProductService.findAllProducts(options)
   });
 };
+
+export const useMeasureUnitsQuery = () => {
+  return useQuery({
+    queryKey: ['measure-units'],
+    queryFn: () => ProductService.getAllMeasureUnits()
+  });
+};
