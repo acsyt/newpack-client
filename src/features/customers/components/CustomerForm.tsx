@@ -12,7 +12,6 @@ import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Customer } from '@/features/customers/customer.interface';
 import { CustomerDto, customerSchema } from '@/features/customers/customer.schema';
 import { useCustomersMutation } from '@/features/customers/hook/customer.mutation';
-import { CustomOption } from '@/interfaces/custom-option.interface';
 import { FormAddress } from '@/features/shared/components/FormAddress';
 
 type CustomerFormProps = {
@@ -23,6 +22,11 @@ type CustomerFormProps = {
 export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
   const navigate = useNavigate();
   const mutation = useCustomersMutation();
+
+  const statusBoolean = (status: string) : boolean => {
+    if(!status || status === 'active') return true;
+    return false;
+  };
   
   const defaultValues = useMemo<DefaultValues<CustomerDto>>(() => {
     const userValues: DefaultValues<CustomerDto> = {
@@ -39,7 +43,8 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
         address_reference: customer?.addressReference || '',
         rfc: customer?.rfc || '',
         legal_name: customer?.legalName || '',
-        status: customer?.status || 'active',
+        statusBoolean: statusBoolean(customer?.status ?? 'active'),
+        status: customer?.status ?? 'active',
         notes: customer?.notes || '',
         zip_code: customer?.suburb?.zipCode?.name ?? '',
         city: customer?.suburb?.zipCode?.city?.name ?? '',
@@ -60,41 +65,14 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
   );
 
   const onSaveUser = (data: CustomerDto) => {
+    data['status'] = data['statusBoolean'] ? 'active' : 'inactive';  
     mutation.mutateAsync({ 
         id: customer ? customer.id : null, 
         data: data
     });
   };
-  
-  const supplierStatusOptions: CustomOption[] = [
-    {
-      key: 'active',
-      value: 'active',
-      label: 'Activo',
-      disabled: false
-    },
-    {
-      key: 'inactive',
-      value: 'inactive',
-      label: 'Inactivo',
-      disabled: false
-    },
-    {
-      key: 'suspended',
-      value: 'suspended',
-      label: 'Suspendido',
-      disabled: false
-    },
-    {
-      key: 'blacklisted',
-      value: 'blacklisted',
-      label: 'En lista negra',
-      disabled: false
-    },
-  ];
 
   const onError = (errors: any) => {};
-
   return (
     <form onSubmit={handleSubmit(onSaveUser, onError)}>
       <Grid container spacing={3}>
@@ -257,13 +235,13 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode,  customer}) => {
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 4 }}>
               <CustomFormTextField
-                fieldType="select"
-                name="status"
-                label="Estatus"
-                placeholder="Estatus"
+                fieldType='switch'
                 control={control}
+                name='statusBoolean'
+                label='Estatus'
                 disabled={isDisabled}
-                options={supplierStatusOptions}
+                labelFalse='Inactivo'
+                labelTrue='Activo'
               />
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>
