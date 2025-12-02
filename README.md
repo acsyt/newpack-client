@@ -55,7 +55,7 @@ Cada feature debe contener:
 
 ## 📋 Consideraciones técnicas
 
-- Components: CamelCase UserForm.tsx
+- Components: PascalCase. UserForm.tsx
 - Funciones, utils, types: (user.services.tsx, date.helper.ts) (Con punto usa para indicar un propósito específico o tipo de archivo)
 - Routes: camelCase, pero la action separado por un punto. (user.show.tsx userTournaments.create.tsx)
 - No crear folders si solo engloban un solo archivo. Considerar el uso de folders para agrugar multimples archivos similares. 

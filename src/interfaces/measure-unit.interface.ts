@@ -2,7 +2,7 @@ export interface MeasureUnit {
   id: number;
   code: string;
   name: string;
-  symbol?: string;
+  description?: string;
   createdAt?: string;
   updatedAt?: string;
 }
