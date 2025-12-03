@@ -1,5 +1,4 @@
 import { BasePaginationParams } from '../../interfaces/pagination-response.interface';
-import { Role } from '../role/role.interface';
 
 export interface User {
   id: number;
@@ -9,7 +8,7 @@ export interface User {
   phone: string;
   userType: string;
   active: boolean;
-  roles: Role[];
+  roles: string[];
   updatedAt: string;
   createdAt: string;
   recoveryAt: string;

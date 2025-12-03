@@ -27,7 +27,7 @@ export const UserFormContainer: FC<UserFormContainerProps> = ({
     isRefetching
   } = useUserByIdQuery({
     id: userId!,
-    options: {},
+    options: {include: ['roles']},
     enabled: mode !== ModeAction.Create,
     retry: false,
     staleTime: 5 * 60 * 1000
