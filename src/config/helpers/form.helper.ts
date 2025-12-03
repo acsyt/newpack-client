@@ -35,14 +35,14 @@ export class FormHelper {
   }
 
   static setFormErrors<T extends FieldValues>(
-    errors: Record<string, string[]>,
+    errors: FieldErrors<T>,
     setError: UseFormSetError<T>
   ) {
     for (const key in errors) {
-      const message = errors[key]?.[0];
+      const errorMessage = FormHelper.findFirstErrorMessage(errors[key]);
 
-      if (message) {
-        setError(key as Path<T>, { type: 'manual', message });
+      if (errorMessage) {
+        setError(key as Path<T>, { type: 'manual', message: errorMessage });
       }
     }
   }

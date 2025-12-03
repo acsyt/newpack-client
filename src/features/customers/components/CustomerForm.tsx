@@ -10,6 +10,7 @@ import { DefaultValues, useForm } from 'react-hook-form';
 
 import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
 import { ModeAction } from '@/config/enums/mode-action.enum';
+import { FormHelper } from '@/config/helpers/form.helper';
 import { Customer } from '@/features/customers/customer.interface';
 import {
   CustomerDto,
@@ -59,11 +60,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
     return userValues;
   }, [customer, mode]);
 
-  const { control, handleSubmit, watch, setValue } = useForm<CustomerDto>({
-    mode: 'onBlur',
-    resolver: zodResolver(customerSchema),
-    defaultValues: defaultValues
-  });
+  const { control, handleSubmit, watch, setValue, setError } =
+    useForm<CustomerDto>({
+      mode: 'onBlur',
+      resolver: zodResolver(customerSchema),
+      defaultValues: defaultValues
+    });
 
   const isDisabled = useMemo(
     () => mode === ModeAction.Show || mutation.isPending,
@@ -79,7 +81,12 @@ export const CustomerForm: FC<CustomerFormProps> = ({ mode, customer }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSaveUser, onError)}>
+    <form
+      onSubmit={handleSubmit(onSaveUser, errors => {
+        FormHelper.setFormErrors(errors, setError);
+        FormHelper.showFirstFormError(errors);
+      })}
+    >
       <Grid container spacing={3}>
         {/* Datos personales */}
         <Grid size={12}>
