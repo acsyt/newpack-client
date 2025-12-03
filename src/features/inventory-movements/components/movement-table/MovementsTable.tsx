@@ -9,8 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import dayjs from 'dayjs';
 import {
   ArrowDown,
@@ -33,7 +31,6 @@ import {
 import { CustomTable } from '@/components/shared/CustomTable';
 import { useAuth } from '@/features/auth/hooks/mutations';
 import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/create-transfer-drawer/CreateTransferDrawer';
-import { TransfersTab } from '@/features/inventory-movements/components/movement-table/TransfersTab';
 import { useInventoryMovementsQuery } from '@/features/inventory-movements/hooks/inventory-movements.query';
 import { InventoryMovementParams } from '@/features/inventory-movements/inventory-movement.interface';
 import { useWarehousesQuery } from '@/features/warehouses/hooks/warehouses.query';
@@ -48,7 +45,6 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   const { permissions } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<number>(0);
 
   const [selectedWarehouse, setSelectedWarehouse] = useState<number | ''>('');
   const [selectedType, setSelectedType] = useState<string | ''>('');
@@ -293,137 +289,124 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
   return (
     <>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-        <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value)}>
-          <Tab label='Movimientos (Kardex)' />
-          <Tab label='Transferencias' />
-        </Tabs>
-      </Box>
+      <CustomTable
+        queryHook={useInventoryMovementsQuery}
+        queryProps={{
+          options: movementParams
+        }}
+        columns={memoizedColumns}
+        enableRowActions={false}
+        initialState={{
+          sorting: [{ id: 'created_at', desc: true }],
+          columnVisibility: { id: false }
+        }}
+        renderTopToolbarCustomActions={() => (
+          <Box
+            display='flex'
+            gap={2}
+            alignItems='flex-end'
+            flexWrap='wrap'
+            sx={{ width: '100%' }}
+          >
+            <FormControl
+              size='small'
+              sx={{ minWidth: 200, width: { xs: '100%', md: 'auto' } }}
+            >
+              <InputLabel>Almacén</InputLabel>
+              <Select
+                displayEmpty
+                value={selectedWarehouse}
+                label='Almacén'
+                onChange={e =>
+                  setSelectedWarehouse(e.target.value as number | '')
+                }
+              >
+                <MenuItem value=''>
+                  <em>Todos los almacenes</em>
+                </MenuItem>
+                {warehouses.map(warehouse => (
+                  <MenuItem key={warehouse.id} value={warehouse.id}>
+                    {warehouse.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-      {activeTab === 0 && (
-        <CustomTable
-          queryHook={useInventoryMovementsQuery}
-          queryProps={{
-            options: movementParams
-          }}
-          columns={memoizedColumns}
-          enableRowActions={false}
-          initialState={{
-            sorting: [{ id: 'created_at', desc: true }],
-            columnVisibility: { id: false }
-          }}
-          renderTopToolbarCustomActions={() => (
+            <FormControl
+              size='small'
+              sx={{ minWidth: 220, width: { xs: '100%', md: 'auto' } }}
+            >
+              <InputLabel>Tipo de movimiento</InputLabel>
+              <Select
+                displayEmpty
+                value={selectedType}
+                label='Tipo de movimiento'
+                onChange={e => setSelectedType(e.target.value)}
+              >
+                <MenuItem value=''>
+                  <em>Todos los tipos</em>
+                </MenuItem>
+                <MenuItem value='entry'>
+                  <div className='flex items-center gap-2'>
+                    <ArrowUp size={16} className='text-green-600' /> Entrada
+                  </div>
+                </MenuItem>
+                <MenuItem value='exit'>
+                  <div className='flex items-center gap-2'>
+                    <ArrowDown size={16} className='text-red-600' /> Salida
+                  </div>
+                </MenuItem>
+              </Select>
+            </FormControl>
+
             <Box
               display='flex'
-              gap={2}
-              alignItems='flex-end'
-              flexWrap='wrap'
-              sx={{ width: '100%' }}
+              gap={1}
+              sx={{
+                width: { xs: '100%', md: 'auto' },
+                flexWrap: { xs: 'wrap', md: 'nowrap' }
+              }}
             >
-              <FormControl
-                size='small'
-                sx={{ minWidth: 200, width: { xs: '100%', md: 'auto' } }}
-              >
-                <InputLabel>Almacén</InputLabel>
-                <Select
-                  displayEmpty
-                  value={selectedWarehouse}
-                  label='Almacén'
-                  onChange={e =>
-                    setSelectedWarehouse(e.target.value as number | '')
-                  }
+              {permissions.includes('inventory-movements.create-transfer') && (
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  size='small'
+                  sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
+                  startIcon={<Plus size={16} />}
+                  onClick={() => setIsOpen(true)}
                 >
-                  <MenuItem value=''>
-                    <em>Todos los almacenes</em>
-                  </MenuItem>
-                  {warehouses.map(warehouse => (
-                    <MenuItem key={warehouse.id} value={warehouse.id}>
-                      {warehouse.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Transferencia
+                </Button>
+              )}
 
-              <FormControl
-                size='small'
-                sx={{ minWidth: 220, width: { xs: '100%', md: 'auto' } }}
-              >
-                <InputLabel>Tipo de movimiento</InputLabel>
-                <Select
-                  displayEmpty
-                  value={selectedType}
-                  label='Tipo de movimiento'
-                  onChange={e => setSelectedType(e.target.value)}
+              {permissions.includes('inventory-movements.create-entry') && (
+                <Button
+                  variant='contained'
+                  color='success'
+                  size='small'
+                  sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
+                  startIcon={<ArrowUp size={16} />}
                 >
-                  <MenuItem value=''>
-                    <em>Todos los tipos</em>
-                  </MenuItem>
-                  <MenuItem value='entry'>
-                    <div className='flex items-center gap-2'>
-                      <ArrowUp size={16} className='text-green-600' /> Entrada
-                    </div>
-                  </MenuItem>
-                  <MenuItem value='exit'>
-                    <div className='flex items-center gap-2'>
-                      <ArrowDown size={16} className='text-red-600' /> Salida
-                    </div>
-                  </MenuItem>
-                </Select>
-              </FormControl>
+                  Nueva Entrada
+                </Button>
+              )}
 
-              <Box
-                display='flex'
-                gap={1}
-                sx={{
-                  width: { xs: '100%', md: 'auto' },
-                  flexWrap: { xs: 'wrap', md: 'nowrap' }
-                }}
-              >
-                {permissions.includes(
-                  'inventory-movements.create-transfer'
-                ) && (
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    size='small'
-                    sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
-                    startIcon={<Plus size={16} />}
-                    onClick={() => setIsOpen(true)}
-                  >
-                    Transferencia
-                  </Button>
-                )}
-
-                {permissions.includes('inventory-movements.create-entry') && (
-                  <Button
-                    variant='contained'
-                    color='success'
-                    size='small'
-                    sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
-                    startIcon={<ArrowUp size={16} />}
-                  >
-                    Nueva Entrada
-                  </Button>
-                )}
-
-                {permissions.includes('inventory-movements.create-exit') && (
-                  <Button
-                    variant='contained'
-                    color='error'
-                    size='small'
-                    sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
-                    startIcon={<ArrowDown size={16} />}
-                  >
-                    Nueva Salida
-                  </Button>
-                )}
-              </Box>
+              {permissions.includes('inventory-movements.create-exit') && (
+                <Button
+                  variant='contained'
+                  color='error'
+                  size='small'
+                  sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
+                  startIcon={<ArrowDown size={16} />}
+                >
+                  Nueva Salida
+                </Button>
+              )}
             </Box>
-          )}
-        />
-      )}
-
-      {activeTab === 1 && <TransfersTab />}
+          </Box>
+        )}
+      />
 
       {isOpen && (
         <CreateTransferDrawer

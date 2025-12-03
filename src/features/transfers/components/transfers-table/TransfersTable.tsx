@@ -8,15 +8,13 @@ import 'dayjs/locale/es-mx';
 import { PackageCheck, Eye } from 'lucide-react';
 import { MRT_ColumnDef } from 'material-react-table';
 
-import { useTransfersQuery } from '../../../transfers/hooks/transfers.query';
+import { CustomTable } from '@/components/shared/CustomTable';
+import { ReceiveTransferDrawer } from '@/features/inventory-movements/components/movement-table/ReceiveTransferDrawer';
+import { useTransfersQuery } from '@/features/transfers/hooks/transfers.query';
 import {
   Transfer,
   TransferStatus
-} from '../../../transfers/transfer.interface';
-
-import { ReceiveTransferDrawer } from './ReceiveTransferDrawer';
-
-import { CustomTable } from '@/components/shared/CustomTable';
+} from '@/features/transfers/transfer.interface';
 
 const statusColors: Record<
   TransferStatus,
@@ -35,7 +33,7 @@ const statusLabels: Record<TransferStatus, string> = {
   [TransferStatus.Cancelled]: 'Cancelado'
 };
 
-export const TransfersTab: FC = () => {
+export const TransfersTable: FC = () => {
   const [receiveDrawerOpen, setReceiveDrawerOpen] = useState(false);
   const [selectedTransferId, setSelectedTransferId] = useState<number | null>(
     null

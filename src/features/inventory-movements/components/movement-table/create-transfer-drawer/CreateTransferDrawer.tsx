@@ -194,14 +194,7 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
       <DialogContent dividers>
         <FormProvider {...form}>
           <Box className='flex flex-col gap-6'>
-            <Box
-              sx={{
-                p: 2.5,
-                border: '1px solid #E2E8F0',
-                borderRadius: 2,
-                bgcolor: '#F8FAFC'
-              }}
-            >
+            <Box className='flex flex-col gap-6 p-2.5 border border-gray-200 rounded-lg bg-gray-50'>
               <Grid container spacing={3} alignItems='center'>
                 <Grid size={{ xs: 5 }}>
                   <Controller
@@ -240,7 +233,6 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
                             error={!!error}
                             helperText={error?.message}
                             size='small'
-                            sx={{ bgcolor: 'white' }}
                           />
                         )}
                         onChange={(_, d) => field.onChange(d?.id)}
@@ -294,7 +286,6 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
                             error={!!error}
                             helperText={error?.message}
                             size='small'
-                            sx={{ bgcolor: 'white' }}
                           />
                         )}
                         onChange={(_, d) => field.onChange(d?.id)}
