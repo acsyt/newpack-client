@@ -10,7 +10,21 @@ export const baseSchema = z.object({
     required_error: 'La unidad de medida es requerida',
     invalid_type_error: 'Selecciona una unidad de medida válida'
   }),
-  is_active: z.boolean().optional()
+  is_active: z.boolean().optional(),
+  ingredients: z
+    .array(
+      z.object({
+        ingredient_id: z.number(),
+        quantity: z.coerce.number().min(0.0001, 'Debe ser mayor a 0'),
+        product: z
+          .object({
+            name: z.string(),
+            sku: z.string()
+          })
+          .optional()
+      })
+    )
+    .optional()
 });
 
 const createProductSchema = baseSchema.extend({

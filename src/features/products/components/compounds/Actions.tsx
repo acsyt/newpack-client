@@ -5,36 +5,31 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Eye, Pencil } from 'lucide-react';
 
-import { Product, useProductDrawerStore } from '../../product.interface';
+import { Product } from '../../product.interface';
+import { useProductDrawerStore } from '../../product.interface';
 
 import { useAuth } from '@/features/auth/hooks/mutations';
 
-interface RawMaterialRowActionProps {
-  rawMaterial: Product;
+interface CompoundRowActionProps {
+  compound: Product;
 }
-export const RawMaterialRowAction: FC<RawMaterialRowActionProps> = ({
-  rawMaterial
-}) => {
+export const CompoundRowAction: FC<CompoundRowActionProps> = ({ compound }) => {
   const { permissions } = useAuth();
 
   const { onEdit, onShow } = useProductDrawerStore();
 
   return (
     <Box display='flex' gap={1}>
-      {permissions.includes('raw-materials.show') && (
+      {permissions.includes('compounds.show') && (
         <Tooltip title='Ver'>
-          <IconButton
-            onClick={() => onShow(rawMaterial, 'Detalle Materia Prima')}
-          >
+          <IconButton onClick={() => onShow(compound, 'Detalle Compuesto')}>
             <Eye size={18} />
           </IconButton>
         </Tooltip>
       )}
-      {permissions.includes('raw-materials.edit') && (
+      {permissions.includes('compounds.edit') && (
         <Tooltip title='Editar'>
-          <IconButton
-            onClick={() => onEdit(rawMaterial, 'Editar Materia Prima')}
-          >
+          <IconButton onClick={() => onEdit(compound, 'Editar Compuesto')}>
             <Pencil size={18} />
           </IconButton>
         </Tooltip>

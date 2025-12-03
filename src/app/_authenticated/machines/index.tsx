@@ -45,7 +45,7 @@ function RouteComponent() {
                 variant='contained'
                 color='primary'
                 startIcon={<Plus size={18} />}
-                onClick={onCreate}
+                onClick={() => onCreate()}
               >
                 Crear maquina
               </Button>

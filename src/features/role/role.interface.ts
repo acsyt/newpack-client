@@ -134,4 +134,11 @@ export type Permission =
 
   // Stock
   | 'inventory-stocks.index'
-  | 'inventory-stocks.export';
+  | 'inventory-stocks.export'
+
+  // Compounds
+  | 'compounds.index'
+  | 'compounds.show'
+  | 'compounds.create'
+  | 'compounds.edit'
+  | 'compounds.export';

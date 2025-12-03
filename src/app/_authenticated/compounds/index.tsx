@@ -7,56 +7,55 @@ import { Plus } from 'lucide-react';
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
 import { CustomTable } from '@/components/shared/CustomTable';
 import { useAuth } from '@/features/auth/hooks/mutations';
+import { CompoundRowAction } from '@/features/products/components/compounds/Actions';
+import { CompoundColumns } from '@/features/products/components/compounds/Columns';
 import { ProductForm } from '@/features/products/components/ProductForm';
-import { RawMaterialRowAction } from '@/features/products/components/raw-material-table/Actions';
-import { RawMaterialColumns } from '@/features/products/components/raw-material-table/Columns';
 import { useProductsQuery } from '@/features/products/hooks/products.query';
 import { useProductDrawerStore } from '@/features/products/product.interface';
 
-export const Route = createFileRoute('/_authenticated/raw-materials/')({
+export const Route = createFileRoute('/_authenticated/compounds/')({
   component: RouteComponent
 });
 
 function RouteComponent() {
   const { permissions } = useAuth();
-
-  const memoizedColumns = useMemo(() => RawMaterialColumns, []);
-
+  const memoizedColumns = useMemo(() => CompoundColumns, []);
   const { onCreate, isOpen } = useProductDrawerStore();
 
   return (
-    <DashboardLayoutContainer title='Materias Primas'>
+    <DashboardLayoutContainer title='Compuestos'>
       <CustomTable
         enableRowActions
         queryHook={useProductsQuery}
         queryProps={{
           options: {
             filter: {
-              type: 'MP'
-            }
+              type: 'COMP'
+            },
+            include: ['ingredients']
           }
         }}
         columns={memoizedColumns}
         positionActionsColumn='last'
         renderTopToolbarCustomActions={() => (
           <Box display='flex' gap={1}>
-            {permissions.includes('raw-materials.create') && (
+            {permissions.includes('compounds.create') && (
               <Button
                 variant='contained'
                 color='primary'
                 startIcon={<Plus size={18} />}
-                onClick={() => onCreate('Crear Materia Prima')}
+                onClick={() => onCreate('Crear Compuesto')}
               >
-                Crear materia prima
+                Crear compuesto
               </Button>
             )}
           </Box>
         )}
         renderRowActions={({ row }) => (
-          <RawMaterialRowAction rawMaterial={row.original} />
+          <CompoundRowAction compound={row.original} />
         )}
       />
-      {isOpen && <ProductForm productParams={{}} type='MP' />}
+      {isOpen && <ProductForm productParams={{}} type='COMP' />}
     </DashboardLayoutContainer>
   );
 }

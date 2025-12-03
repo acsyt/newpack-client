@@ -71,7 +71,7 @@ export const WarehouseTable: FC<WarehouseTableProps> = ({}) => {
                 variant='contained'
                 color='primary'
                 startIcon={<Plus size={18} />}
-                onClick={onCreate}
+                onClick={() => onCreate()}
               >
                 Crear almacén
               </Button>

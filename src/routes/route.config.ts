@@ -112,7 +112,8 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/subclasses': ['subclasses.index'],
   '/warehouses': ['warehouses.index'],
   '/inventory-movements': ['inventory-movements.index'],
-  '/inventory-stocks': ['inventory-stocks.index']
+  '/inventory-stocks': ['inventory-stocks.index'],
+  '/compounds': ['compounds.index']
 };
 
 export const useRouteConfig = () => {
@@ -205,6 +206,10 @@ export const useRouteConfig = () => {
         { title: 'Inicio', path: '/' },
         { title: 'Materias Primas' }
       ]
+    },
+    '/compounds': {
+      title: 'Compuestos',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Compuestos' }]
     },
     '/roles': {
       title: 'Roles',
