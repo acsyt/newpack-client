@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authenticated/roles/')({
 
 function RouteComponent() {
   return (
-    <DashboardLayoutContainer title={'Listado de Roles'}>
+    <DashboardLayoutContainer>
       <RoleTable />
     </DashboardLayoutContainer>
   );

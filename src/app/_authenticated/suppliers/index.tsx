@@ -23,7 +23,7 @@ function RouteComponent() {
   const memoizedColumns = useMemo(() => columns, []);
 
   return (
-    <DashboardLayoutContainer title='Proveedores registrados'>
+    <DashboardLayoutContainer>
       <CustomTable
         enableRowActions
         queryHook={useSupplierQuery}

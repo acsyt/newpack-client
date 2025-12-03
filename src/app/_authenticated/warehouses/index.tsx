@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authenticated/warehouses/')({
 
 function RouteComponent() {
   return (
-    <DashboardLayoutContainer title='Almacenes'>
+    <DashboardLayoutContainer>
       <WarehouseTable />
     </DashboardLayoutContainer>
   );

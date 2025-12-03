@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authenticated/inventory-stocks/')({
 
 function RouteComponent() {
   return (
-    <DashboardLayoutContainer title='Existencias de inventario'>
+    <DashboardLayoutContainer>
       <InventoryStocksTable />
     </DashboardLayoutContainer>
   );

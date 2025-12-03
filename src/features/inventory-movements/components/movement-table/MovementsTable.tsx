@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { useNavigate } from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import {
   ArrowDown,
@@ -30,7 +31,6 @@ import {
 
 import { CustomTable } from '@/components/shared/CustomTable';
 import { useAuth } from '@/features/auth/hooks/mutations';
-import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/create-transfer-drawer/CreateTransferDrawer';
 import { useInventoryMovementsQuery } from '@/features/inventory-movements/hooks/inventory-movements.query';
 import { InventoryMovementParams } from '@/features/inventory-movements/inventory-movement.interface';
 import { useWarehousesQuery } from '@/features/warehouses/hooks/warehouses.query';
@@ -43,8 +43,7 @@ const isEntryType = (type: MovementType): boolean => {
 
 export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   const { permissions } = useAuth();
-
-  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const [selectedWarehouse, setSelectedWarehouse] = useState<number | ''>('');
   const [selectedType, setSelectedType] = useState<string | ''>('');
@@ -374,7 +373,9 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
                   size='small'
                   sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
                   startIcon={<Plus size={16} />}
-                  onClick={() => setIsOpen(true)}
+                  onClick={() =>
+                    navigate({ to: '/inventory-movements/create-transfer' })
+                  }
                 >
                   Transferencia
                 </Button>
@@ -407,13 +408,6 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
           </Box>
         )}
       />
-
-      {isOpen && (
-        <CreateTransferDrawer
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
     </>
   );
 };

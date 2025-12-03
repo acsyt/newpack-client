@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { useNavigate } from '@tanstack/react-router';
 import { Download, Plus } from 'lucide-react';
 import { MRT_ColumnDef } from 'material-react-table';
 
@@ -23,7 +24,6 @@ import {
 
 import { CustomTable } from '@/components/shared/CustomTable';
 import { useAuth } from '@/features/auth/hooks/mutations';
-import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/create-transfer-drawer/CreateTransferDrawer';
 import { useProductTypesQuery } from '@/features/product-types/hooks/product-types.query';
 import { useWarehousesQuery } from '@/features/warehouses/hooks/warehouses.query';
 import { CustomOption } from '@/interfaces/custom-option.interface';
@@ -41,8 +41,7 @@ const statusColors: Record<
 
 export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
   const { permissions } = useAuth();
-
-  const [isOpenTransfer, setIsOpenTransfer] = useState(false);
+  const navigate = useNavigate();
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<number | null>(
     null
   );
@@ -323,7 +322,9 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
                   size='small'
                   sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
                   startIcon={<Plus size={16} />}
-                  onClick={() => setIsOpenTransfer(true)}
+                  onClick={() =>
+                    navigate({ to: '/inventory-movements/create-transfer' })
+                  }
                 >
                   Transferencia
                 </Button>
@@ -352,13 +353,6 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
           </Box>
         )}
       />
-
-      {isOpenTransfer && (
-        <CreateTransferDrawer
-          isOpen={isOpenTransfer}
-          onClose={() => setIsOpenTransfer(false)}
-        />
-      )}
     </>
   );
 };

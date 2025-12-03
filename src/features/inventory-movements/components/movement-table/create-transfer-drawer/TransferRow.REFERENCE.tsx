@@ -13,8 +13,6 @@ import { Trash2 } from 'lucide-react';
 import { useFormContext, useWatch, Controller } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
-import { invisibleInputSx } from './CreateTransferDrawer';
-
 import { cn } from '@/config/utils/cn.util';
 import { InventoryTransferDto } from '@/features/inventory-movements/inventory-movement.schema';
 import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
@@ -187,7 +185,6 @@ export const TransferRow: FC<TransferRowProps> = ({
               variant='standard'
               disabled={!sourceWarehouseId}
               InputProps={{ ...params.InputProps, disableUnderline: true }}
-              sx={invisibleInputSx(false)}
             />
           )}
           filterOptions={x => x}
@@ -310,7 +307,6 @@ export const TransferRow: FC<TransferRowProps> = ({
                     </Typography>
                   ) : null
                 }}
-                sx={invisibleInputSx(!!error)}
                 onChange={async e => {
                   const val = e.target.value;
 
@@ -376,7 +372,6 @@ export const TransferRow: FC<TransferRowProps> = ({
                   error={!!error}
                   helperText={error ? 'Requerido' : ''}
                   InputProps={{ ...params.InputProps, disableUnderline: true }}
-                  sx={invisibleInputSx(!!error)}
                 />
               )}
               onChange={(_, v) => onChange(v?.id)}

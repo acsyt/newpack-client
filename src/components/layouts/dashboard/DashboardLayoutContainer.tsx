@@ -18,7 +18,7 @@ export const DashboardLayoutContainer: FC<
   return (
     <Box>
       <Typography variant='h5' fontWeight={FontWeight.semiBold} color='primary'>
-        {title || currentRoute?.title}
+        {title ?? currentRoute?.title}
       </Typography>
       <Box mt={2}>{children}</Box>
     </Box>

@@ -25,7 +25,7 @@ function RouteComponent() {
   const { onCreate, isOpen } = useProductDrawerStore();
 
   return (
-    <DashboardLayoutContainer title='Materias Primas'>
+    <DashboardLayoutContainer>
       <CustomTable
         enableRowActions
         queryHook={useProductsQuery}

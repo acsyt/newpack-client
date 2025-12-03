@@ -124,7 +124,10 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/processes/bolsa-suelta': ['processes.bolsa-suelta.index'],
   '/processes/extrusion': ['processes.extrusion.index'],
   '/processes/impresion': ['processes.impresion.index'],
-  '/processes/peletizado': ['processes.peletizado.index']
+  '/processes/peletizado': ['processes.peletizado.index'],
+  '/inventory-movements/create-transfer': [
+    'inventory-movements.create-transfer'
+  ]
 };
 
 export const useRouteConfig = () => {
@@ -136,7 +139,7 @@ export const useRouteConfig = () => {
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Panel' }]
     },
     '/users': {
-      title: 'Usuarios',
+      title: 'Listado de Usuarios',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Usuarios' }]
     },
     '/users/create': {
@@ -166,64 +169,64 @@ export const useRouteConfig = () => {
       ]
     },
     '/classes': {
-      title: 'Clases',
+      title: 'Listado de Clases',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clases' }]
     },
     '/subclasses': {
-      title: 'Subclases',
+      title: 'Listado de Subclases',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Subclases' }]
     },
     '/customers': {
-      title: 'Clientes',
+      title: 'Listado de Clientes',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clientes' }]
     },
     '/customers/create': {
-      title: 'Create Cliente',
+      title: 'Crear Cliente',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Customers', path: '/customers' },
-        { title: 'Create' }
+        { title: 'Inicio', path: '/' },
+        { title: 'Clientes', path: '/customers' },
+        { title: 'Crear' }
       ]
     },
     '/customers/$customerId/edit': {
-      title: 'Edit Cliente',
+      title: 'Editar Cliente',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Customers', path: '/customers' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Clientes', path: '/customers' },
         { title: ':id' },
-        { title: 'Edit' }
+        { title: 'Editar' }
       ]
     },
     '/customers/$customerId/show': {
-      title: 'Show Cliente',
+      title: 'Detalle Cliente',
       breadcrumbs: [
-        { title: 'Home', path: '/' },
-        { title: 'Customers', path: '/customers' },
+        { title: 'Inicio', path: '/' },
+        { title: 'Clientes', path: '/customers' },
         { title: ':id' },
-        { title: 'Show' }
+        { title: 'Detalle' }
       ]
     },
     '/machines': {
-      title: 'Máquinas',
+      title: 'Listado de Máquinas',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Máquinas' }]
     },
     '/processes': {
-      title: 'Procesos',
+      title: 'Listado de Procesos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Procesos' }]
     },
     '/raw-materials': {
-      title: 'Materias Primas',
+      title: 'Listado de Materias Primas',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Materias Primas' }
       ]
     },
     '/compounds': {
-      title: 'Compuestos',
+      title: 'Listado de Compuestos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Compuestos' }]
     },
     '/suppliers': {
-      title: 'Proveedores',
+      title: 'Listado de Proveedores',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Proveedores' }]
     },
     '/suppliers/create': {
@@ -253,15 +256,15 @@ export const useRouteConfig = () => {
       ]
     },
     '/warehouses': {
-      title: 'Almacenes',
+      title: 'Listado de Almacenes',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Almacenes' }]
     },
     '/inventory-movements': {
-      title: 'Movimientos',
+      title: 'Listado de Movimientos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Movimientos' }]
     },
     '/inventory-stocks': {
-      title: 'Existencias',
+      title: 'Listado de Existencias',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Existencias' }]
     },
     '/currencies': {
@@ -293,7 +296,7 @@ export const useRouteConfig = () => {
       ]
     },
     '/roles/$roleId/show': {
-      title: 'Detalle de Rol',
+      title: 'Detalle Rol',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Roles', path: '/roles' },
@@ -302,7 +305,7 @@ export const useRouteConfig = () => {
       ]
     },
     '/processes/bolsa-en-rollo': {
-      title: 'Bolsa en Rollo',
+      title: 'Proceso: Bolsa en Rollo',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Procesos', path: '/processes' },
@@ -310,7 +313,7 @@ export const useRouteConfig = () => {
       ]
     },
     '/processes/bolsa-suelta': {
-      title: 'Bolsa Suelta',
+      title: 'Proceso: Bolsa Suelta',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Procesos', path: '/processes' },
@@ -318,23 +321,23 @@ export const useRouteConfig = () => {
       ]
     },
     '/processes/extrusion': {
-      title: 'Extrusion',
+      title: 'Proceso: Extrusión',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Procesos', path: '/processes' },
-        { title: 'Extrusion' }
+        { title: 'Extrusión' }
       ]
     },
     '/processes/impresion': {
-      title: 'Impresion',
+      title: 'Proceso: Impresión',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Procesos', path: '/processes' },
-        { title: 'Impresion' }
+        { title: 'Impresión' }
       ]
     },
     '/processes/peletizado': {
-      title: 'Peletizado',
+      title: 'Proceso: Peletizado',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
         { title: 'Procesos', path: '/processes' },
@@ -342,10 +345,18 @@ export const useRouteConfig = () => {
       ]
     },
     '/purchase-orders': {
-      title: 'Pedidos Comprados',
+      title: 'Listado de Órdenes de Compra',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },
-        { title: 'Pedidos Comprados' }
+        { title: 'Órdenes de Compra' }
+      ]
+    },
+    '/inventory-movements/create-transfer': {
+      title: 'Nueva Transferencia',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Movimientos', path: '/inventory-movements' },
+        { title: 'Crear Transferencia' }
       ]
     }
   };

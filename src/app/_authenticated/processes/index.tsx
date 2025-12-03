@@ -15,7 +15,7 @@ function RouteComponent() {
   const memoizedColumns = useMemo(() => columns, []);
 
   return (
-    <DashboardLayoutContainer title='Listar procesos'>
+    <DashboardLayoutContainer>
       <CustomTable
         queryHook={useProcessesQuery}
         queryProps={{

@@ -28,7 +28,7 @@ function RouteComponent() {
   const { isOpen, onCreate } = useMachineDrawerStore();
 
   return (
-    <DashboardLayoutContainer title='Máquinas'>
+    <DashboardLayoutContainer>
       <CustomTable
         queryHook={useMachinesQuery}
         queryProps={{
