@@ -1,4 +1,4 @@
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 
 import { UserForm } from './UserForm';
 

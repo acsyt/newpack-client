@@ -1,4 +1,4 @@
-import { BasePaginationParams } from "@/interfaces/pagination-response.interface";
+import { BasePaginationParams } from '@/interfaces/pagination-response.interface';
 
 export interface Suburb {
   id: number;
@@ -8,11 +8,10 @@ export interface Suburb {
 
 export interface SuburbFilter {
   id?: number[];
-  name?: string
+  name?: string;
 }
 
 export type SuburbRelations = '';
 
 export interface SuburbsParams
   extends BasePaginationParams<SuburbFilter, SuburbRelations> {}
-

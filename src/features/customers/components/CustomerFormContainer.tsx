@@ -1,10 +1,10 @@
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 
-import { CustomerForm } from '@/features/customers/components/CustomerForm';
 import { DashboardLayoutContainer } from '@/components/layouts/dashboard/DashboardLayoutContainer';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
 import { PageNotFound } from '@/components/shared/PageNotFound';
 import { ModeAction } from '@/config/enums/mode-action.enum';
+import { CustomerForm } from '@/features/customers/components/CustomerForm';
 import { useCustomerByIdQuery } from '@/features/customers/hook/customer.query';
 
 type CustomerFormContainerProps = {
@@ -13,22 +13,32 @@ type CustomerFormContainerProps = {
   title: string;
 };
 
-export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({ mode, customerId, title }) => {
-  const { data: customer,isLoading: customerLoading, error, refetch, isRefetching } = useCustomerByIdQuery({
+export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({
+  mode,
+  customerId,
+  title
+}) => {
+  const {
+    data: customer,
+    isLoading: customerLoading,
+    error,
+    refetch,
+    isRefetching
+  } = useCustomerByIdQuery({
     id: customerId!,
-    options: {include: ['suburb.zipCode']},
+    options: { include: ['suburb.zipCode'] },
     enabled: mode !== ModeAction.Create,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000
   });
-  
+
   if (mode === ModeAction.Create) {
     return (
       <DashboardLayoutContainer title={title}>
         <CustomerForm mode={mode} />
       </DashboardLayoutContainer>
     );
-  };
+  }
 
   if (customerLoading) {
     return (
@@ -36,10 +46,12 @@ export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({ mode, cu
         <LoadingScreen isLoading={true} />
       </DashboardLayoutContainer>
     );
-  };
+  }
 
   if (error || !customer) {
-    const errorMessage = error ? 'Error loading customer' : 'Customer not found';
+    const errorMessage = error
+      ? 'Error loading customer'
+      : 'Customer not found';
 
     return (
       <DashboardLayoutContainer title={title}>
@@ -53,7 +65,7 @@ export const CustomerFormContainer: FC<CustomerFormContainerProps> = ({ mode, cu
         />
       </DashboardLayoutContainer>
     );
-  };
+  }
 
   return (
     <DashboardLayoutContainer title={title}>

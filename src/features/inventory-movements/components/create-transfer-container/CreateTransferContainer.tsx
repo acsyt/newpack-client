@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { useCanGoBack, useNavigate, useRouter } from '@tanstack/react-router';
 import { Plus, Save, ArrowRightCircle, ArrowLeft, Trash2 } from 'lucide-react';
 import {
   Controller,
@@ -32,6 +32,7 @@ import {
 import { toast } from 'sonner';
 import { useDebounce } from 'use-debounce';
 
+import { InventoryMovementTabEnum } from '@/app/_authenticated/inventory-movements';
 import { ErrorMapper } from '@/config/error.mapper';
 import { FormHelper } from '@/config/helpers/form.helper';
 import { cn } from '@/config/utils/cn.util';
@@ -40,7 +41,10 @@ import {
   inventoryTransferSchema
 } from '@/features/inventory-movements/inventory-movement.schema';
 import { useInventoryStocksQuery } from '@/features/inventory-stocks/hooks/inventory-stocks.query';
-import { InventoryStockParams } from '@/features/inventory-stocks/inventory-stock.interface';
+import {
+  InventoryStock,
+  InventoryStockParams
+} from '@/features/inventory-stocks/inventory-stock.interface';
 import { useShipTransferMutation } from '@/features/transfers/hooks/transfers.query';
 import {
   useWarehouseLocationsQuery,
@@ -53,6 +57,9 @@ interface CreateTransferContainerProps {}
 export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
   const navigate = useNavigate();
   const mutation = useShipTransferMutation();
+
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
 
   const form = useForm<InventoryTransferDto>({
     mode: 'onChange',
@@ -160,7 +167,10 @@ export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
     mutation.mutate(data, {
       onSuccess: () => {
         toast.success('Transferencia enviada exitosamente');
-        navigate({ to: '/inventory-movements' });
+        navigate({
+          to: '/inventory-movements',
+          search: { tab: InventoryMovementTabEnum.Transfers }
+        });
       },
       onError: error => {
         const errors = ErrorMapper.mapErrorToApiResponse(error);
@@ -172,19 +182,19 @@ export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
     });
   };
 
-  const onCancel = () => {
-    navigate({ to: '/inventory-movements' });
-  };
-
   return (
     <FormProvider {...form}>
       <Box className='flex flex-col gap-6'>
         <Box display='flex' justifyContent='space-between' alignItems='center'>
-          <Link to='/inventory-movements'>
-            <Button variant='outlined' startIcon={<ArrowLeft size={18} />}>
+          {canGoBack && (
+            <Button
+              variant='outlined'
+              startIcon={<ArrowLeft size={18} />}
+              onClick={() => router.history.back()}
+            >
               Volver
             </Button>
-          </Link>
+          )}
           <Button
             disableElevation
             variant='contained'
@@ -421,9 +431,6 @@ export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
         </Card>
 
         <Box display='flex' justifyContent='flex-end' gap={2}>
-          <Button variant='outlined' onClick={onCancel}>
-            Cancelar
-          </Button>
           <Button
             disableElevation
             variant='contained'
@@ -465,7 +472,8 @@ const TransferRow: FC<TransferRowProps> = ({
   } = useFormContext<InventoryTransferDto>();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStockObj, setSelectedStockObj] = useState<any>(null);
+  const [selectedStockObj, setSelectedStockObj] =
+    useState<InventoryStock | null>(null);
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
   const productId = useWatch({ control, name: `products.${index}.product_id` });
@@ -552,7 +560,7 @@ const TransferRow: FC<TransferRowProps> = ({
               {...props}
               className={cn(
                 props.className,
-                ' !px-2 !py-1 border-b border-slate-100'
+                'px-2 py-1 border-b border-slate-100'
               )}
             >
               <div className='w-full flex justify-between items-start gap-1'>
@@ -612,7 +620,7 @@ const TransferRow: FC<TransferRowProps> = ({
               setValue(`products.${index}.product_id`, stock.productId);
               setValue(
                 `products.${index}.source_location_id`,
-                stock.warehouseLocationId
+                stock.warehouseLocationId!
               );
               setValue(`products.${index}.batch_id`, stock.batchId);
 

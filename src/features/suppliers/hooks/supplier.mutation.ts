@@ -2,12 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
+import { getErrorMessage } from '@/config/error.mapper';
+import { suppliersKeys } from '@/features/suppliers/hooks/supplier.query';
 import { SupplierDto } from '@/features/suppliers/supplier.schema';
 import { SupplierService } from '@/features/suppliers/supplier.service';
-
-import {  suppliersKeys } from '@/features/suppliers/hooks/supplier.query';
-
-import { getErrorMessage } from '@/config/error.mapper';
 
 export const useSupplierMutation = () => {
   const queryClient = useQueryClient();
@@ -23,10 +21,13 @@ export const useSupplierMutation = () => {
       toast.success(message);
       router.navigate({ to: '/suppliers' });
       queryClient.invalidateQueries({ queryKey: suppliersKeys.list({}) });
-      queryClient.invalidateQueries({ queryKey: suppliersKeys.detail(data.id) });
+      queryClient.invalidateQueries({
+        queryKey: suppliersKeys.detail(data.id)
+      });
     },
     onError: error => {
       const message = getErrorMessage(error);
+
       toast.error(message);
     }
   });

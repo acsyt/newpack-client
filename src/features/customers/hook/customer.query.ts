@@ -1,14 +1,18 @@
-import { Customer, CustomerParams } from '../customer.interface';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
 import { useQuery } from '@tanstack/react-query';
 
+import { Customer, CustomerParams } from '../customer.interface';
 import { CustomerService } from '../customer.service';
 
-interface QueryOptions extends Omit<UseQueryOptions<PaginationResponse<Customer>>,'queryKey' | 'queryFn'> {
+interface QueryOptions
+  extends Omit<
+    UseQueryOptions<PaginationResponse<Customer>>,
+    'queryKey' | 'queryFn'
+  > {
   options: CustomerParams;
-};
+}
 
 export const customersKeys = {
   all: () => ['customers'],
@@ -24,10 +28,11 @@ export const useCustomerQuery = ({ options, ...rest }: QueryOptions) => {
   });
 };
 
-interface CustomerQueryOptionsById extends Omit<UseQueryOptions<Customer>, 'queryKey' | 'queryFn'> {
+interface CustomerQueryOptionsById
+  extends Omit<UseQueryOptions<Customer>, 'queryKey' | 'queryFn'> {
   id: number;
   options: CustomerParams;
-};
+}
 
 //useUserByIdQuery
 export const useCustomerByIdQuery = ({

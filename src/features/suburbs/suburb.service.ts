@@ -14,10 +14,11 @@ export class SuburbService extends SharedService {
   static findAllSuburbs = async (
     options: SuburbsParams
   ): Promise<PaginationResponse<Suburb>> => {
-    return SharedService.findAll<Suburb, SuburbFilter, SuburbRelations, SuburbsParams>(
-      apiFetcher,
-      '/suburbs',
-      options
-    );
+    return SharedService.findAll<
+      Suburb,
+      SuburbFilter,
+      SuburbRelations,
+      SuburbsParams
+    >(apiFetcher, '/suburbs', options);
   };
 }

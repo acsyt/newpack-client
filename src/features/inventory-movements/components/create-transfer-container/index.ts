@@ -1,1 +1,0 @@
-export { CreateTransferContainer } from './CreateTransferContainer';

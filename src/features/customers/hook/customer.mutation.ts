@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
+import { getErrorMessage } from '@/config/error.mapper';
 import { CustomerDto } from '@/features/customers/customer.schema';
 import { CustomerService } from '@/features/customers/customer.service';
 import { customersKeys } from '@/features/customers/hook/customer.query';
-import { getErrorMessage } from '@/config/error.mapper';
 
 export const useCustomersMutation = () => {
   const queryClient = useQueryClient();
@@ -21,7 +21,9 @@ export const useCustomersMutation = () => {
       toast.success(message);
       router.navigate({ to: '/customers' });
       queryClient.invalidateQueries({ queryKey: customersKeys.list({}) });
-      queryClient.invalidateQueries({ queryKey: customersKeys.detail(data.id) });
+      queryClient.invalidateQueries({
+        queryKey: customersKeys.detail(data.id)
+      });
     },
     onError: error => {
       const message = getErrorMessage(error);

@@ -9,39 +9,43 @@ import type { PaginationResponse } from '@/interfaces/pagination-response.interf
 
 import { SharedService } from '../shared/shared.service';
 
+import { CustomerDto } from './customer.schema';
+
 import { apiFetcher } from '@/config/api-fetcher';
 import { getErrorMessage } from '@/config/error.mapper';
-import { CustomerDto } from './customer.schema';
 
 export class CustomerService extends SharedService {
   static findAllCustomers = async (
     options: CustomerParams
   ): Promise<PaginationResponse<Customer>> => {
-    return SharedService.findAll<Customer, CustomerFilter, CusomerRelations, CustomerParams>(
-      apiFetcher,
-      '/customers',
-      options
-    );
+    return SharedService.findAll<
+      Customer,
+      CustomerFilter,
+      CusomerRelations,
+      CustomerParams
+    >(apiFetcher, '/customers', options);
   };
 
   static findCustomerByIdAction = async (
     id: number,
     options: CustomerParams
   ): Promise<Customer> => {
-    return SharedService.findOne<Customer, CustomerFilter, CusomerRelations, CustomerParams>(
-      apiFetcher,
-      `/customers/${id}`,
-      options
-    );
+    return SharedService.findOne<
+      Customer,
+      CustomerFilter,
+      CusomerRelations,
+      CustomerParams
+    >(apiFetcher, `/customers/${id}`, options);
   };
 
-  static createCustomer = async (CustomerDto: CustomerDto): Promise<DataResponse<Customer>> => {
+  static createCustomer = async (
+    CustomerDto: CustomerDto
+  ): Promise<DataResponse<Customer>> => {
     try {
-      const data = await SharedService.create<DataResponse<Customer>, CustomerDto>(
-        apiFetcher,
-        '/customers',
+      const data = await SharedService.create<
+        DataResponse<Customer>,
         CustomerDto
-      );
+      >(apiFetcher, '/customers', CustomerDto);
 
       return data;
     } catch (error) {
@@ -54,11 +58,10 @@ export class CustomerService extends SharedService {
     CustomerDto: CustomerDto
   ): Promise<DataResponse<Customer>> => {
     try {
-      const data = await SharedService.update<DataResponse<Customer>, CustomerDto>(
-        apiFetcher,
-        `/customers/${id}`,
+      const data = await SharedService.update<
+        DataResponse<Customer>,
         CustomerDto
-      );
+      >(apiFetcher, `/customers/${id}`, CustomerDto);
 
       return data;
     } catch (error) {

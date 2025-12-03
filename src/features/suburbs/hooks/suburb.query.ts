@@ -1,11 +1,12 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
-
-import type { 
-    Suburb, 
-    SuburbsParams
+import type {
+  Suburb,
+  SuburbsParams
 } from '@/features/suburbs/suburb.interface';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
+import type { UseQueryOptions } from '@tanstack/react-query';
+
+import { useQuery } from '@tanstack/react-query';
+
 import { SuburbService } from '@/features/suburbs/suburb.service';
 
 interface QueryOptions

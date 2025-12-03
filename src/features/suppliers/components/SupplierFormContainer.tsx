@@ -26,7 +26,7 @@ export const SuppliersFormContainer: FC<SuppliersFormContainerProps> = ({
     isRefetching
   } = useSupplierByIdQuery({
     id: supplierId!,
-    options: {include: ['suburb.zipCode']},
+    options: { include: ['suburb.zipCode'] },
     enabled: mode !== ModeAction.Create,
     retry: false,
     staleTime: 5 * 60 * 1000

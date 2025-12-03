@@ -1,4 +1,4 @@
-import { BasePaginationParams } from "@/interfaces/pagination-response.interface";
+import { BasePaginationParams } from '@/interfaces/pagination-response.interface';
 
 export interface Supplier {
   id: number;
@@ -24,34 +24,33 @@ export interface Supplier {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
-  suburb: Suburb
-};
+  suburb: Suburb;
+}
 
 interface Suburb {
   id: number;
   name: string;
   zipCodeId: number;
-  zipCode: ZipCode
+  zipCode: ZipCode;
 }
 
 interface ZipCode {
-  id: number,
-  name: string,
-  city: City
-};
+  id: number;
+  name: string;
+  city: City;
+}
 
 interface City {
-  id: number,
-  name: string
-  state: State
+  id: number;
+  name: string;
+  state: State;
 }
 
 interface State {
-  id: number,
-  code: string,
-  name: string
+  id: number;
+  code: string;
+  name: string;
 }
-
 
 export interface SupplierFilter {
   id?: number[];
@@ -61,4 +60,3 @@ export type SupplierRelations = 'suburb.zipCode';
 
 export interface SupplierParams
   extends BasePaginationParams<SupplierFilter, SupplierRelations> {}
-

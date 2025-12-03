@@ -1,6 +1,7 @@
 import type { MRT_ColumnDef } from 'material-react-table';
+
 import dayjs from 'dayjs';
-import { StatusChip } from '@/components/shared/StatusChip';
+
 import { Supplier } from '@/features/suppliers/supplier.interface'; // ajusta el path según tu estructura
 
 export const columns: MRT_ColumnDef<Supplier>[] = [
@@ -17,9 +18,7 @@ export const columns: MRT_ColumnDef<Supplier>[] = [
     id: 'updatedAt',
     accessorKey: 'updatedAt',
     header: 'Actualizado el',
-    accessorFn: (row) =>
-      row.updatedAt
-        ? dayjs(row.updatedAt).format('YYYY-MM-DD HH:mm:ss')
-        : '-',
+    accessorFn: row =>
+      row.updatedAt ? dayjs(row.updatedAt).format('YYYY-MM-DD HH:mm:ss') : '-'
   }
 ];

@@ -15,7 +15,10 @@ export const RowActions = ({ customer }: { customer: Customer }) => {
       <Box display='flex' gap={1}>
         {permissions.includes('users.show') && (
           <Tooltip title='Show'>
-            <Link to='/customers/$customerId/show' params={{ customerId: String(customer.id) }}>
+            <Link
+              to='/customers/$customerId/show'
+              params={{ customerId: String(customer.id) }}
+            >
               <IconButton>
                 <Eye size={18} />
               </IconButton>
@@ -24,7 +27,10 @@ export const RowActions = ({ customer }: { customer: Customer }) => {
         )}
         {permissions.includes('users.edit') && (
           <Tooltip title={'Edit'}>
-            <Link to='/customers/$customerId/edit' params={{ customerId: String(customer.id) }}>
+            <Link
+              to='/customers/$customerId/edit'
+              params={{ customerId: String(customer.id) }}
+            >
               <IconButton>
                 <Pencil size={18} />
               </IconButton>

@@ -1,30 +1,48 @@
-import { ModeAction } from '@/config/enums/mode-action.enum';
 import { z } from 'zod';
 
+import { ModeAction } from '@/config/enums/mode-action.enum';
+
 export const baseSchema = z.object({
-    name: z.string().min(1, "El nombre es obligatorio"),
-    last_name: z.string().min(1, "El apellido es obligatorio"),
-    email: z.string().email("Correo electrónico no válido"),
-    phone: z.string().trim().regex(/^[0-9]{10}$/, "El teléfono debe contener exactamente 10 números (sin letras ni símbolos)."),
-    phone_secondary: z.string().trim().regex(/^[0-9]{10}$/, "El teléfono secundario debe contener exactamente 10 números (sin letras ni símbolos).").optional(),
-    suburb_id: z.number(),
-    street: z.string().min(1, "La calle es obligatoria"),
-    exterior_number: z.string().min(1, "El número exterior es obligatorio"),
-    interior_number: z.string().optional(),
-    address_reference: z.string().optional(),
-    rfc: z.string().regex(/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/i, "Formato de RFC no válido"),
-    legal_name: z.string().min(1, "La razón social es obligatoria"),
-    statusBoolean: z.boolean(),
-    status: z.string(),
-    notes: z.string().optional(),
-    zip_code: z.string({ required_error: 'El código postal es obligatorio'}).min(1, 'El código postal es obligatorio'),
-    city: z.string(),
-    state: z.string()
+  name: z.string().min(1, 'El nombre es obligatorio'),
+  last_name: z.string().min(1, 'El apellido es obligatorio'),
+  email: z.string().email('Correo electrónico no válido'),
+  phone: z
+    .string()
+    .trim()
+    .regex(
+      /^[0-9]{10}$/,
+      'El teléfono debe contener exactamente 10 números (sin letras ni símbolos).'
+    ),
+  phone_secondary: z
+    .string()
+    .trim()
+    .regex(
+      /^[0-9]{10}$/,
+      'El teléfono secundario debe contener exactamente 10 números (sin letras ni símbolos).'
+    )
+    .optional(),
+  suburb_id: z.number(),
+  street: z.string().min(1, 'La calle es obligatoria'),
+  exterior_number: z.string().min(1, 'El número exterior es obligatorio'),
+  interior_number: z.string().optional(),
+  address_reference: z.string().optional(),
+  rfc: z
+    .string()
+    .regex(/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/i, 'Formato de RFC no válido'),
+  legal_name: z.string().min(1, 'La razón social es obligatoria'),
+  statusBoolean: z.boolean(),
+  status: z.string(),
+  notes: z.string().optional(),
+  zip_code: z
+    .string({ required_error: 'El código postal es obligatorio' })
+    .min(1, 'El código postal es obligatorio'),
+  city: z.string(),
+  state: z.string()
 });
 
 const createSchema = z.object({
-    ...baseSchema.shape,
-    mode: z.literal(ModeAction.Create)
+  ...baseSchema.shape,
+  mode: z.literal(ModeAction.Create)
 });
 
 const updateSchema = z.object({
@@ -33,8 +51,8 @@ const updateSchema = z.object({
 });
 
 export const customerSchema = z.discriminatedUnion('mode', [
-    createSchema,
-    updateSchema
+  createSchema,
+  updateSchema
 ]);
 
 export type CustomerDto = z.infer<typeof customerSchema>;

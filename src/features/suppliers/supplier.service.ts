@@ -17,31 +17,34 @@ export class SupplierService extends SharedService {
   static findAllSuppliers = async (
     options: SupplierParams
   ): Promise<PaginationResponse<Supplier>> => {
-    return SharedService.findAll<Supplier, SupplierFilter, SupplierRelations, SupplierParams>(
-      apiFetcher,
-      '/suppliers',
-      options
-    );
+    return SharedService.findAll<
+      Supplier,
+      SupplierFilter,
+      SupplierRelations,
+      SupplierParams
+    >(apiFetcher, '/suppliers', options);
   };
 
   static findSupplierByIdAction = async (
     id: number,
     options: SupplierParams
   ): Promise<Supplier> => {
-    return SharedService.findOne<Supplier, SupplierFilter, SupplierRelations, SupplierParams>(
-      apiFetcher,
-      `/suppliers/${id}`,
-      options
-    );
+    return SharedService.findOne<
+      Supplier,
+      SupplierFilter,
+      SupplierRelations,
+      SupplierParams
+    >(apiFetcher, `/suppliers/${id}`, options);
   };
 
-  static createSupplier = async (SupplierDto: SupplierDto): Promise<DataResponse<Supplier>> => {
+  static createSupplier = async (
+    SupplierDto: SupplierDto
+  ): Promise<DataResponse<Supplier>> => {
     try {
-      const data = await SharedService.create<DataResponse<Supplier>, SupplierDto>(
-        apiFetcher,
-        '/suppliers',
+      const data = await SharedService.create<
+        DataResponse<Supplier>,
         SupplierDto
-      );
+      >(apiFetcher, '/suppliers', SupplierDto);
 
       return data;
     } catch (error) {
@@ -54,11 +57,10 @@ export class SupplierService extends SharedService {
     SupplierDto: SupplierDto
   ): Promise<DataResponse<Supplier>> => {
     try {
-      const data = await SharedService.update<DataResponse<Supplier>, SupplierDto>(
-        apiFetcher,
-        `/suppliers/${id}`,
+      const data = await SharedService.update<
+        DataResponse<Supplier>,
         SupplierDto
-      );
+      >(apiFetcher, `/suppliers/${id}`, SupplierDto);
 
       return data;
     } catch (error) {

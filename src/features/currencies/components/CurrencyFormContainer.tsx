@@ -19,9 +19,7 @@ export const CurrencyFormContainer: FC<CurrencyFormContainerProps> = ({
   const {
     data: currency,
     isLoading: currencyLoading,
-    error,
-    refetch,
-    isRefetching
+    error
   } = useCurrencyByIdQuery({
     id: currencyId!,
     options: {},

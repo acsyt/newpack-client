@@ -1,4 +1,7 @@
-import type { Supplier, SupplierParams } from '@/features/suppliers/supplier.interface';
+import type {
+  Supplier,
+  SupplierParams
+} from '@/features/suppliers/supplier.interface';
 import type { PaginationResponse } from '@/interfaces/pagination-response.interface';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
@@ -11,7 +14,7 @@ interface QueryOptions
     UseQueryOptions<PaginationResponse<Supplier>>,
     'queryKey' | 'queryFn'
   > {
-  options: SupplierParams
+  options: SupplierParams;
 }
 
 export const suppliersKeys = {
