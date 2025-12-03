@@ -254,7 +254,7 @@ export const WarehouseLocationsDialog = ({
                     size='small'
                     startIcon={<Plus size={16} />}
                     className='whitespace-nowrap'
-                    onClick={onCreate}
+                    onClick={() => onCreate('Crear Ubicación')}
                   >
                     Nueva
                   </Button>
@@ -300,7 +300,7 @@ export const WarehouseLocationsDialog = ({
                 <Button
                   variant='outlined'
                   startIcon={<Plus size={16} />}
-                  onClick={onCreate}
+                  onClick={() => onCreate()}
                 >
                   Crear primera ubicación
                 </Button>

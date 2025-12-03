@@ -201,7 +201,7 @@ export const CustomFormTextField = <T extends FieldValues>({
         const {
           initialOption = {
             value: '',
-            label: 'Select option'
+            label: 'Seleccione una opción'
           },
           ...restOptions
         } = props;

@@ -99,6 +99,9 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/users/$userId/show': ['users.show'],
   '/classes': ['classes.index'],
   '/customers': ['customers.index'],
+  '/customers/create': ['customers.create'],
+  '/customers/$customerId/edit': ['customers.edit'],
+  '/customers/$customerId/show': ['customers.show'],
   '/machines': ['machines.index'],
   '/processes': ['processes.index'],
   '/raw-materials': ['raw-materials.index'],
@@ -114,7 +117,8 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/currencies': ['currencies.index'],
   '/roles/$roleId/edit': ['roles.edit'],
   '/roles/create': ['roles.create'],
-  '/roles/$roleId/show': ['roles.show']
+  '/roles/$roleId/show': ['roles.show'],
+  '/compounds': ['compounds.index']
 };
 
 export const useRouteConfig = () => {
@@ -167,6 +171,32 @@ export const useRouteConfig = () => {
       title: 'Clientes',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Clientes' }]
     },
+    '/customers/create': {
+      title: 'Create Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: 'Create' }
+      ]
+    },
+    '/customers/$customerId/edit': {
+      title: 'Edit Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Edit' }
+      ]
+    },
+    '/customers/$customerId/show': {
+      title: 'Show Cliente',
+      breadcrumbs: [
+        { title: 'Home', path: '/' },
+        { title: 'Customers', path: '/customers' },
+        { title: ':id' },
+        { title: 'Show' }
+      ]
+    },
     '/machines': {
       title: 'Máquinas',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Máquinas' }]
@@ -181,6 +211,10 @@ export const useRouteConfig = () => {
         { title: 'Inicio', path: '/' },
         { title: 'Materias Primas' }
       ]
+    },
+    '/compounds': {
+      title: 'Compuestos',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Compuestos' }]
     },
     '/suppliers': {
       title: 'Proveedores',

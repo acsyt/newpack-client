@@ -107,6 +107,8 @@ export type Permission =
   | 'customers.show'
   | 'customers.create'
   | 'customers.edit'
+  | 'customers.change-password'
+  | 'customers.export'
   | 'customers.export'
 
   // Warehouses
@@ -139,4 +141,11 @@ export type Permission =
   | 'currencies.show'
   | 'currencies.create'
   | 'currencies.edit'
-  | 'currencies.export';
+  | 'currencies.export'
+
+  // Compounds
+  | 'compounds.index'
+  | 'compounds.show'
+  | 'compounds.create'
+  | 'compounds.edit'
+  | 'compounds.export';

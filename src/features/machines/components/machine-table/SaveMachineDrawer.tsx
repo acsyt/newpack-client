@@ -4,8 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField, Autocomplete, Button, Grid } from '@mui/material';
 import { DefaultValues, useForm, Controller } from 'react-hook-form';
 
-import { useMachineDrawerStore } from './MachineTable';
-
+import { useMachineDrawerStore } from '@/app/_authenticated/machines';
 import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ModeAction } from '@/config/enums/mode-action.enum';
 import { Environment } from '@/config/env';

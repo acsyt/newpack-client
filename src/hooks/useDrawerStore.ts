@@ -6,11 +6,12 @@ export interface BaseDrawerStoreProps<T> {
   mode: ModeAction;
   isOpen: boolean;
   item: T | null;
+  title?: string;
   onClose: () => void;
   setItem: (item: T | null) => void;
-  onCreate: () => void;
-  onEdit: (item: T) => void;
-  onShow: (item: T) => void;
+  onCreate: (title?: string) => void;
+  onEdit: (item: T, title?: string) => void;
+  onShow: (item: T, title?: string) => void;
 }
 
 /**
@@ -35,8 +36,21 @@ export function createDrawerStore<T>() {
     item: null,
     onClose: () => set({ isOpen: false, item: null }),
     setItem: item => set({ item }),
-    onCreate: () => set({ isOpen: true, mode: ModeAction.Create, item: null }),
-    onEdit: item => set({ isOpen: true, mode: ModeAction.Edit, item }),
-    onShow: item => set({ isOpen: true, mode: ModeAction.Show, item })
+    onCreate: (title?: string) =>
+      set({
+        isOpen: true,
+        mode: ModeAction.Create,
+        item: null,
+        title: title ?? ''
+      }),
+    onEdit: (item, title?: string) =>
+      set({
+        isOpen: true,
+        mode: ModeAction.Edit,
+        item,
+        title: title ?? ''
+      }),
+    onShow: (item, title?: string) =>
+      set({ isOpen: true, mode: ModeAction.Show, item, title: title ?? '' })
   }));
 }

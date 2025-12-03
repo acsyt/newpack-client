@@ -82,6 +82,12 @@ export const useMenuItems = () => {
         isEnabled: true
       },
       {
+        title: 'Compuestos',
+        icon: <Box aria-hidden='true' size={20} />,
+        href: '/compounds',
+        isEnabled: true
+      },
+      {
         title: 'Clientes',
         icon: <UserCheckIcon aria-hidden='true' size={20} />,
         href: '/customers',
