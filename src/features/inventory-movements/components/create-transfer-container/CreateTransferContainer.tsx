@@ -1,4 +1,4 @@
-import { useMemo, useEffect, FC, useState } from 'react';
+import { useMemo, useEffect, FC, useState, memo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
@@ -161,7 +161,6 @@ export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
       onSuccess: () => {
         toast.success('Transferencia enviada exitosamente');
         navigate({ to: '/inventory-movements' });
-        form.reset();
       },
       onError: error => {
         const errors = ErrorMapper.mapErrorToApiResponse(error);
@@ -372,7 +371,7 @@ export const CreateTransferContainer: FC<CreateTransferContainerProps> = () => {
                     </TableRow>
                   ) : (
                     fields.map((field, index) => (
-                      <TransferRow
+                      <OptimizedTransferRow
                         key={field.id}
                         index={index}
                         remove={remove}
@@ -464,8 +463,6 @@ const TransferRow: FC<TransferRowProps> = ({
     trigger,
     formState: { errors }
   } = useFormContext<InventoryTransferDto>();
-
-  const allProductsWatcher = useWatch({ control, name: 'products' });
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStockObj, setSelectedStockObj] = useState<any>(null);
@@ -681,16 +678,16 @@ const TransferRow: FC<TransferRowProps> = ({
             field: { onChange, value, ref, onBlur },
             fieldState: { error }
           }) => {
-            const allRows = allProductsWatcher || [];
+            const allRows = getValues().products || [];
+
             const usedInOtherRows = allRows.reduce((acc, row, idx) => {
               if (idx === index) return acc;
               if (
                 row.product_id === productId &&
                 row.source_location_id === sourceLocationId &&
                 row.batch_id === batchId
-              ) {
+              )
                 return acc + (Number(row.quantity) || 0);
-              }
 
               return acc;
             }, 0);
@@ -817,3 +814,10 @@ const TransferRow: FC<TransferRowProps> = ({
     </TableRow>
   );
 };
+
+const OptimizedTransferRow = memo(
+  TransferRow,
+  (prev, next) =>
+    prev.sourceWarehouseId === next.sourceWarehouseId &&
+    prev.destWarehouseId === next.destWarehouseId
+);
