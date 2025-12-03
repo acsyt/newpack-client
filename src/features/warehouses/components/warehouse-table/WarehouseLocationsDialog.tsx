@@ -225,7 +225,7 @@ export const WarehouseLocationsDialog = ({
                 variant='contained'
                 size='small'
                 startIcon={<Plus size={16} />}
-                onClick={onCreate}
+                onClick={() => onCreate('Crear Ubicación')}
               >
                 Nueva ubicación
               </Button>
@@ -253,7 +253,7 @@ export const WarehouseLocationsDialog = ({
                   variant='contained'
                   size='small'
                   startIcon={<Plus size={16} />}
-                  onClick={onCreate}
+                  onClick={() => onCreate()}
                 >
                   Nueva ubicación
                 </Button>
@@ -283,7 +283,7 @@ export const WarehouseLocationsDialog = ({
                 <Button
                   variant='outlined'
                   startIcon={<Plus size={16} />}
-                  onClick={onCreate}
+                  onClick={() => onCreate()}
                 >
                   Crear primera ubicación
                 </Button>

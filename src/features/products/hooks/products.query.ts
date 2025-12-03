@@ -10,14 +10,17 @@ export const productsKeys = {
 
 interface UseProductsQueryProps {
   options?: ProductParams;
+  enabled?: boolean;
 }
 
 export const useProductsQuery = ({
-  options = {}
+  options = {},
+  enabled = true
 }: UseProductsQueryProps = {}) => {
   return useQuery({
     queryKey: productsKeys.list(options),
-    queryFn: () => ProductService.findAllProducts(options)
+    queryFn: () => ProductService.findAllProducts(options),
+    enabled: enabled ?? true
   });
 };
 

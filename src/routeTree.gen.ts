@@ -26,6 +26,7 @@ import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authentic
 import { Route as AuthenticatedInventoryStocksIndexRouteImport } from './app/_authenticated/inventory-stocks/index'
 import { Route as AuthenticatedInventoryMovementsIndexRouteImport } from './app/_authenticated/inventory-movements/index'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './app/_authenticated/customers/index'
+import { Route as AuthenticatedCompoundsIndexRouteImport } from './app/_authenticated/compounds/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './app/_authenticated/classes/index'
 import { Route as AuthenticatedUsersCreateRouteImport } from './app/_authenticated/users/create'
 import { Route as AuthenticatedUsersUserIdRouteImport } from './app/_authenticated/users/$userId'
@@ -132,6 +133,12 @@ const AuthenticatedCustomersIndexRoute =
     path: '/customers/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedCompoundsIndexRoute =
+  AuthenticatedCompoundsIndexRouteImport.update({
+    id: '/compounds/',
+    path: '/compounds/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedClassesIndexRoute =
   AuthenticatedClassesIndexRouteImport.update({
     id: '/classes/',
@@ -217,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
   '/users/create': typeof AuthenticatedUsersCreateRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
+  '/compounds': typeof AuthenticatedCompoundsIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
@@ -247,6 +255,7 @@ export interface FileRoutesByTo {
   '/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
   '/users/create': typeof AuthenticatedUsersCreateRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
+  '/compounds': typeof AuthenticatedCompoundsIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/inventory-movements': typeof AuthenticatedInventoryMovementsIndexRoute
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
@@ -279,6 +288,7 @@ export interface FileRoutesById {
   '/_authenticated/users/$userId': typeof AuthenticatedUsersUserIdRouteWithChildren
   '/_authenticated/users/create': typeof AuthenticatedUsersCreateRoute
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
+  '/_authenticated/compounds/': typeof AuthenticatedCompoundsIndexRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
   '/_authenticated/inventory-movements/': typeof AuthenticatedInventoryMovementsIndexRoute
   '/_authenticated/inventory-stocks/': typeof AuthenticatedInventoryStocksIndexRoute
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/users/create'
     | '/classes'
+    | '/compounds'
     | '/customers'
     | '/inventory-movements'
     | '/inventory-stocks'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/users/create'
     | '/classes'
+    | '/compounds'
     | '/customers'
     | '/inventory-movements'
     | '/inventory-stocks'
@@ -372,6 +384,7 @@ export interface FileRouteTypes {
     | '/_authenticated/users/$userId'
     | '/_authenticated/users/create'
     | '/_authenticated/classes/'
+    | '/_authenticated/compounds/'
     | '/_authenticated/customers/'
     | '/_authenticated/inventory-movements/'
     | '/_authenticated/inventory-stocks/'
@@ -519,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomersIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/compounds/': {
+      id: '/_authenticated/compounds/'
+      path: '/compounds'
+      fullPath: '/compounds'
+      preLoaderRoute: typeof AuthenticatedCompoundsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/classes/': {
       id: '/_authenticated/classes/'
       path: '/classes'
@@ -649,6 +669,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedUsersUserIdRoute: typeof AuthenticatedUsersUserIdRouteWithChildren
   AuthenticatedUsersCreateRoute: typeof AuthenticatedUsersCreateRoute
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
+  AuthenticatedCompoundsIndexRoute: typeof AuthenticatedCompoundsIndexRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
   AuthenticatedInventoryMovementsIndexRoute: typeof AuthenticatedInventoryMovementsIndexRoute
   AuthenticatedInventoryStocksIndexRoute: typeof AuthenticatedInventoryStocksIndexRoute
@@ -674,6 +695,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedUsersUserIdRoute: AuthenticatedUsersUserIdRouteWithChildren,
   AuthenticatedUsersCreateRoute: AuthenticatedUsersCreateRoute,
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
+  AuthenticatedCompoundsIndexRoute: AuthenticatedCompoundsIndexRoute,
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
   AuthenticatedInventoryMovementsIndexRoute:
     AuthenticatedInventoryMovementsIndexRoute,
