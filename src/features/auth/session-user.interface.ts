@@ -1,4 +1,4 @@
-import { Permission } from '../role/role.interface';
+import { Permission } from '../roles/role.interface';
 
 export interface SessionUser {
   id: string;

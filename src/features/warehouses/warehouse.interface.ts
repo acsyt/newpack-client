@@ -22,6 +22,7 @@ export interface Warehouse {
   updatedAt: string;
   warehouseLocations?: WarehouseLocation[];
   warehouseLocationsCount: number;
+  stocksCount?: number;
 }
 
 export interface WarehouseFilter {

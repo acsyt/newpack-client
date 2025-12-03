@@ -3,7 +3,7 @@ import type { FileRouteTypes } from '@/routeTree.gen';
 import { useLocation } from '@tanstack/react-router';
 
 import { SessionUser } from '@/features/auth/session-user.interface';
-import { Permission } from '@/features/role/role.interface';
+import { Permission } from '@/features/roles/role.interface';
 
 export interface RouteBreadcrumb {
   title: ':id' | string;
@@ -25,6 +25,7 @@ export type DashboardRoutes = Exclude<
   | '/auth/forgot-password'
   | '/auth/reset-password'
   | '/users/$userId'
+  | '/roles/$roleId'
   | '/suppliers/$supplierId'
 >;
 
@@ -113,6 +114,10 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/warehouses': ['warehouses.index'],
   '/inventory-movements': ['inventory-movements.index'],
   '/inventory-stocks': ['inventory-stocks.index'],
+  '/currencies': ['currencies.index'],
+  '/roles/$roleId/edit': ['roles.edit'],
+  '/roles/create': ['roles.create'],
+  '/roles/$roleId/show': ['roles.show'],
   '/compounds': ['compounds.index']
 };
 
@@ -211,10 +216,6 @@ export const useRouteConfig = () => {
       title: 'Compuestos',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Compuestos' }]
     },
-    '/roles': {
-      title: 'Roles',
-      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Roles' }]
-    },
     '/suppliers': {
       title: 'Proveedores',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Proveedores' }]
@@ -256,6 +257,43 @@ export const useRouteConfig = () => {
     '/inventory-stocks': {
       title: 'Existencias',
       breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Existencias' }]
+    },
+    '/currencies': {
+      title: 'Tipos de Monedas',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Tipos de Monedas' }
+      ]
+    },
+    '/roles': {
+      title: 'Listado de Roles',
+      breadcrumbs: [{ title: 'Inicio', path: '/' }, { title: 'Roles' }]
+    },
+    '/roles/create': {
+      title: 'Crear Rol',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Roles', path: '/roles' },
+        { title: 'Crear' }
+      ]
+    },
+    '/roles/$roleId/edit': {
+      title: 'Editar Rol',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Roles', path: '/roles' },
+        { title: ':id' },
+        { title: 'Editar' }
+      ]
+    },
+    '/roles/$roleId/show': {
+      title: 'Detalle de Rol',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Roles', path: '/roles' },
+        { title: ':id' },
+        { title: 'Detalle' }
+      ]
     }
   };
 

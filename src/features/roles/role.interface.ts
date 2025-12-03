@@ -136,6 +136,13 @@ export type Permission =
   | 'inventory-stocks.index'
   | 'inventory-stocks.export'
 
+  // Currencies
+  | 'currencies.index'
+  | 'currencies.show'
+  | 'currencies.create'
+  | 'currencies.edit'
+  | 'currencies.export'
+
   // Compounds
   | 'compounds.index'
   | 'compounds.show'

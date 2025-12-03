@@ -1,3 +1,5 @@
+import { useState, useMemo } from 'react';
+
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -5,6 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,9 +15,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { X, Plus, Pencil, Trash2, MapPin, Eye } from 'lucide-react';
+import { X, Plus, Pencil, Trash2, MapPin, Eye, Search } from 'lucide-react';
 
 import { SaveLocationDrawer } from './SaveLocationDrawer';
 
@@ -41,6 +45,7 @@ export const WarehouseLocationsDialog = ({
   onClose,
   warehouse
 }: WarehouseLocationsModalProps) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const can = useAuthStore(state => state.can);
 
   const {
@@ -67,7 +72,34 @@ export const WarehouseLocationsDialog = ({
     warehouseId: warehouse.id
   });
 
-  const locations = locationsData?.data || [];
+  const locations = useMemo(() => {
+    const data = locationsData?.data || [];
+
+    if (!searchQuery) return data;
+
+    const normalizeText = (text: string) =>
+      text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+
+    const normalizedQuery = normalizeText(searchQuery);
+
+    return data.filter(location => {
+      const normalizedId = normalizeText(location.id.toString());
+      const normalizedAisle = normalizeText(location.aisle || '');
+      const normalizedShelf = normalizeText(location.shelf || '');
+      const normalizedSection = normalizeText(location.section || '');
+
+      return (
+        normalizedId.includes(normalizedQuery) ||
+        normalizedAisle.includes(normalizedQuery) ||
+        normalizedShelf.includes(normalizedQuery) ||
+        normalizedSection.includes(normalizedQuery)
+      );
+    });
+  }, [locationsData?.data, searchQuery]);
 
   const canView = can('warehouse-locations.index');
   const canCreate = can('warehouse-locations.create');
@@ -196,16 +228,16 @@ export const WarehouseLocationsDialog = ({
         onClose={onClose}
       >
         <DialogTitle className='border-b border-divider pb-3'>
-          <div className='flex sm:hidden flex-col gap-3'>
+          <div className='flex flex-col gap-4'>
             <div className='flex items-center justify-between'>
-              <div className='flex items-center gap-2 flex-1 min-w-0'>
-                <MapPin size={20} className='flex-0' />
-                <div className='min-w-0 flex-1'>
+              <div className='flex items-center gap-3'>
+                <MapPin size={24} className='text-primary-main' />
+                <div>
                   <Typography
-                    variant='subtitle1'
-                    className='font-semibold truncate'
+                    variant='h6'
+                    className='font-semibold leading-tight'
                   >
-                    Ubicaciones
+                    Ubicaciones - {warehouse.name}
                   </Typography>
                   <Typography variant='caption' className='text-text-secondary'>
                     {warehouse.warehouseLocationsCount}{' '}
@@ -215,53 +247,38 @@ export const WarehouseLocationsDialog = ({
                   </Typography>
                 </div>
               </div>
-              <IconButton size='small' className='flex-0' onClick={onClose}>
-                <X size={20} />
-              </IconButton>
-            </div>
-            {canCreate && (
-              <Button
-                fullWidth
-                variant='contained'
-                size='small'
-                startIcon={<Plus size={16} />}
-                onClick={() => onCreate('Crear Ubicación')}
-              >
-                Nueva ubicación
-              </Button>
-            )}
-          </div>
-
-          <div className='hidden sm:flex sm:items-center sm:justify-between'>
-            <div className='flex items-center gap-3'>
-              <MapPin size={24} />
-              <div>
-                <Typography variant='h6' className='font-semibold'>
-                  Ubicaciones - {warehouse.name}
-                </Typography>
-                <Typography variant='caption' className='text-text-secondary'>
-                  {warehouse.warehouseLocationsCount}{' '}
-                  {warehouse.warehouseLocationsCount > 1
-                    ? 'ubicaciones'
-                    : 'ubicación'}
-                </Typography>
+              <div className='flex items-center gap-2'>
+                {canCreate && (
+                  <Button
+                    variant='contained'
+                    size='small'
+                    startIcon={<Plus size={16} />}
+                    className='whitespace-nowrap'
+                    onClick={() => onCreate('Crear Ubicación')}
+                  >
+                    Nueva
+                  </Button>
+                )}
+                <IconButton size='small' onClick={onClose}>
+                  <X size={20} />
+                </IconButton>
               </div>
             </div>
-            <div className='flex items-center gap-2'>
-              {canCreate && (
-                <Button
-                  variant='contained'
-                  size='small'
-                  startIcon={<Plus size={16} />}
-                  onClick={() => onCreate()}
-                >
-                  Nueva ubicación
-                </Button>
-              )}
-              <IconButton size='small' onClick={onClose}>
-                <X size={20} />
-              </IconButton>
-            </div>
+
+            <TextField
+              fullWidth
+              size='small'
+              placeholder='Buscar por ID, pasillo, estante...'
+              value={searchQuery}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Search size={16} className='text-text-secondary' />
+                  </InputAdornment>
+                )
+              }}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
           </div>
         </DialogTitle>
 

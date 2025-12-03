@@ -14,6 +14,7 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { DefaultValues, useForm, Controller } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { CustomDrawer } from '@/components/shared/CustomDrawer';
 import { ModeAction } from '@/config/enums/mode-action.enum';
@@ -114,12 +115,14 @@ export const SaveWarehouseDrawer = ({
             disabled={mutation.isPending}
             onClick={form.handleSubmit(data => {
               mutation.mutate(data, {
-                onSuccess: () => {
+                onSuccess: ({ message }) => {
+                  toast.success(message);
                   onClose();
                 },
                 onError: error => {
                   const errors = ErrorMapper.mapErrorToApiResponse(error);
 
+                  toast.error(errors.message);
                   FormHelper.setFormErrors(errors.errors, form.setError);
                 }
               });

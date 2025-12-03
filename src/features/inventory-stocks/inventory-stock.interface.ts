@@ -29,12 +29,12 @@ export enum InventoryStockStatus {
 }
 
 export interface InventoryStockFilter {
-  product_id?: number;
-  warehouse_id?: number;
-  warehouse_location_id?: number;
-  batch_id?: number;
-  status?: InventoryStockStatus;
-  product_type_id?: number;
+  product_id?: number[];
+  warehouse_id?: number[];
+  warehouse_location_id?: number[];
+  batch_id?: number[];
+  status?: InventoryStockStatus[];
+  product_type_id?: number[];
 }
 
 export type InventoryStockRelations =

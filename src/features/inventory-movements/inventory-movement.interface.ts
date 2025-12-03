@@ -10,8 +10,7 @@ import { BasePaginationParams } from '@/interfaces/pagination-response.interface
 
 export enum MovementType {
   Entry = 'entry',
-  Exit = 'exit',
-  Transfer = 'transfer'
+  Exit = 'exit'
 }
 
 export interface InventoryMovement {

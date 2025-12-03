@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { AuthToken } from '@/features/auth/auth.service';
 import { SessionUser } from '@/features/auth/session-user.interface';
-import { Permission } from '@/features/role/role.interface';
+import { Permission } from '@/features/roles/role.interface';
 
 export interface AuthState {
   user: SessionUser | null;

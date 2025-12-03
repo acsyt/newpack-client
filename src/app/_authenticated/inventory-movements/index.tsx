@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_authenticated/inventory-movements/')({
 
 function RouteComponent() {
   return (
-    <DashboardLayoutContainer title='Movimientos de Inventario (Kardex)'>
+    <DashboardLayoutContainer title='Movimientos de Inventario'>
       <MovementsTable />
     </DashboardLayoutContainer>
   );
