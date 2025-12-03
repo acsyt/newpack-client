@@ -2,17 +2,15 @@ import type { FC } from 'react';
 
 import { useMemo, useState } from 'react';
 
-import {
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  Tabs
-} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import dayjs from 'dayjs';
 import {
   ArrowDown,
@@ -52,6 +50,37 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
 
+  const [selectedWarehouse, setSelectedWarehouse] = useState<number | ''>('');
+  const [selectedType, setSelectedType] = useState<string | ''>('');
+
+  const { data: warehousesData } = useWarehousesQuery({
+    options: {}
+  });
+  const warehouses = useMemo(
+    () =>
+      warehousesData?.data.sort(
+        (a, b) => (b?.stocksCount || 0) - (a?.stocksCount || 0)
+      ) || [],
+    [warehousesData]
+  );
+
+  const movementParams: InventoryMovementParams = {
+    include: [
+      'product',
+      'product.measureUnit',
+      'warehouse',
+      'warehouseLocation',
+      'batch',
+      'user',
+      'relatedMovement',
+      'relatedMovement.warehouse'
+    ],
+    filter: {
+      ...(selectedWarehouse && { warehouse_id: selectedWarehouse }),
+      ...(selectedType && { type: selectedType as any })
+    }
+  };
+
   const memoizedColumns = useMemo<MRT_ColumnDef<InventoryMovement>[]>(
     () => [
       {
@@ -59,6 +88,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
         id: 'created_at',
         accessorKey: 'createdAt',
         size: 100,
+        filterVariant: 'date-range',
         Cell: ({ row: { original } }) => (
           <div className='flex flex-col'>
             <span className='text-sm font-semibold text-gray-900'>
@@ -76,11 +106,16 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
         id: 'type',
         accessorKey: 'type',
         size: 130,
+        filterVariant: 'select',
+        filterOptions: [
+          { label: 'Entrada', value: MovementType.Entry },
+          { label: 'Salida', value: MovementType.Exit }
+        ],
         Cell: ({ row: { original } }) => {
           const isEntry = isEntryType(original.type);
           const isTransfer = !!original.relatedMovement;
 
-          let color = isEntry ? 'success' : 'error';
+          let color: ChipProps['color'] = isEntry ? 'success' : 'error';
           let Icon = isEntry ? ArrowUpCircle : ArrowDownCircle;
           let label = InventoryMovementHelper.humanReadableType(original.type);
 
@@ -95,7 +130,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
               icon={<Icon size={16} />}
               label={label}
               size='small'
-              color={color as any}
+              color={color}
               variant='outlined'
               sx={{ fontWeight: 600, border: 'none', bgcolor: `${color}.50` }}
             />
@@ -105,8 +140,8 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Producto',
-        id: 'product_details',
-        accessorFn: row => row.product?.name,
+        id: 'product.name',
+        accessorKey: 'product.name',
         size: 280,
         Cell: ({ row: { original } }) => (
           <div className='flex flex-col'>
@@ -122,7 +157,8 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Origen',
-        id: 'source_warehouse',
+        id: 'sourceWarehouse.name',
+        enableColumnFilter: false,
         accessorFn: row => {
           if (row.type === MovementType.Entry && row.relatedMovement?.warehouse)
             return row.relatedMovement.warehouse.name;
@@ -136,7 +172,8 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Destino',
-        id: 'destination_warehouse',
+        id: 'destinationWarehouse.name',
+        enableColumnFilter: false,
         accessorFn: row => {
           if (row.type === MovementType.Exit && row.relatedMovement?.warehouse)
             return row.relatedMovement.warehouse.name;
@@ -151,8 +188,9 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Referencia',
-        id: 'reference_unified',
+        id: 'reference_id',
         size: 160,
+        enableColumnFilter: false,
         Cell: ({ row: { original } }) => {
           let text = 'Ajuste Manual';
           let subtext = '';
@@ -190,6 +228,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
         id: 'quantity',
         accessorKey: 'quantity',
         size: 110,
+        filterVariant: 'range-slider',
         muiTableHeadCellProps: { align: 'right' },
         muiTableBodyCellProps: { align: 'right' },
         Cell: ({ row: { original } }) => {
@@ -216,9 +255,10 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Stock',
-        id: 'balance',
+        id: 'balance_after',
         accessorKey: 'balanceAfter',
         size: 100,
+        filterVariant: 'range-slider',
         muiTableHeadCellProps: { align: 'right' },
         muiTableBodyCellProps: { align: 'right' },
         Cell: ({ row: { original } }) => (
@@ -235,7 +275,7 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
 
       {
         header: 'Usuario',
-        id: 'user',
+        id: 'user.fullName',
         accessorFn: row => row.user?.fullName,
         size: 150,
         Cell: ({ row: { original } }) => (
@@ -250,34 +290,6 @@ export const MovementsTable: FC<MovementsTableProps> = ({}) => {
     ],
     []
   );
-
-  const [selectedWarehouse, setSelectedWarehouse] = useState<number | ''>('');
-  const [selectedType, setSelectedType] = useState<string | ''>('');
-
-  const { data: warehousesData } = useWarehousesQuery({
-    options: {}
-  });
-  const warehouses = useMemo(
-    () => warehousesData?.data || [],
-    [warehousesData]
-  );
-
-  const movementParams: InventoryMovementParams = {
-    include: [
-      'product',
-      'product.measureUnit',
-      'warehouse',
-      'warehouseLocation',
-      'batch',
-      'user',
-      'relatedMovement',
-      'relatedMovement.warehouse'
-    ],
-    filter: {
-      ...(selectedWarehouse && { warehouse_id: selectedWarehouse }),
-      ...(selectedType && { type: selectedType as any })
-    }
-  };
 
   return (
     <>

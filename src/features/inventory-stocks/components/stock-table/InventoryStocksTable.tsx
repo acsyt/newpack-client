@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { Download } from 'lucide-react';
+import { Download, Plus } from 'lucide-react';
 import { MRT_ColumnDef } from 'material-react-table';
 
 import { useInventoryStocksQuery } from '../../hooks/inventory-stocks.query';
@@ -22,6 +22,8 @@ import {
 } from '../../inventory-stock.interface';
 
 import { CustomTable } from '@/components/shared/CustomTable';
+import { useAuth } from '@/features/auth/hooks/mutations';
+import { CreateTransferDrawer } from '@/features/inventory-movements/components/movement-table/create-transfer-drawer/CreateTransferDrawer';
 import { useProductTypesQuery } from '@/features/product-types/hooks/product-types.query';
 import { useWarehousesQuery } from '@/features/warehouses/hooks/warehouses.query';
 import { CustomOption } from '@/interfaces/custom-option.interface';
@@ -38,6 +40,9 @@ const statusColors: Record<
 };
 
 export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
+  const { permissions } = useAuth();
+
+  const [isOpenTransfer, setIsOpenTransfer] = useState(false);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<number | null>(
     null
   );
@@ -52,7 +57,10 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
   const { data: productTypesData } = useProductTypesQuery({});
 
   const warehouses = useMemo(
-    () => warehousesData?.data || [],
+    () =>
+      (warehousesData?.data || []).sort(
+        (a, b) => (b?.stocksCount || 0) - (a?.stocksCount || 0)
+      ),
     [warehousesData]
   );
   const warehouseOptions = useMemo<CustomOption[]>(
@@ -93,7 +101,7 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
 
     if (selectedWarehouseId) {
       filters.push({
-        id: 'warehouse.id',
+        id: 'warehouse_id',
         value: selectedWarehouseId
       });
     }
@@ -181,23 +189,23 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
         size: 150
       },
       {
-        header: 'Lote',
-        id: 'batch.code',
-        accessorFn: row => row.batch?.code || '-',
-        size: 100
-      },
-      {
         header: 'Cantidad Actual',
         id: 'quantity',
         accessorKey: 'quantity',
         size: 100,
         Cell: ({ row: { original } }) => {
-          const quantity = Number(original.quantity);
+          const val = Number(original.quantity);
 
           return (
-            <span style={{ fontWeight: 'bold' }}>
-              {quantity.toFixed(2)} {original.product?.measureUnit?.code || ''}
-            </span>
+            <div>
+              <span className={`text-sm font-bold tabular-nums`}>
+                {' '}
+                {val.toFixed(2)}
+              </span>
+              <span className='text-xs text-gray-500'>
+                {original.product?.measureUnit?.code}
+              </span>
+            </div>
           );
         }
       },
@@ -221,89 +229,136 @@ export const InventoryStocksTable: FC<InventoryStocksTableProps> = ({}) => {
   );
 
   return (
-    <CustomTable
-      queryHook={useInventoryStocksQuery}
-      queryProps={{
-        options: stockParams
-      }}
-      columns={columns}
-      enableRowActions={false}
-      customFilters={columnFilters}
-      initialState={{
-        columnVisibility: { id: false }
-      }}
-      renderTopToolbarCustomActions={() => (
-        <Box display='flex' gap={2} alignItems='flex-end' flexWrap='wrap'>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <InputLabel>Almacén</InputLabel>
-            <Select
-              displayEmpty
-              value={selectedWarehouseId ?? 'all'}
-              label='Almacén'
-              onChange={e =>
-                setSelectedWarehouseId(
-                  !isNaN(Number(e.target.value)) ? Number(e.target.value) : null
-                )
-              }
-            >
-              <MenuItem value='all'>
-                <em>Todos los almacenes</em>
-              </MenuItem>
-              {warehouses.map(warehouse => (
-                <MenuItem key={warehouse.id} value={warehouse.id}>
-                  {warehouse.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <InputLabel>Tipo de Producto</InputLabel>
-            <Select
-              displayEmpty
-              value={selectedProductTypeId ?? 'all'}
-              label='Tipo de Producto'
-              onChange={e =>
-                setSelectedProductTypeId(
-                  !isNaN(Number(e.target.value)) ? Number(e.target.value) : null
-                )
-              }
-            >
-              <MenuItem value='all'>
-                <em>Todos los tipos</em>
-              </MenuItem>
-              {productTypes.map(type => (
-                <MenuItem key={type.id} value={type.id}>
-                  {type.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          {hasActiveFilters && (
-            <Button
-              variant='outlined'
+    <>
+      <CustomTable
+        queryHook={useInventoryStocksQuery}
+        queryProps={{ options: stockParams }}
+        columns={columns}
+        enableRowActions={false}
+        customFilters={columnFilters}
+        initialState={{
+          columnVisibility: { id: false }
+        }}
+        renderTopToolbarCustomActions={() => (
+          <Box display='flex' gap={2} alignItems='flex-end' flexWrap='wrap'>
+            <FormControl
               size='small'
-              sx={{ height: 40 }}
-              onClick={onClearFilters}
+              sx={{ minWidth: 200, width: { xs: '100%', md: 'auto' } }}
             >
-              Limpiar filtros
-            </Button>
-          )}
+              <InputLabel>Almacén</InputLabel>
+              <Select
+                displayEmpty
+                value={selectedWarehouseId ?? 'all'}
+                label='Almacén'
+                onChange={e =>
+                  setSelectedWarehouseId(
+                    !isNaN(Number(e.target.value))
+                      ? Number(e.target.value)
+                      : null
+                  )
+                }
+              >
+                <MenuItem value='all'>
+                  <em>Todos los almacenes</em>
+                </MenuItem>
+                {warehouses.map(warehouse => (
+                  <MenuItem key={warehouse.id} value={warehouse.id}>
+                    {warehouse.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <Box display='flex' gap={1} marginLeft='auto'>
-            <Button
-              variant='outlined'
-              color='primary'
+            <FormControl
               size='small'
-              startIcon={<Download size={16} />}
-              onClick={onExport}
+              sx={{ minWidth: 200, width: { xs: '100%', md: 'auto' } }}
             >
-              Exportar Reporte
-            </Button>
+              <InputLabel>Tipo de Producto</InputLabel>
+              <Select
+                displayEmpty
+                value={selectedProductTypeId ?? 'all'}
+                label='Tipo de Producto'
+                onChange={e =>
+                  setSelectedProductTypeId(
+                    !isNaN(Number(e.target.value))
+                      ? Number(e.target.value)
+                      : null
+                  )
+                }
+              >
+                <MenuItem value='all'>
+                  <em>Todos los tipos</em>
+                </MenuItem>
+                {productTypes.map(type => (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {hasActiveFilters && (
+              <Button
+                variant='outlined'
+                size='small'
+                sx={{ height: 40, width: { xs: '100%', md: 'auto' } }}
+                onClick={onClearFilters}
+              >
+                Limpiar filtros
+              </Button>
+            )}
+
+            <Box
+              display='flex'
+              gap={1}
+              sx={{
+                width: { xs: '100%', md: 'auto' },
+                flexWrap: { xs: 'wrap', md: 'nowrap' }
+              }}
+            >
+              {permissions.includes('inventory-movements.create-transfer') && (
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  size='small'
+                  sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
+                  startIcon={<Plus size={16} />}
+                  onClick={() => setIsOpenTransfer(true)}
+                >
+                  Transferencia
+                </Button>
+              )}
+            </Box>
+
+            <Box
+              display='flex'
+              gap={1}
+              sx={{
+                width: { xs: '100%', md: 'auto' },
+                marginLeft: { xs: 0, md: 'auto' }
+              }}
+            >
+              <Button
+                variant='outlined'
+                color='primary'
+                size='small'
+                sx={{ height: 40, flex: { xs: 1, md: 'initial' } }}
+                startIcon={<Download size={16} />}
+                onClick={onExport}
+              >
+                Exportar Reporte
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        )}
+      />
+
+      {isOpenTransfer && (
+        <CreateTransferDrawer
+          isOpen={isOpenTransfer}
+          onClose={() => setIsOpenTransfer(false)}
+        />
       )}
-    />
+    </>
   );
 };
