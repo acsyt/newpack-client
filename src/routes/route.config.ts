@@ -119,7 +119,7 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/roles/create': ['roles.create'],
   '/roles/$roleId/show': ['roles.show'],
   '/compounds': ['compounds.index'],
-  '/purchased-orders': ['purchased-orders.index'],
+  '/purchase-orders': ['purchase-orders.index'],
   '/processes/bolsa-en-rollo': ['processes.bolsa-en-rollo.index'],
   '/processes/bolsa-suelta': ['processes.bolsa-suelta.index'],
   '/processes/extrusion': ['processes.extrusion.index'],
@@ -341,7 +341,7 @@ export const useRouteConfig = () => {
         { title: 'Peletizado' }
       ]
     },
-    '/purchased-orders': {
+    '/purchase-orders': {
       title: 'Pedidos Comprados',
       breadcrumbs: [
         { title: 'Inicio', path: '/' },

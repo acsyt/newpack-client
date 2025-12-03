@@ -21,7 +21,7 @@ import { Route as AuthenticatedSuppliersIndexRouteImport } from './app/_authenti
 import { Route as AuthenticatedSubclassesIndexRouteImport } from './app/_authenticated/subclasses/index'
 import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticated/roles/index'
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
-import { Route as AuthenticatedPurchasedOrdersIndexRouteImport } from './app/_authenticated/purchased-orders/index'
+import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './app/_authenticated/purchase-orders/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
 import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authenticated/machines/index'
 import { Route as AuthenticatedInventoryStocksIndexRouteImport } from './app/_authenticated/inventory-stocks/index'
@@ -114,10 +114,10 @@ const AuthenticatedRawMaterialsIndexRoute =
     path: '/raw-materials/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedPurchasedOrdersIndexRoute =
-  AuthenticatedPurchasedOrdersIndexRouteImport.update({
-    id: '/purchased-orders/',
-    path: '/purchased-orders/',
+const AuthenticatedPurchaseOrdersIndexRoute =
+  AuthenticatedPurchaseOrdersIndexRouteImport.update({
+    id: '/purchase-orders/',
+    path: '/purchase-orders/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedProcessesIndexRoute =
@@ -315,7 +315,7 @@ export interface FileRoutesByFullPath {
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
-  '/purchased-orders': typeof AuthenticatedPurchasedOrdersIndexRoute
+  '/purchase-orders': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
@@ -357,7 +357,7 @@ export interface FileRoutesByTo {
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
-  '/purchased-orders': typeof AuthenticatedPurchasedOrdersIndexRoute
+  '/purchase-orders': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
@@ -401,7 +401,7 @@ export interface FileRoutesById {
   '/_authenticated/inventory-stocks/': typeof AuthenticatedInventoryStocksIndexRoute
   '/_authenticated/machines/': typeof AuthenticatedMachinesIndexRoute
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
-  '/_authenticated/purchased-orders/': typeof AuthenticatedPurchasedOrdersIndexRoute
+  '/_authenticated/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
   '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
   '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
@@ -445,7 +445,7 @@ export interface FileRouteTypes {
     | '/inventory-stocks'
     | '/machines'
     | '/processes'
-    | '/purchased-orders'
+    | '/purchase-orders'
     | '/raw-materials'
     | '/roles'
     | '/subclasses'
@@ -487,7 +487,7 @@ export interface FileRouteTypes {
     | '/inventory-stocks'
     | '/machines'
     | '/processes'
-    | '/purchased-orders'
+    | '/purchase-orders'
     | '/raw-materials'
     | '/roles'
     | '/subclasses'
@@ -530,7 +530,7 @@ export interface FileRouteTypes {
     | '/_authenticated/inventory-stocks/'
     | '/_authenticated/machines/'
     | '/_authenticated/processes/'
-    | '/_authenticated/purchased-orders/'
+    | '/_authenticated/purchase-orders/'
     | '/_authenticated/raw-materials/'
     | '/_authenticated/roles/'
     | '/_authenticated/subclasses/'
@@ -640,11 +640,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRawMaterialsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/purchased-orders/': {
-      id: '/_authenticated/purchased-orders/'
-      path: '/purchased-orders'
-      fullPath: '/purchased-orders'
-      preLoaderRoute: typeof AuthenticatedPurchasedOrdersIndexRouteImport
+    '/_authenticated/purchase-orders/': {
+      id: '/_authenticated/purchase-orders/'
+      path: '/purchase-orders'
+      fullPath: '/purchase-orders'
+      preLoaderRoute: typeof AuthenticatedPurchaseOrdersIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/processes/': {
@@ -919,7 +919,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedInventoryStocksIndexRoute: typeof AuthenticatedInventoryStocksIndexRoute
   AuthenticatedMachinesIndexRoute: typeof AuthenticatedMachinesIndexRoute
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
-  AuthenticatedPurchasedOrdersIndexRoute: typeof AuthenticatedPurchasedOrdersIndexRoute
+  AuthenticatedPurchaseOrdersIndexRoute: typeof AuthenticatedPurchaseOrdersIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
   AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
   AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
@@ -958,8 +958,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedInventoryStocksIndexRoute,
   AuthenticatedMachinesIndexRoute: AuthenticatedMachinesIndexRoute,
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
-  AuthenticatedPurchasedOrdersIndexRoute:
-    AuthenticatedPurchasedOrdersIndexRoute,
+  AuthenticatedPurchaseOrdersIndexRoute: AuthenticatedPurchaseOrdersIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,
   AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
   AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,

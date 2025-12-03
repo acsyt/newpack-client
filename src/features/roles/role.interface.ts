@@ -156,4 +156,4 @@ export type Permission =
   | 'compounds.export'
 
   // Purchased Orders
-  | 'purchased-orders.index';
+  | 'purchase-orders.index';
