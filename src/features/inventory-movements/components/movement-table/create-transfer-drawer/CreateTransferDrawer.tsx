@@ -217,27 +217,20 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
                         }
                         renderOption={(props, option) => (
                           <li {...props}>
-                            <Box>
-                              <Typography variant='body2' fontWeight={500}>
+                            <div className='flex flex-col'>
+                              <span className='text-sm font-medium text-gray-900'>
                                 {option.name}
-                              </Typography>
+                              </span>
                               {(option.stocksCount || 0) > 0 ? (
-                                <Typography
-                                  variant='caption'
-                                  color='success.main'
-                                  fontWeight={600}
-                                >
+                                <span className='text-xs font-semibold text-green-600'>
                                   {option.stocksCount} productos en stock
-                                </Typography>
+                                </span>
                               ) : (
-                                <Typography
-                                  variant='caption'
-                                  color='text.secondary'
-                                >
+                                <span className='text-xs text-gray-500'>
                                   Sin stock
-                                </Typography>
+                                </span>
                               )}
-                            </Box>
+                            </div>
                           </li>
                         )}
                         renderInput={params => (
@@ -278,28 +271,20 @@ export const CreateTransferDrawer: FC<CreateTransferDrawerProps> = ({
                         }
                         renderOption={(props, option) => (
                           <li {...props}>
-                            <Box>
-                              <Typography variant='body2' fontWeight={500}>
+                            <div className='flex flex-col'>
+                              <span className='text-sm font-medium text-gray-900'>
                                 {option.name}
-                              </Typography>
+                              </span>
                               {(option.warehouseLocationsCount || 0) > 0 ? (
-                                <Typography
-                                  variant='caption'
-                                  color='primary.main'
-                                  fontWeight={600}
-                                >
+                                <span className='text-xs font-semibold text-blue-600'>
                                   {option.warehouseLocationsCount} ubicaciones
-                                </Typography>
+                                </span>
                               ) : (
-                                <Typography
-                                  variant='caption'
-                                  color='error.main'
-                                  fontWeight={600}
-                                >
+                                <span className='text-xs font-semibold text-red-600'>
                                   Sin ubicaciones (Solo recepción general)
-                                </Typography>
+                                </span>
                               )}
-                            </Box>
+                            </div>
                           </li>
                         )}
                         renderInput={params => (

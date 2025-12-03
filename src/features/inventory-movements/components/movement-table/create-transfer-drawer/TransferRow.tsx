@@ -69,7 +69,8 @@ export const TransferRow: FC<TransferRowProps> = ({
         'product',
         'warehouseLocation',
         'batch',
-        'product.productType'
+        'product.productType',
+        'product.measureUnit'
       ] as const,
       per_page: 50
     }),
@@ -135,20 +136,20 @@ export const TransferRow: FC<TransferRowProps> = ({
               {...props}
               className={cn(
                 props.className,
-                ' !px-3 !py-2 border-b border-slate-100'
+                ' !px-2 !py-1 border-b border-slate-100'
               )}
             >
-              <div className='w-full flex justify-between items-start gap-2'>
+              <div className='w-full flex justify-between items-start gap-1'>
                 <div className='flex flex-col overflow-hidden'>
-                  <span className='text-sm font-semibold text-slate-800 truncate'>
+                  <span className='text-xs font-semibold text-slate-800 truncate leading-tight'>
                     {option.product?.name}
                   </span>
-                  <div className='flex items-center gap-2 mt-0.5 text-xs text-slate-500'>
+                  <div className='flex items-center gap-1 mt-0.5 text-[10px] text-slate-500 leading-none'>
                     <span>SKU: {option.product?.sku}</span>
                     {option.warehouseLocation && (
                       <>
                         <span className='text-slate-300'>•</span>
-                        <span className='flex items-center gap-1'>
+                        <span className='flex items-center gap-0.5'>
                           📍{' '}
                           {`${option.warehouseLocation.aisle}-${option.warehouseLocation.shelf}-${option.warehouseLocation.section}`}
                         </span>
@@ -157,13 +158,13 @@ export const TransferRow: FC<TransferRowProps> = ({
                   </div>
                 </div>
 
-                <div className='flex flex-col items-end gap-1 shrink-0'>
-                  <span className='text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100'>
+                <div className='flex flex-col items-end gap-0.5 shrink-0'>
+                  <span className='text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-100 leading-none'>
                     {Number(option.quantity).toFixed(2)}{' '}
                     {option.product?.measureUnit?.code}
                   </span>
                   {option.batch && (
-                    <span className='text-[10px] font-medium text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100'>
+                    <span className='text-[9px] font-medium text-blue-700 bg-blue-50 px-1 py-0.5 rounded border border-blue-100 leading-none'>
                       Lote: {option.batch.code}
                     </span>
                   )}
