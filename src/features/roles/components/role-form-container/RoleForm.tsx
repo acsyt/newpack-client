@@ -64,7 +64,7 @@ export const RoleForm: FC<RoleFormProps> = props => {
       return {
         mode,
         id: +role.id,
-        name: role.name,
+        name: role.description,
         permissions: role.permissions.map(permission => permission.name),
         active: role.active
       };
