@@ -87,6 +87,11 @@ export type Permission =
   | 'processes.create'
   | 'processes.edit'
   | 'processes.export'
+  | 'processes.bolsa-en-rollo.index'
+  | 'processes.bolsa-suelta.index'
+  | 'processes.extrusion.index'
+  | 'processes.impresion.index'
+  | 'processes.peletizado.index'
 
   // Raw materials
   | 'raw-materials.index'
@@ -148,4 +153,7 @@ export type Permission =
   | 'compounds.show'
   | 'compounds.create'
   | 'compounds.edit'
-  | 'compounds.export';
+  | 'compounds.export'
+
+  // Purchased Orders
+  | 'purchased-orders.index';

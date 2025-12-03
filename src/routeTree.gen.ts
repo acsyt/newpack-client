@@ -21,6 +21,7 @@ import { Route as AuthenticatedSuppliersIndexRouteImport } from './app/_authenti
 import { Route as AuthenticatedSubclassesIndexRouteImport } from './app/_authenticated/subclasses/index'
 import { Route as AuthenticatedRolesIndexRouteImport } from './app/_authenticated/roles/index'
 import { Route as AuthenticatedRawMaterialsIndexRouteImport } from './app/_authenticated/raw-materials/index'
+import { Route as AuthenticatedPurchasedOrdersIndexRouteImport } from './app/_authenticated/purchased-orders/index'
 import { Route as AuthenticatedProcessesIndexRouteImport } from './app/_authenticated/processes/index'
 import { Route as AuthenticatedMachinesIndexRouteImport } from './app/_authenticated/machines/index'
 import { Route as AuthenticatedInventoryStocksIndexRouteImport } from './app/_authenticated/inventory-stocks/index'
@@ -35,6 +36,11 @@ import { Route as AuthenticatedSuppliersCreateRouteImport } from './app/_authent
 import { Route as AuthenticatedSuppliersSupplierIdRouteImport } from './app/_authenticated/suppliers/$supplierId'
 import { Route as AuthenticatedRolesCreateRouteImport } from './app/_authenticated/roles/create'
 import { Route as AuthenticatedRolesRoleIdRouteImport } from './app/_authenticated/roles/$roleId'
+import { Route as AuthenticatedProcessesPeletizadoRouteImport } from './app/_authenticated/processes/peletizado'
+import { Route as AuthenticatedProcessesImpresionRouteImport } from './app/_authenticated/processes/impresion'
+import { Route as AuthenticatedProcessesExtrusionRouteImport } from './app/_authenticated/processes/extrusion'
+import { Route as AuthenticatedProcessesBolsaSueltaRouteImport } from './app/_authenticated/processes/bolsa-suelta'
+import { Route as AuthenticatedProcessesBolsaEnRolloRouteImport } from './app/_authenticated/processes/bolsa-en-rollo'
 import { Route as AuthenticatedCustomersCreateRouteImport } from './app/_authenticated/customers/create'
 import { Route as AuthenticatedUsersUserIdShowRouteImport } from './app/_authenticated/users/$userId.show'
 import { Route as AuthenticatedUsersUserIdEditRouteImport } from './app/_authenticated/users/$userId.edit'
@@ -106,6 +112,12 @@ const AuthenticatedRawMaterialsIndexRoute =
   AuthenticatedRawMaterialsIndexRouteImport.update({
     id: '/raw-materials/',
     path: '/raw-materials/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPurchasedOrdersIndexRoute =
+  AuthenticatedPurchasedOrdersIndexRouteImport.update({
+    id: '/purchased-orders/',
+    path: '/purchased-orders/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedProcessesIndexRoute =
@@ -192,6 +204,36 @@ const AuthenticatedRolesRoleIdRoute =
     path: '/roles/$roleId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedProcessesPeletizadoRoute =
+  AuthenticatedProcessesPeletizadoRouteImport.update({
+    id: '/processes/peletizado',
+    path: '/processes/peletizado',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProcessesImpresionRoute =
+  AuthenticatedProcessesImpresionRouteImport.update({
+    id: '/processes/impresion',
+    path: '/processes/impresion',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProcessesExtrusionRoute =
+  AuthenticatedProcessesExtrusionRouteImport.update({
+    id: '/processes/extrusion',
+    path: '/processes/extrusion',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProcessesBolsaSueltaRoute =
+  AuthenticatedProcessesBolsaSueltaRouteImport.update({
+    id: '/processes/bolsa-suelta',
+    path: '/processes/bolsa-suelta',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProcessesBolsaEnRolloRoute =
+  AuthenticatedProcessesBolsaEnRolloRouteImport.update({
+    id: '/processes/bolsa-en-rollo',
+    path: '/processes/bolsa-en-rollo',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedCustomersCreateRoute =
   AuthenticatedCustomersCreateRouteImport.update({
     id: '/customers/create',
@@ -254,6 +296,11 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
   '/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
+  '/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
+  '/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
+  '/processes/impresion': typeof AuthenticatedProcessesImpresionRoute
+  '/processes/peletizado': typeof AuthenticatedProcessesPeletizadoRoute
   '/roles/$roleId': typeof AuthenticatedRolesRoleIdRouteWithChildren
   '/roles/create': typeof AuthenticatedRolesCreateRoute
   '/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
@@ -268,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
+  '/purchased-orders': typeof AuthenticatedPurchasedOrdersIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
@@ -290,6 +338,11 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
   '/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
+  '/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
+  '/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
+  '/processes/impresion': typeof AuthenticatedProcessesImpresionRoute
+  '/processes/peletizado': typeof AuthenticatedProcessesPeletizadoRoute
   '/roles/$roleId': typeof AuthenticatedRolesRoleIdRouteWithChildren
   '/roles/create': typeof AuthenticatedRolesCreateRoute
   '/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
@@ -304,6 +357,7 @@ export interface FileRoutesByTo {
   '/inventory-stocks': typeof AuthenticatedInventoryStocksIndexRoute
   '/machines': typeof AuthenticatedMachinesIndexRoute
   '/processes': typeof AuthenticatedProcessesIndexRoute
+  '/purchased-orders': typeof AuthenticatedPurchasedOrdersIndexRoute
   '/raw-materials': typeof AuthenticatedRawMaterialsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
   '/subclasses': typeof AuthenticatedSubclassesIndexRoute
@@ -328,6 +382,11 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/_authenticated/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
+  '/_authenticated/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
+  '/_authenticated/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
+  '/_authenticated/processes/impresion': typeof AuthenticatedProcessesImpresionRoute
+  '/_authenticated/processes/peletizado': typeof AuthenticatedProcessesPeletizadoRoute
   '/_authenticated/roles/$roleId': typeof AuthenticatedRolesRoleIdRouteWithChildren
   '/_authenticated/roles/create': typeof AuthenticatedRolesCreateRoute
   '/_authenticated/suppliers/$supplierId': typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
@@ -342,6 +401,7 @@ export interface FileRoutesById {
   '/_authenticated/inventory-stocks/': typeof AuthenticatedInventoryStocksIndexRoute
   '/_authenticated/machines/': typeof AuthenticatedMachinesIndexRoute
   '/_authenticated/processes/': typeof AuthenticatedProcessesIndexRoute
+  '/_authenticated/purchased-orders/': typeof AuthenticatedPurchasedOrdersIndexRoute
   '/_authenticated/raw-materials/': typeof AuthenticatedRawMaterialsIndexRoute
   '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
   '/_authenticated/subclasses/': typeof AuthenticatedSubclassesIndexRoute
@@ -366,6 +426,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/'
     | '/customers/create'
+    | '/processes/bolsa-en-rollo'
+    | '/processes/bolsa-suelta'
+    | '/processes/extrusion'
+    | '/processes/impresion'
+    | '/processes/peletizado'
     | '/roles/$roleId'
     | '/roles/create'
     | '/suppliers/$supplierId'
@@ -380,6 +445,7 @@ export interface FileRouteTypes {
     | '/inventory-stocks'
     | '/machines'
     | '/processes'
+    | '/purchased-orders'
     | '/raw-materials'
     | '/roles'
     | '/subclasses'
@@ -402,6 +468,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/'
     | '/customers/create'
+    | '/processes/bolsa-en-rollo'
+    | '/processes/bolsa-suelta'
+    | '/processes/extrusion'
+    | '/processes/impresion'
+    | '/processes/peletizado'
     | '/roles/$roleId'
     | '/roles/create'
     | '/suppliers/$supplierId'
@@ -416,6 +487,7 @@ export interface FileRouteTypes {
     | '/inventory-stocks'
     | '/machines'
     | '/processes'
+    | '/purchased-orders'
     | '/raw-materials'
     | '/roles'
     | '/subclasses'
@@ -439,6 +511,11 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/_authenticated/'
     | '/_authenticated/customers/create'
+    | '/_authenticated/processes/bolsa-en-rollo'
+    | '/_authenticated/processes/bolsa-suelta'
+    | '/_authenticated/processes/extrusion'
+    | '/_authenticated/processes/impresion'
+    | '/_authenticated/processes/peletizado'
     | '/_authenticated/roles/$roleId'
     | '/_authenticated/roles/create'
     | '/_authenticated/suppliers/$supplierId'
@@ -453,6 +530,7 @@ export interface FileRouteTypes {
     | '/_authenticated/inventory-stocks/'
     | '/_authenticated/machines/'
     | '/_authenticated/processes/'
+    | '/_authenticated/purchased-orders/'
     | '/_authenticated/raw-materials/'
     | '/_authenticated/roles/'
     | '/_authenticated/subclasses/'
@@ -562,6 +640,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRawMaterialsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/purchased-orders/': {
+      id: '/_authenticated/purchased-orders/'
+      path: '/purchased-orders'
+      fullPath: '/purchased-orders'
+      preLoaderRoute: typeof AuthenticatedPurchasedOrdersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/processes/': {
       id: '/_authenticated/processes/'
       path: '/processes'
@@ -658,6 +743,41 @@ declare module '@tanstack/react-router' {
       path: '/roles/$roleId'
       fullPath: '/roles/$roleId'
       preLoaderRoute: typeof AuthenticatedRolesRoleIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/processes/peletizado': {
+      id: '/_authenticated/processes/peletizado'
+      path: '/processes/peletizado'
+      fullPath: '/processes/peletizado'
+      preLoaderRoute: typeof AuthenticatedProcessesPeletizadoRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/processes/impresion': {
+      id: '/_authenticated/processes/impresion'
+      path: '/processes/impresion'
+      fullPath: '/processes/impresion'
+      preLoaderRoute: typeof AuthenticatedProcessesImpresionRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/processes/extrusion': {
+      id: '/_authenticated/processes/extrusion'
+      path: '/processes/extrusion'
+      fullPath: '/processes/extrusion'
+      preLoaderRoute: typeof AuthenticatedProcessesExtrusionRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/processes/bolsa-suelta': {
+      id: '/_authenticated/processes/bolsa-suelta'
+      path: '/processes/bolsa-suelta'
+      fullPath: '/processes/bolsa-suelta'
+      preLoaderRoute: typeof AuthenticatedProcessesBolsaSueltaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/processes/bolsa-en-rollo': {
+      id: '/_authenticated/processes/bolsa-en-rollo'
+      path: '/processes/bolsa-en-rollo'
+      fullPath: '/processes/bolsa-en-rollo'
+      preLoaderRoute: typeof AuthenticatedProcessesBolsaEnRolloRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/customers/create': {
@@ -780,6 +900,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedCustomersCreateRoute: typeof AuthenticatedCustomersCreateRoute
+  AuthenticatedProcessesBolsaEnRolloRoute: typeof AuthenticatedProcessesBolsaEnRolloRoute
+  AuthenticatedProcessesBolsaSueltaRoute: typeof AuthenticatedProcessesBolsaSueltaRoute
+  AuthenticatedProcessesExtrusionRoute: typeof AuthenticatedProcessesExtrusionRoute
+  AuthenticatedProcessesImpresionRoute: typeof AuthenticatedProcessesImpresionRoute
+  AuthenticatedProcessesPeletizadoRoute: typeof AuthenticatedProcessesPeletizadoRoute
   AuthenticatedRolesRoleIdRoute: typeof AuthenticatedRolesRoleIdRouteWithChildren
   AuthenticatedRolesCreateRoute: typeof AuthenticatedRolesCreateRoute
   AuthenticatedSuppliersSupplierIdRoute: typeof AuthenticatedSuppliersSupplierIdRouteWithChildren
@@ -794,6 +919,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedInventoryStocksIndexRoute: typeof AuthenticatedInventoryStocksIndexRoute
   AuthenticatedMachinesIndexRoute: typeof AuthenticatedMachinesIndexRoute
   AuthenticatedProcessesIndexRoute: typeof AuthenticatedProcessesIndexRoute
+  AuthenticatedPurchasedOrdersIndexRoute: typeof AuthenticatedPurchasedOrdersIndexRoute
   AuthenticatedRawMaterialsIndexRoute: typeof AuthenticatedRawMaterialsIndexRoute
   AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
   AuthenticatedSubclassesIndexRoute: typeof AuthenticatedSubclassesIndexRoute
@@ -808,6 +934,13 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedCustomersCreateRoute: AuthenticatedCustomersCreateRoute,
+  AuthenticatedProcessesBolsaEnRolloRoute:
+    AuthenticatedProcessesBolsaEnRolloRoute,
+  AuthenticatedProcessesBolsaSueltaRoute:
+    AuthenticatedProcessesBolsaSueltaRoute,
+  AuthenticatedProcessesExtrusionRoute: AuthenticatedProcessesExtrusionRoute,
+  AuthenticatedProcessesImpresionRoute: AuthenticatedProcessesImpresionRoute,
+  AuthenticatedProcessesPeletizadoRoute: AuthenticatedProcessesPeletizadoRoute,
   AuthenticatedRolesRoleIdRoute: AuthenticatedRolesRoleIdRouteWithChildren,
   AuthenticatedRolesCreateRoute: AuthenticatedRolesCreateRoute,
   AuthenticatedSuppliersSupplierIdRoute:
@@ -825,6 +958,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedInventoryStocksIndexRoute,
   AuthenticatedMachinesIndexRoute: AuthenticatedMachinesIndexRoute,
   AuthenticatedProcessesIndexRoute: AuthenticatedProcessesIndexRoute,
+  AuthenticatedPurchasedOrdersIndexRoute:
+    AuthenticatedPurchasedOrdersIndexRoute,
   AuthenticatedRawMaterialsIndexRoute: AuthenticatedRawMaterialsIndexRoute,
   AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
   AuthenticatedSubclassesIndexRoute: AuthenticatedSubclassesIndexRoute,

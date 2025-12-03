@@ -14,7 +14,10 @@ import {
   UserCheckIcon,
   Users,
   Warehouse,
-  Coins
+  Coins,
+  ShoppingCart,
+  Factory,
+  Activity
 } from 'lucide-react';
 
 export const useMenuItems = () => {
@@ -98,6 +101,49 @@ export const useMenuItems = () => {
         icon: <Building2 aria-hidden='true' size={20} />,
         href: '/suppliers',
         isEnabled: true
+      },
+      {
+        title: 'Ordenes de Compra',
+        icon: <ShoppingCart aria-hidden='true' size={20} />,
+        href: '/purchase-orders',
+        isEnabled: true
+      },
+      {
+        title: 'Procesos',
+        icon: <Factory aria-hidden='true' size={20} />,
+        isEnabled: true,
+        menuItems: [
+          {
+            title: 'Extrusión',
+            href: '/processes/extrusion',
+            isEnabled: true,
+            icon: <Activity aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Impresión',
+            href: '/processes/impresion',
+            isEnabled: true,
+            icon: <Activity aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Bolsa Suelta',
+            href: '/processes/bolsa-suelta',
+            isEnabled: true,
+            icon: <Activity aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Bolsa En Rollo',
+            href: '/processes/bolsa-en-rollo',
+            isEnabled: true,
+            icon: <Activity aria-hidden='true' size={20} />
+          },
+          {
+            title: 'Peletizado',
+            href: '/processes/peletizado',
+            isEnabled: true,
+            icon: <Activity aria-hidden='true' size={20} />
+          }
+        ]
       },
       {
         title: 'Almacén',

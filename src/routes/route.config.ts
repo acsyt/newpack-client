@@ -118,7 +118,13 @@ export const routePermissions: Record<DashboardRoutes, Permission[]> = {
   '/roles/$roleId/edit': ['roles.edit'],
   '/roles/create': ['roles.create'],
   '/roles/$roleId/show': ['roles.show'],
-  '/compounds': ['compounds.index']
+  '/compounds': ['compounds.index'],
+  '/purchased-orders': ['purchased-orders.index'],
+  '/processes/bolsa-en-rollo': ['processes.bolsa-en-rollo.index'],
+  '/processes/bolsa-suelta': ['processes.bolsa-suelta.index'],
+  '/processes/extrusion': ['processes.extrusion.index'],
+  '/processes/impresion': ['processes.impresion.index'],
+  '/processes/peletizado': ['processes.peletizado.index']
 };
 
 export const useRouteConfig = () => {
@@ -293,6 +299,53 @@ export const useRouteConfig = () => {
         { title: 'Roles', path: '/roles' },
         { title: ':id' },
         { title: 'Detalle' }
+      ]
+    },
+    '/processes/bolsa-en-rollo': {
+      title: 'Bolsa en Rollo',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Procesos', path: '/processes' },
+        { title: 'Bolsa en Rollo' }
+      ]
+    },
+    '/processes/bolsa-suelta': {
+      title: 'Bolsa Suelta',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Procesos', path: '/processes' },
+        { title: 'Bolsa Suelta' }
+      ]
+    },
+    '/processes/extrusion': {
+      title: 'Extrusion',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Procesos', path: '/processes' },
+        { title: 'Extrusion' }
+      ]
+    },
+    '/processes/impresion': {
+      title: 'Impresion',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Procesos', path: '/processes' },
+        { title: 'Impresion' }
+      ]
+    },
+    '/processes/peletizado': {
+      title: 'Peletizado',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Procesos', path: '/processes' },
+        { title: 'Peletizado' }
+      ]
+    },
+    '/purchased-orders': {
+      title: 'Pedidos Comprados',
+      breadcrumbs: [
+        { title: 'Inicio', path: '/' },
+        { title: 'Pedidos Comprados' }
       ]
     }
   };
