@@ -41,6 +41,7 @@ import { Route as AuthenticatedProcessesImpresionRouteImport } from './app/_auth
 import { Route as AuthenticatedProcessesExtrusionRouteImport } from './app/_authenticated/processes/extrusion'
 import { Route as AuthenticatedProcessesBolsaSueltaRouteImport } from './app/_authenticated/processes/bolsa-suelta'
 import { Route as AuthenticatedProcessesBolsaEnRolloRouteImport } from './app/_authenticated/processes/bolsa-en-rollo'
+import { Route as AuthenticatedInventoryMovementsCreateTransferRouteImport } from './app/_authenticated/inventory-movements/create-transfer'
 import { Route as AuthenticatedCustomersCreateRouteImport } from './app/_authenticated/customers/create'
 import { Route as AuthenticatedUsersUserIdShowRouteImport } from './app/_authenticated/users/$userId.show'
 import { Route as AuthenticatedUsersUserIdEditRouteImport } from './app/_authenticated/users/$userId.edit'
@@ -234,6 +235,12 @@ const AuthenticatedProcessesBolsaEnRolloRoute =
     path: '/processes/bolsa-en-rollo',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedInventoryMovementsCreateTransferRoute =
+  AuthenticatedInventoryMovementsCreateTransferRouteImport.update({
+    id: '/inventory-movements/create-transfer',
+    path: '/inventory-movements/create-transfer',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedCustomersCreateRoute =
   AuthenticatedCustomersCreateRouteImport.update({
     id: '/customers/create',
@@ -296,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
   '/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/inventory-movements/create-transfer': typeof AuthenticatedInventoryMovementsCreateTransferRoute
   '/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
   '/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
   '/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
@@ -338,6 +346,7 @@ export interface FileRoutesByTo {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/': typeof AuthenticatedIndexRoute
   '/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/inventory-movements/create-transfer': typeof AuthenticatedInventoryMovementsCreateTransferRoute
   '/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
   '/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
   '/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
@@ -382,6 +391,7 @@ export interface FileRoutesById {
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/customers/create': typeof AuthenticatedCustomersCreateRoute
+  '/_authenticated/inventory-movements/create-transfer': typeof AuthenticatedInventoryMovementsCreateTransferRoute
   '/_authenticated/processes/bolsa-en-rollo': typeof AuthenticatedProcessesBolsaEnRolloRoute
   '/_authenticated/processes/bolsa-suelta': typeof AuthenticatedProcessesBolsaSueltaRoute
   '/_authenticated/processes/extrusion': typeof AuthenticatedProcessesExtrusionRoute
@@ -426,6 +436,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/'
     | '/customers/create'
+    | '/inventory-movements/create-transfer'
     | '/processes/bolsa-en-rollo'
     | '/processes/bolsa-suelta'
     | '/processes/extrusion'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/'
     | '/customers/create'
+    | '/inventory-movements/create-transfer'
     | '/processes/bolsa-en-rollo'
     | '/processes/bolsa-suelta'
     | '/processes/extrusion'
@@ -511,6 +523,7 @@ export interface FileRouteTypes {
     | '/auth/reset-password'
     | '/_authenticated/'
     | '/_authenticated/customers/create'
+    | '/_authenticated/inventory-movements/create-transfer'
     | '/_authenticated/processes/bolsa-en-rollo'
     | '/_authenticated/processes/bolsa-suelta'
     | '/_authenticated/processes/extrusion'
@@ -780,6 +793,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProcessesBolsaEnRolloRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/inventory-movements/create-transfer': {
+      id: '/_authenticated/inventory-movements/create-transfer'
+      path: '/inventory-movements/create-transfer'
+      fullPath: '/inventory-movements/create-transfer'
+      preLoaderRoute: typeof AuthenticatedInventoryMovementsCreateTransferRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/customers/create': {
       id: '/_authenticated/customers/create'
       path: '/customers/create'
@@ -900,6 +920,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedCustomersCreateRoute: typeof AuthenticatedCustomersCreateRoute
+  AuthenticatedInventoryMovementsCreateTransferRoute: typeof AuthenticatedInventoryMovementsCreateTransferRoute
   AuthenticatedProcessesBolsaEnRolloRoute: typeof AuthenticatedProcessesBolsaEnRolloRoute
   AuthenticatedProcessesBolsaSueltaRoute: typeof AuthenticatedProcessesBolsaSueltaRoute
   AuthenticatedProcessesExtrusionRoute: typeof AuthenticatedProcessesExtrusionRoute
@@ -934,6 +955,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedCustomersCreateRoute: AuthenticatedCustomersCreateRoute,
+  AuthenticatedInventoryMovementsCreateTransferRoute:
+    AuthenticatedInventoryMovementsCreateTransferRoute,
   AuthenticatedProcessesBolsaEnRolloRoute:
     AuthenticatedProcessesBolsaEnRolloRoute,
   AuthenticatedProcessesBolsaSueltaRoute:

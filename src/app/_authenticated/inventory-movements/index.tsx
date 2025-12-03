@@ -14,24 +14,24 @@ export const Route = createFileRoute('/_authenticated/inventory-movements/')({
 });
 
 enum TabEnum {
-  MOVEMENTS = 'movements',
-  TRANSFERS = 'transfers'
+  Movements,
+  Transfers
 }
 
 function RouteComponent() {
-  const [activeTab, setActiveTab] = useState<TabEnum>(TabEnum.MOVEMENTS);
+  const [activeTab, setActiveTab] = useState<TabEnum>(TabEnum.Movements);
 
   return (
     <DashboardLayoutContainer title='Movimientos de Inventario'>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
         <Tabs value={activeTab} onChange={(_, value) => setActiveTab(value)}>
-          <Tab value={TabEnum.MOVEMENTS} label='Movimientos (Kardex)' />
-          <Tab value={TabEnum.TRANSFERS} label='Transferencias' />
+          <Tab value={TabEnum.Movements} label='Movimientos (Kardex)' />
+          <Tab value={TabEnum.Transfers} label='Transferencias' />
         </Tabs>
       </Box>
 
-      {activeTab === TabEnum.MOVEMENTS && <MovementsTable />}
-      {activeTab === TabEnum.TRANSFERS && <TransfersTable />}
+      {activeTab === TabEnum.Movements && <MovementsTable />}
+      {activeTab === TabEnum.Transfers && <TransfersTable />}
     </DashboardLayoutContainer>
   );
 }
